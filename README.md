@@ -1,4 +1,4 @@
 CourtPicker.backend
 ===================
 
-Configurable court reservation system
+Backend code for Courtpicker, the Configurable court reservation system.
