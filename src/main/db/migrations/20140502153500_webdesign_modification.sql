@@ -1,0 +1,1 @@
+ALTER TABLE roger.webdesign ADD COLUMN controlstextcolor character varying(50) default '';

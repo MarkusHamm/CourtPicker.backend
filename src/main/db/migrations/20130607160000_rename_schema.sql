@@ -1,0 +1,1 @@
+ALTER SCHEMA "Roger" RENAME TO roger;

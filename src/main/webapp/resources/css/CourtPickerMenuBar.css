@@ -1,0 +1,66 @@
+@CHARSET "UTF-8";
+
+a.menu:link, a.menu:visited{
+    color: #ffffff;
+}
+
+/* New */
+
+
+
+.new ul li {
+	float: left;
+	list-style: none;
+}
+
+.new ul li a {
+	font: bold 12px/100% "Lucida Grande", "Lucida Sans Unicode", Arial, Helvetica, sans-serif;
+	border-right: 1px solid #646464;
+	padding: 6px 35px;
+	text-decoration: none;
+	color: #ffffff;
+	text-shadow: 0 -1px 0 rgba(0,0,0,.9);
+	
+	background: -webkit-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+	background: -moz-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+	background: -ms-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+	background: -o-linear-gradient(top, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+	background: linear-gradient(to bottom, #8b8b8b, #717171 49%, #5e5e5e 50%, #787878);
+}
+
+.new ul li a:before {
+	border-left: 1px solid rgba(255,255,255,.1);	
+	content: "";
+	padding: 10px 35px;
+	margin: 0 -35px;
+	position: relative;
+}
+
+.new ul li a:after {
+	border-right: 1px solid rgba(255,255,255,.1);	
+	content: "";
+	padding: 10px 35px;
+	margin: 0 -35px;
+	position: relative;
+}
+
+.new ul li:last-child a:after {border: none;}
+
+.new ul li:first-child a {-moz-border-radius: 5px 0 0 5px; border-radius: 5px 0 0 5px;}
+.new ul li:last-child a {-moz-border-radius: 0 5px 5px 0; border-radius: 0 5px 5px 0;}
+
+.new ul li a:hover {
+	border-right: 1px solid rgba(255,255,255,.2);
+	text-shadow: 0 -1px 0 rgba(0,0,0,.5);
+	
+	-webkit-box-shadow: inset 0 0 40px rgba(255,255,255,.2);
+	-moz-box-shadow: inset 0 0 40px rgba(255,255,255,.2);
+	box-shadow: inset 0 0 40px rgba(255,255,255,.2);
+	
+	background-image: -webkit-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+	background-image: -moz-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+	background-image: -ms-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+	background-image: -o-linear-gradient(top, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+	background-image: linear-gradient(to bottom, #656556, #4a4a4a 49%, #3b3b3b 50%, #454545);
+}
+

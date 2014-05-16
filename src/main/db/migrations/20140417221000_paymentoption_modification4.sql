@@ -1,0 +1,1 @@
+ALTER TABLE roger.paymentoption ADD COLUMN deleted boolean default false;

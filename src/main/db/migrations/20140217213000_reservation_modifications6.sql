@@ -1,0 +1,1 @@
+ALTER TABLE roger.singlereservation RENAME customername TO reservingcustomername;
