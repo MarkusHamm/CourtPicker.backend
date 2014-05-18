@@ -24,6 +24,7 @@ import com.courtpicker.dao.CPInstanceDAO;
 import com.courtpicker.dao.CourtCategoryDAO;
 import com.courtpicker.dao.CourtDAO;
 import com.courtpicker.dao.CssFileDAO;
+import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.dao.CustomerUserGroupDAO;
 import com.courtpicker.dao.PaymentOptionDAO;
 import com.courtpicker.dao.RateDAO;
@@ -34,6 +35,7 @@ import com.courtpicker.dao.WebdesignFileDAO;
 import com.courtpicker.model.CPInstance;
 import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
+import com.courtpicker.model.Customer;
 import com.courtpicker.model.CustomerExtract;
 import com.courtpicker.model.PaymentOption;
 import com.courtpicker.model.Rate;
@@ -71,6 +73,8 @@ public class ConfigurationController {
     private SubscriptionRatePeriodDAO subscriptionRatePeriodDAO;
     @Inject
     private PaymentOptionDAO paymentOptionDAO;
+    @Inject
+    private CustomerDAO customerDAO;
 
     @RequestMapping(value = "/api/createNewInstance", method = RequestMethod.GET)
     public @ResponseBody
@@ -352,7 +356,7 @@ public class ConfigurationController {
 
     @RequestMapping(value = "/api/validateUniqueCpShortName", method = RequestMethod.GET)
     public @ResponseBody
-    String validateUniqueCpShortName(@RequestParam String shortName, @RequestParam Integer excludeCurrentCpInstanceId) {
+    String validateUniqueCpShortName(@RequestParam String shortName, @RequestParam(required=false) Integer excludeCurrentCpInstanceId) {
         if (shortName.equals("")) {
             return "VALID";
         }
@@ -361,7 +365,43 @@ public class ConfigurationController {
         if (queryResult == null) {
             return "VALID";
         }
-        if (queryResult.getId().equals(excludeCurrentCpInstanceId)) {
+        if (excludeCurrentCpInstanceId != null && queryResult.getId().equals(excludeCurrentCpInstanceId)) {
+            return "VALID";
+        }
+
+        return "INVALID";
+    }
+    
+    @RequestMapping(value = "/api/validateUniqueUserName", method = RequestMethod.GET)
+    public @ResponseBody 
+    String validateUniqueUserName(@RequestParam String userName, @RequestParam(required=false) Integer excludeCurrentUserId) {
+        if (userName.equals("")) {
+            return "VALID";
+        }
+
+        Customer queryResult = customerDAO.getByUserName(userName);
+        if (queryResult == null) {
+            return "VALID";
+        }
+        if (excludeCurrentUserId != null && queryResult.getId().equals(excludeCurrentUserId)) {
+            return "VALID";
+        }
+
+        return "INVALID";
+    }
+    
+    @RequestMapping(value = "/api/validateUniqueUserEmail", method = RequestMethod.GET)
+    public @ResponseBody 
+    String validateUniqueUserEmail(@RequestParam String userEmail, @RequestParam(required=false) Integer excludeCurrentUserId) {
+        if (userEmail.equals("")) {
+            return "VALID";
+        }
+
+        Customer queryResult = customerDAO.getByEmail(userEmail);
+        if (queryResult == null) {
+            return "VALID";
+        }
+        if (excludeCurrentUserId != null && queryResult.getId().equals(excludeCurrentUserId)) {
             return "VALID";
         }
 
