@@ -31,6 +31,7 @@ import com.courtpicker.dao.RateDAO;
 import com.courtpicker.dao.SingleReservationDAO;
 import com.courtpicker.dao.SubscriptionReservationPeriodDAO;
 import com.courtpicker.exception.UserAlreadyExistsException;
+import com.courtpicker.model.Authority;
 import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.Customer;
@@ -104,6 +105,22 @@ public class CourtpickerController {
     @RequestMapping(value="/api/getAllAuthorities", method=RequestMethod.GET)
     public @ResponseBody Map<Integer, List<String>> getAllAuthorities(@RequestParam Integer userId) throws Exception {
         return authorityDAO.getAllAuthorities(userId);
+    }
+    
+    @RequestMapping(value="/api/associateUserWithCpInstance", method=RequestMethod.POST)
+    public @ResponseBody void associateUserWithCpInstance(@RequestParam Integer cpInstanceId, @RequestParam Integer userId) {
+        boolean authoritiesContainAdmin = false;
+        List<Authority> authorities = authorityDAO.getCpInstanceAuthorities(cpInstanceId);
+        
+        for (Authority authority : authorities) {
+            if (authority.getAuthority().toUpperCase().equals("ADMIN")) {
+                authoritiesContainAdmin = true;
+            }
+        }
+        
+        if (!authoritiesContainAdmin) {
+            authorityDAO.authorizeUser(cpInstanceId, userId, "ADMIN");
+        }
     }
     
     @RequestMapping(value="/api/forgotPasswordRequest", method=RequestMethod.GET)
