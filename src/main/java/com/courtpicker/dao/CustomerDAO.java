@@ -61,8 +61,8 @@ public class CustomerDAO {
     }
 
     public Customer getByNameAndEmail(String email, String firstName, String lastName) {
-        String query = "select * from roger.customer where lower(email)=? and lower(firstname)=? and lower(lastname)=? and enabled=?";
-        List<Customer> matches = jdbcTemplate.query(query, new Object[] { email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase(), true}, rowMapper);
+        String query = "select * from roger.customer where lower(email)=? and lower(firstname)=? and lower(lastname)=?";
+        List<Customer> matches = jdbcTemplate.query(query, new Object[] { email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
             return null;
@@ -72,8 +72,8 @@ public class CustomerDAO {
     }
     
     public Customer getByEmail(String email) {
-        String query = "select * from roger.customer where lower(email)=? and enabled=?";
-        List<Customer> matches = jdbcTemplate.query(query, new Object[] { email.toLowerCase(), true}, rowMapper);
+        String query = "select * from roger.customer where lower(email)=?";
+        List<Customer> matches = jdbcTemplate.query(query, new Object[] { email.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
             return null;
@@ -83,8 +83,8 @@ public class CustomerDAO {
     }
     
     public Customer getByUserName(String userName) {
-        String query = "select * from roger.customer where lower(username)=? and enabled=?";
-        List<Customer> matches = jdbcTemplate.query(query, new Object[] { userName.toLowerCase(), true}, rowMapper);
+        String query = "select * from roger.customer where lower(username)=?";
+        List<Customer> matches = jdbcTemplate.query(query, new Object[] { userName.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
             return null;
