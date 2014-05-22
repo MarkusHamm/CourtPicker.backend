@@ -64,6 +64,13 @@ public class CourtDAO {
         String query = "delete from roger.court where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
+    
+    public Integer getNrOfCourts(Integer cpInstanceId) {
+        String query = "select count(1) from roger.court where courtcategoryid in " +
+        		"(select id from roger.courtcategory where cpinstanceid=?)";
+        Integer result = jdbcTemplate.queryForObject(query, new Object[] { cpInstanceId }, Integer.class);
+        return result;
+    }
 
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;

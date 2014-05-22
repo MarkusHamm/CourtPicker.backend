@@ -1,6 +1,7 @@
 package com.courtpicker.controller;
 
 import java.io.IOException;
+import java.math.BigDecimal;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -20,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import com.courtpicker.configurator.CssDesign;
 import com.courtpicker.configurator.CssDesignFactory;
+import com.courtpicker.courtpicker.MonthlyFeeCalculator;
 import com.courtpicker.dao.CPInstanceDAO;
 import com.courtpicker.dao.CourtCategoryDAO;
 import com.courtpicker.dao.CourtDAO;
@@ -75,6 +77,8 @@ public class ConfigurationController {
     private PaymentOptionDAO paymentOptionDAO;
     @Inject
     private CustomerDAO customerDAO;
+    @Inject
+    private MonthlyFeeCalculator monthlyFeeCalculator;
 
     @RequestMapping(value = "/api/createNewInstance", method = RequestMethod.GET)
     public @ResponseBody
@@ -351,6 +355,12 @@ public class ConfigurationController {
     void deletePaymentOption(@RequestParam Integer id) {
         paymentOptionDAO.delete(id);
     }
+    
+    @RequestMapping(value = "/api/getMonthlyFee", method = RequestMethod.GET)
+    public @ResponseBody BigDecimal getMonthlyFee(@RequestParam Integer cpInstanceId) {
+        Integer nrOfCourts = courtDAO.getNrOfCourts(cpInstanceId);
+        return monthlyFeeCalculator.calculateMonthlyFee(nrOfCourts);
+    }    
 
     // ---------- validators --------------
 
