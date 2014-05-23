@@ -100,6 +100,24 @@ public class UserAccountManager {
         return true;        
     }
     
+    public String changeUserPassword(Integer userId, String oldPassword, String newPassword) {
+        Customer customer = customerDAO.get(userId);
+        if (customer == null) {
+            return ""; // no customer found with id
+        }
+        
+        String oldPasswordMd5 = DigestUtils.md5Hex(oldPassword);
+        if (!customer.getPassword().equals(oldPasswordMd5)) {
+            return ""; // old password wrong
+        }
+        
+        String newPasswordMd5 = DigestUtils.md5Hex(newPassword);
+        customer.setPassword(newPasswordMd5);
+        customerDAO.persist(customer);
+        
+        return newPasswordMd5;
+    }
+    
     private Customer createUser(Customer user) throws UserAlreadyExistsException {
         Customer customerWithSameUserName = customerDAO.getByUserName(user.getUserName());
         Customer customerWithSameEmail = customerDAO.getByEmail(user.getEmail());

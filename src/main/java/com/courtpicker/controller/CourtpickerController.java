@@ -98,6 +98,11 @@ public class CourtpickerController {
         return customerDAO.getByUserCredentials(username, DigestUtils.md5Hex(password));
     }
     
+    @RequestMapping(value="/api/changeUserPassword", method=RequestMethod.POST)
+    public @ResponseBody String changeUserPassword(@RequestParam Integer userId, @RequestParam String oldPassword, @RequestParam String newPassword) {
+        return userAccountManager.changeUserPassword(userId, oldPassword, newPassword);
+    }
+    
     @RequestMapping(value="/api/getAuthorities", method=RequestMethod.GET)
     public @ResponseBody List<String> getAuthorities(@RequestParam Integer userId, @RequestParam Integer cpInstanceId) throws Exception {
         return authorityDAO.getAuthorities(userId, cpInstanceId);
