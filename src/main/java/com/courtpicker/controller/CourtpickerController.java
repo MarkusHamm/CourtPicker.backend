@@ -13,6 +13,7 @@ import javax.inject.Inject;
 
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -88,7 +89,7 @@ public class CourtpickerController {
     }
     
     @RequestMapping(value="/api/updateUser", method=RequestMethod.POST)
-    public @ResponseBody Customer updateUser(@RequestParam Customer user) {
+    public @ResponseBody Customer updateUser(@RequestBody Customer user) {
         return customerDAO.persist(user);
     }
     
