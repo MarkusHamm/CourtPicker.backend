@@ -36,6 +36,13 @@ public class CustomerDAO {
         String query = "select * from roger.customer where enabled=true order by lastname asc";
         List<CustomerExtract> matches = jdbcTemplate.query(query, new Object[] {}, extractRowMapper);
         return matches;
+    }
+    
+    public List<CustomerExtract> getAdminUserExctract(Integer cpInstanceId) {
+        String query = "select * from roger.customer where id in " +
+        		"(select userid from roger.authority where cpinstanceid=? and authority='ADMIN')";
+        List<CustomerExtract> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, extractRowMapper);
+        return matches;
     }    
     
     public Customer get(Integer id) {

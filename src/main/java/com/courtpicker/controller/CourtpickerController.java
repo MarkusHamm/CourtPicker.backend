@@ -129,6 +129,16 @@ public class CourtpickerController {
         }
     }
     
+    @RequestMapping(value="/api/authorizeUser", method=RequestMethod.POST)
+    public @ResponseBody void authorizeUser(@RequestParam Integer cpInstanceId, @RequestParam Integer userId, @RequestParam String authority) {
+        authorityDAO.authorizeUser(cpInstanceId, userId, authority);
+    }
+    
+    @RequestMapping(value="/api/deAuthorizeUser", method=RequestMethod.POST)
+    public @ResponseBody void deAuthorizeUser(@RequestParam Integer cpInstanceId, @RequestParam Integer userId, @RequestParam String authority) {
+        authorityDAO.deAuthorizeUser(cpInstanceId, userId, authority);
+    }
+    
     @RequestMapping(value="/api/forgotPasswordRequest", method=RequestMethod.GET)
     public @ResponseBody Boolean forgotPasswordRequest(@RequestParam String email, @RequestParam String firstName, @RequestParam String lastName) {
         return userAccountManager.processForgotPasswordRequest(email, firstName, lastName);
@@ -302,6 +312,11 @@ public class CourtpickerController {
     public @ResponseBody List<CustomerExtract> getAllUserExtract() {
         return customerDAO.getAllExctract();
     }
+    
+    @RequestMapping(value="/api/getAdminUserExtract", method=RequestMethod.GET)
+    public @ResponseBody List<CustomerExtract> getAdminUserExtract(@RequestParam Integer cpInstanceId) {
+        return customerDAO.getAdminUserExctract(cpInstanceId);
+    }    
     
     @RequestMapping(value="/api/getSingleReservationInfosForCustomer", method=RequestMethod.GET)
     public @ResponseBody List<SingleReservationInfo> getSingleReservationInfosForCustomer(@RequestParam Integer customerId) {
