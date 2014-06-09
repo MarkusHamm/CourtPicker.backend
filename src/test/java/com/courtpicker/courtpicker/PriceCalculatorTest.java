@@ -11,12 +11,12 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 import com.courtpicker.tools.DateHelper;
 
 public class PriceCalculatorTest {
     private PriceCalculator calc;
-    private List<Rate> rates;
+    private List<SingleRate> rates;
     private SimpleDateFormat dateFormat;
     private SimpleDateFormat dateWithoutYearFormat;
     private SimpleDateFormat timeFormat;
@@ -235,8 +235,8 @@ public class PriceCalculatorTest {
         assertEquals(new BigDecimal(47), calcPrice);
     }
         
-    private List<Rate> createTestRates() {
-        List<Rate> rates = new ArrayList<Rate>();
+    private List<SingleRate> createTestRates() {
+        List<SingleRate> rates = new ArrayList<SingleRate>();
         // base rate
         rates.add(createRate(false, false, false, false, "", "", false, false, false, false, false, false, false, "", "", new ArrayList<Integer>(), 10));
         // time constraint
@@ -263,10 +263,10 @@ public class PriceCalculatorTest {
         return rates;
     }
     
-    private Rate createRate(boolean constrainTime, boolean constrainWeekDay, boolean constrainDate, boolean constrainUserGroup,
+    private SingleRate createRate(boolean constrainTime, boolean constrainWeekDay, boolean constrainDate, boolean constrainUserGroup,
             String cTimeFrom, String cTimeTo, boolean cMon, boolean cTue, boolean cWed, boolean cThu, boolean cFri, boolean cSat, boolean cSun,
             String cDateFrom, String cDateTo, List<Integer> cUserGroupIds, Integer price) {
-        Rate rate = new Rate();
+        SingleRate rate = new SingleRate();
         rate.setId(1);
         rate.setCourtCategoryId(1);
         rate.setName("name");

@@ -7,10 +7,10 @@ import java.util.List;
 
 import org.junit.Test;
 
-public class RateTest {
+public class SingleRateTest {
     @Test
     public void convertcUserGroupIdsToString_nullValueReturnsNull() {
-        Rate rate = new Rate();
+        SingleRate rate = new SingleRate();
         rate.setcUserGroupIds(null);
         
         assertNull(rate.convertcUserGroupIdsToString());
@@ -18,7 +18,7 @@ public class RateTest {
 
     @Test
     public void convertcUserGroupIdsToString_emptyListReturnsEmptyString() {
-        Rate rate = new Rate();
+        SingleRate rate = new SingleRate();
         rate.setcUserGroupIds(new ArrayList<Integer>());
         
         assertEquals("", rate.convertcUserGroupIdsToString());        
@@ -26,7 +26,7 @@ public class RateTest {
 
     @Test
     public void convertcUserGroupIdsToString_oneItemListReturnsItemAsString() {
-        Rate rate = new Rate();
+        SingleRate rate = new SingleRate();
         List<Integer> cUserGroupIds = new ArrayList<Integer>();
         cUserGroupIds.add(1);
         rate.setcUserGroupIds(cUserGroupIds);
@@ -36,7 +36,7 @@ public class RateTest {
 
     @Test
     public void convertcUserGroupIdsToString_threeItemListReturnsItemAsCommaSeparatedString() {
-        Rate rate = new Rate();
+        SingleRate rate = new SingleRate();
         List<Integer> cUserGroupIds = new ArrayList<Integer>();
         cUserGroupIds.add(1);
         cUserGroupIds.add(2);

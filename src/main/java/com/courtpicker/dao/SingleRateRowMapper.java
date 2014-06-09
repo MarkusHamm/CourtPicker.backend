@@ -8,12 +8,12 @@ import java.util.List;
 
 import org.springframework.jdbc.core.RowMapper;
 
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 
-public class RateRowMapper implements RowMapper<Rate> {
+public class SingleRateRowMapper implements RowMapper<SingleRate> {
     
-    public Rate mapRow(ResultSet rs, int rowNum) throws SQLException {
-        Rate rate = new Rate();
+    public SingleRate mapRow(ResultSet rs, int rowNum) throws SQLException {
+        SingleRate rate = new SingleRate();
         rate.setId(rs.getInt("id"));
         rate.setCourtCategoryId(rs.getInt("courtcategoryid"));
         rate.setName(rs.getString("name"));

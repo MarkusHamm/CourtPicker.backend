@@ -1,0 +1,1 @@
+ALTER TABLE roger.rate_id_seq RENAME TO singlerate_id_seq;

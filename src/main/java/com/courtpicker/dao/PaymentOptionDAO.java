@@ -9,7 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.courtpicker.model.PaymentOption;
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 
 @Component("paymentOptionDAO")
 @Scope("prototype")

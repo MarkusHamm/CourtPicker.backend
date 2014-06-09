@@ -1,0 +1,1 @@
+ALTER TABLE roger.rate RENAME TO singlerate;

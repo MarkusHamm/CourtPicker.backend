@@ -12,7 +12,7 @@ import java.util.List;
 
 import org.junit.Test;
 
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.SingleReservation;
 
 public class SingleReservationDAOTest extends BaseDAOTest {

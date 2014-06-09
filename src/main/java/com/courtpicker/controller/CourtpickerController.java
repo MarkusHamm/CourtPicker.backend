@@ -28,7 +28,7 @@ import com.courtpicker.dao.CourtCategoryDAO;
 import com.courtpicker.dao.CourtDAO;
 import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.dao.CustomerUserGroupDAO;
-import com.courtpicker.dao.RateDAO;
+import com.courtpicker.dao.SingleRateDAO;
 import com.courtpicker.dao.SingleReservationDAO;
 import com.courtpicker.dao.SubscriptionReservationPeriodDAO;
 import com.courtpicker.exception.UserAlreadyExistsException;
@@ -37,7 +37,7 @@ import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.Customer;
 import com.courtpicker.model.CustomerExtract;
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.SubscriptionReservationPeriod;
 import com.courtpicker.tools.DateHelper;
@@ -63,7 +63,7 @@ public class CourtpickerController {
     @Inject
     private SubscriptionReservationPeriodDAO subscriptionReservationPeriodDAO;
     @Inject
-    private RateDAO rateDAO;
+    private SingleRateDAO singleRateDAO;
     @Inject
     private CustomerUserGroupDAO customerUserGroupDAO;
     @Inject
@@ -353,7 +353,7 @@ public class CourtpickerController {
         Court court = courtDAO.get(courtId);
         CourtCategory courtCategory = courtCategoryDAO.get(court.getCourtCategoryId());
         List<Integer> userGroupIds = customerUserGroupDAO.getUserGroupIds(customerId);
-        List<Rate> courtCategoryRates = rateDAO.getRates(courtCategory.getId());
+        List<SingleRate> courtCategoryRates = singleRateDAO.getRates(courtCategory.getId());
         Date fromDate = dateTimeFormat.parse(fromDateTime);
         Date toDate = dateTimeFormat.parse(toDateTime);
         

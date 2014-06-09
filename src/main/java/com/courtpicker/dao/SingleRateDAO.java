@@ -9,40 +9,40 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.courtpicker.model.CourtCategory;
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 
-@Component("rateDAO")
+@Component("singleRateDAO")
 @Scope("prototype")
-public class RateDAO {
+public class SingleRateDAO {
     @Inject
     private JdbcTemplate jdbcTemplate;
 
-    private RateRowMapper rowMapper;
+    private SingleRateRowMapper rowMapper;
 
-    public RateDAO() {
-        rowMapper = new RateRowMapper();
+    public SingleRateDAO() {
+        rowMapper = new SingleRateRowMapper();
     }
 
-    public List<Rate> getRates(Integer courtCategoryId) {
-        String query = "select * from roger.rate where courtcategoryid=? order by ordernr";
-        List<Rate> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
+    public List<SingleRate> getRates(Integer courtCategoryId) {
+        String query = "select * from roger.singlerate where courtcategoryid=? order by ordernr";
+        List<SingleRate> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
 
-    public Rate persist(Rate rate) {
+    public SingleRate persist(SingleRate rate) {
         String query = "";
 
         // do an insert if id is NOT set
         if (rate.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.rate_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.singlerate_id_seq')");
             rate.setId(newRecordId);
-            query = "insert into roger.rate (courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, " +
+            query = "insert into roger.singlerate (courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, " +
             		"cdatefrom, cdateto, ctimefrom, ctimeto, cmon, ctue, cwed, cthu, cfri, csat, csun, " +
             		"cusergroupids, price, active, ordernr, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.rate set courtcategoryid=?, name=?, constraindate=?, constraintime=?, constrainweekday=?, constrainusergroup=?, " +
+            query = "update roger.singlerate set courtcategoryid=?, name=?, constraindate=?, constraintime=?, constrainweekday=?, constrainusergroup=?, " +
             		"cdatefrom=?, cdateto=?, ctimefrom=?, ctimeto=?, cmon=?, ctue=?, cwed=?, cthu=?, cfri=?, csat=?, csun=?, " +
             		"cusergroupids=?, price=?, active=?, ordernr=? where id=?";
         }
@@ -56,7 +56,7 @@ public class RateDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.rate where id=?";
+        String query = "delete from roger.singlerate where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 

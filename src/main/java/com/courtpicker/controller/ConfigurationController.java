@@ -29,7 +29,7 @@ import com.courtpicker.dao.CssFileDAO;
 import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.dao.CustomerUserGroupDAO;
 import com.courtpicker.dao.PaymentOptionDAO;
-import com.courtpicker.dao.RateDAO;
+import com.courtpicker.dao.SingleRateDAO;
 import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionRatePeriodDAO;
@@ -42,7 +42,7 @@ import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.Customer;
 import com.courtpicker.model.CustomerExtract;
 import com.courtpicker.model.PaymentOption;
-import com.courtpicker.model.Rate;
+import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.Subscription;
 import com.courtpicker.model.SubscriptionRate;
 import com.courtpicker.model.SubscriptionRatePeriod;
@@ -70,7 +70,7 @@ public class ConfigurationController {
     @Inject
     private FileHandler fileHandler;
     @Inject
-    private RateDAO rateDAO;
+    private SingleRateDAO singleRateDAO;
     @Inject
     private UserGroupDAO userGroupDAO;
     @Inject
@@ -271,22 +271,22 @@ public class ConfigurationController {
     // return webdesignFileDAO.persist(webdesignFile);
     // }
 
-    @RequestMapping(value = "/api/getRates", method = RequestMethod.GET)
+    @RequestMapping(value = "/api/getSingleRates", method = RequestMethod.GET)
     public @ResponseBody
-    List<Rate> getRates(@RequestParam Integer courtCategoryId) {
-        return rateDAO.getRates(courtCategoryId);
+    List<SingleRate> getSingleRates(@RequestParam Integer courtCategoryId) {
+        return singleRateDAO.getRates(courtCategoryId);
     }
 
-    @RequestMapping(value = "/api/saveRate", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/saveSingleRate", method = RequestMethod.POST)
     public @ResponseBody
-    Rate saveRate(@RequestBody Rate rate) {
-        return rateDAO.persist(rate);
+    SingleRate saveSingleRate(@RequestBody SingleRate rate) {
+        return singleRateDAO.persist(rate);
     }
 
-    @RequestMapping(value = "/api/deleteRate", method = RequestMethod.POST)
+    @RequestMapping(value = "/api/deleteSingleRate", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteRate(@RequestParam Integer id) {
-        rateDAO.delete(id);
+    void deleteSingleRate(@RequestParam Integer id) {
+        singleRateDAO.delete(id);
     }
 
     @RequestMapping(value = "/api/getSubscriptions", method = RequestMethod.GET)

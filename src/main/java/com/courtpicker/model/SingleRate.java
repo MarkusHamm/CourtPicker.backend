@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
-public class Rate {
+public class SingleRate {
     // properties
     private Integer id;
     private Integer courtCategoryId;
@@ -37,7 +37,7 @@ public class Rate {
      */
     private List<Integer> cUserGroupIds;
 
-    public Rate() {
+    public SingleRate() {
         this.id = null;
         this.courtCategoryId = null;
         this.name = "";
