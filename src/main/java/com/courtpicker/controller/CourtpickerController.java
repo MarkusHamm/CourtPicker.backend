@@ -37,6 +37,7 @@ import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.Customer;
 import com.courtpicker.model.CustomerExtract;
+import com.courtpicker.model.Rate;
 import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.SubscriptionReservationPeriod;
@@ -353,11 +354,14 @@ public class CourtpickerController {
         Court court = courtDAO.get(courtId);
         CourtCategory courtCategory = courtCategoryDAO.get(court.getCourtCategoryId());
         List<Integer> userGroupIds = customerUserGroupDAO.getUserGroupIds(customerId);
-        List<SingleRate> courtCategoryRates = singleRateDAO.getRates(courtCategory.getId());
+        List<Rate> courtCategoryRates = new ArrayList<Rate>();
+        for (Rate singleRate : singleRateDAO.getRates(courtCategory.getId())) {
+            courtCategoryRates.add(singleRate);
+        }
         Date fromDate = dateTimeFormat.parse(fromDateTime);
         Date toDate = dateTimeFormat.parse(toDateTime);
         
-        BigDecimal price = priceCalculator.calculateSingleReservationPrice(fromDate, toDate, new Date(), userGroupIds, courtCategory.getBookingUnit(), courtCategoryRates);
+        BigDecimal price = priceCalculator.calculateReservationPrice(fromDate, toDate, new Date(), userGroupIds, courtCategory.getBookingUnit(), courtCategoryRates);
         return price;
     }
 }

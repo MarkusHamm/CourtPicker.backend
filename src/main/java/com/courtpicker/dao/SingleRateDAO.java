@@ -9,6 +9,7 @@ import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
 import com.courtpicker.model.CourtCategory;
+import com.courtpicker.model.Rate;
 import com.courtpicker.model.SingleRate;
 
 @Component("singleRateDAO")

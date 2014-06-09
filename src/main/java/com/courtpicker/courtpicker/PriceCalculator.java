@@ -1,13 +1,11 @@
 package com.courtpicker.courtpicker;
 
 import java.math.BigDecimal;
-import java.math.RoundingMode;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.GregorianCalendar;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -15,7 +13,7 @@ import javax.inject.Inject;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
-import com.courtpicker.model.SingleRate;
+import com.courtpicker.model.Rate;
 import com.courtpicker.tools.DateHelper;
 
 @Component("priceCalculator")
@@ -25,19 +23,15 @@ public class PriceCalculator {
     private DateHelper dateHelper;
 
     private SimpleDateFormat dateFormat;
-    private SimpleDateFormat dateWithoutYearFormat;
-    private SimpleDateFormat timeFormat;
     private SimpleDateFormat dateTimeFormat;    
     
     public PriceCalculator() {
         dateFormat = new SimpleDateFormat("dd.MM.yyyy");
-        dateWithoutYearFormat = new SimpleDateFormat("dd.MM.");
-        timeFormat = new SimpleDateFormat("HH:mm");
         dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
     }
     
-    public BigDecimal calculateSingleReservationPrice(Date fromDate, Date toDate, Date reservationDate, 
-            List<Integer> userGroupIds, Integer bookingUnit, List<SingleRate> rates) throws ParseException {
+    public BigDecimal calculateReservationPrice(Date fromDate, Date toDate, Date reservationDate, 
+            List<Integer> userGroupIds, Integer bookingUnit, List<Rate> rates) throws ParseException {
         BigDecimal price = new BigDecimal(0);
         Integer nrOfBookingSlots = getNrOfBookingSlots(fromDate, toDate, bookingUnit);
         
@@ -45,8 +39,8 @@ public class PriceCalculator {
             Date slotFromTime = dateHelper.addMinutes(fromDate, bookingUnit * (slotNr - 1));
             Date slotToTime = dateHelper.addMinutes(fromDate, bookingUnit * slotNr);
             
-            List<SingleRate> matchingRates = identifyMatchingRates(rates, slotFromTime, slotToTime, userGroupIds);
-            SingleRate accurateRate = identifyAccurateRate(matchingRates);
+            List<Rate> matchingRates = identifyMatchingRates(rates, slotFromTime, slotToTime, userGroupIds);
+            Rate accurateRate = identifyAccurateRate(matchingRates);
             
             price = price.add(accurateRate.getPrice());
         }
@@ -65,11 +59,11 @@ public class PriceCalculator {
         return result;
     }
     
-    private List<SingleRate> identifyMatchingRates(List<SingleRate> rates, Date fromDate, Date toDate,
+    private List<Rate> identifyMatchingRates(List<Rate> rates, Date fromDate, Date toDate,
             List<Integer> userGroupIds) throws ParseException {
-        List<SingleRate> result = new ArrayList<SingleRate>();
+        List<Rate> result = new ArrayList<Rate>();
         
-        for (SingleRate rate : rates) {
+        for (Rate rate : rates) {
             if (doesRateMatchTimeConstraint(rate, fromDate, toDate) &&
                     doesRateMatchWeekDayConstraint(rate, fromDate, toDate) &&
                     doesRateMatchDateConstraint(rate, fromDate, toDate) &&
@@ -81,7 +75,7 @@ public class PriceCalculator {
         return result;
     }
     
-    private boolean doesRateMatchTimeConstraint(SingleRate rate, Date fromDate, Date toDate) throws ParseException {
+    private boolean doesRateMatchTimeConstraint(Rate rate, Date fromDate, Date toDate) throws ParseException {
         if (!rate.getConstrainTime()) {
             return true;
         }
@@ -96,7 +90,7 @@ public class PriceCalculator {
         return false;
     }
     
-    private boolean doesRateMatchWeekDayConstraint(SingleRate rate, Date fromDate, Date toDate) throws ParseException {
+    private boolean doesRateMatchWeekDayConstraint(Rate rate, Date fromDate, Date toDate) throws ParseException {
         if (!rate.getConstrainWeekDay()) {
             return true;
         }
@@ -114,7 +108,7 @@ public class PriceCalculator {
         return false;
     }
 
-    private boolean doesRateMatchDateConstraint(SingleRate rate, Date fromDate, Date toDate) throws ParseException {
+    private boolean doesRateMatchDateConstraint(Rate rate, Date fromDate, Date toDate) throws ParseException {
         if (!rate.getConstrainDate()) {
             return true;
         }
@@ -138,7 +132,7 @@ public class PriceCalculator {
         return false;
     }
     
-    private boolean doesRateMatchUserGroupConstraint(SingleRate rate, List<Integer> userGroupIds) {
+    private boolean doesRateMatchUserGroupConstraint(Rate rate, List<Integer> userGroupIds) {
         if (!rate.getConstrainUserGroup()) {
             return true;
         }
@@ -152,11 +146,11 @@ public class PriceCalculator {
         return false;
     }
     
-    private SingleRate identifyAccurateRate(List<SingleRate> matchingRates) {
-        SingleRate result = null;
+    private Rate identifyAccurateRate(List<Rate> matchingRates) {
+        Rate result = null;
         Integer resultRating = -1;
         
-        for (SingleRate rate : matchingRates) {
+        for (Rate rate : matchingRates) {
             Integer rateEvaluation = evaluateRate(rate);
             if (rateEvaluation > resultRating) {
                 result = rate;
@@ -167,7 +161,7 @@ public class PriceCalculator {
         return result;
     }
     
-    private Integer evaluateRate(SingleRate rate) {
+    private Integer evaluateRate(Rate rate) {
         Integer result = 0;
         
         if (rate.getConstrainTime()) {
