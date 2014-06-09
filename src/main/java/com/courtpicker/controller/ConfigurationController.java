@@ -30,6 +30,8 @@ import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.dao.CustomerUserGroupDAO;
 import com.courtpicker.dao.PaymentOptionDAO;
 import com.courtpicker.dao.RateDAO;
+import com.courtpicker.dao.SubscriptionDAO;
+import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionRatePeriodDAO;
 import com.courtpicker.dao.UserGroupDAO;
 import com.courtpicker.dao.WebdesignDAO;
@@ -41,6 +43,8 @@ import com.courtpicker.model.Customer;
 import com.courtpicker.model.CustomerExtract;
 import com.courtpicker.model.PaymentOption;
 import com.courtpicker.model.Rate;
+import com.courtpicker.model.Subscription;
+import com.courtpicker.model.SubscriptionRate;
 import com.courtpicker.model.SubscriptionRatePeriod;
 import com.courtpicker.model.UserGroup;
 import com.courtpicker.model.Webdesign;
@@ -71,6 +75,10 @@ public class ConfigurationController {
     private UserGroupDAO userGroupDAO;
     @Inject
     private CustomerUserGroupDAO customerUserGroupDAO;
+    @Inject
+    private SubscriptionDAO subscriptionDAO;
+    @Inject
+    private SubscriptionRateDAO subscriptionRateDAO;
     @Inject
     private SubscriptionRatePeriodDAO subscriptionRatePeriodDAO;
     @Inject
@@ -281,6 +289,43 @@ public class ConfigurationController {
         rateDAO.delete(id);
     }
 
+    @RequestMapping(value = "/api/getSubscriptions", method = RequestMethod.GET)
+    public @ResponseBody
+    List<Subscription> getSubscriptions(@RequestParam Integer courtCategoryId) {
+        return subscriptionDAO.getAll(courtCategoryId);
+    }
+
+    @RequestMapping(value = "/api/saveSubscription", method = RequestMethod.POST)
+    public @ResponseBody
+    Subscription saveSubscription(@RequestBody Subscription subscription) {
+        return subscriptionDAO.persist(subscription);
+    }
+
+    @RequestMapping(value = "/api/deleteSubscription", method = RequestMethod.POST)
+    public @ResponseBody
+    void deleteSubscription(@RequestParam Integer id) {
+        subscriptionDAO.delete(id);
+    }
+    
+    @RequestMapping(value = "/api/getSubscriptionRates", method = RequestMethod.GET)
+    public @ResponseBody
+    List<SubscriptionRate> getSubscriptionRates(@RequestParam Integer subscriptionId) {
+        return subscriptionRateDAO.getAll(subscriptionId);
+    }
+
+    @RequestMapping(value = "/api/saveSubscriptionRate", method = RequestMethod.POST)
+    public @ResponseBody
+    SubscriptionRate saveSubscriptionRate(@RequestBody SubscriptionRate subscriptionRate) {
+        return subscriptionRateDAO.persist(subscriptionRate);
+    }
+
+    @RequestMapping(value = "/api/deleteSubscriptionRate", method = RequestMethod.POST)
+    public @ResponseBody
+    void deleteSubscriptionRate(@RequestParam Integer id) {
+        subscriptionRateDAO.delete(id);
+    }
+    
+    /*
     @RequestMapping(value = "/api/getSubscriptionPeriodRates", method = RequestMethod.GET)
     public @ResponseBody
     List<SubscriptionRatePeriod> getSubscriptionPeriodRates(@RequestParam Integer courtCategoryId) {
@@ -298,6 +343,7 @@ public class ConfigurationController {
     void deleteSubscriptionPeriodRate(@RequestParam Integer id) {
         subscriptionRatePeriodDAO.delete(id);
     }
+    */
 
     @RequestMapping(value = "/api/getUserGroups", method = RequestMethod.GET)
     public @ResponseBody
