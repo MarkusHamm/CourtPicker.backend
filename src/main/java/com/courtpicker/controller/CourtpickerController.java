@@ -30,6 +30,8 @@ import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.dao.CustomerUserGroupDAO;
 import com.courtpicker.dao.SingleRateDAO;
 import com.courtpicker.dao.SingleReservationDAO;
+import com.courtpicker.dao.SubscriptionDAO;
+import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionReservationPeriodDAO;
 import com.courtpicker.exception.UserAlreadyExistsException;
 import com.courtpicker.model.Authority;
@@ -40,6 +42,7 @@ import com.courtpicker.model.CustomerExtract;
 import com.courtpicker.model.Rate;
 import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.SingleReservation;
+import com.courtpicker.model.Subscription;
 import com.courtpicker.model.SubscriptionReservationPeriod;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
@@ -67,6 +70,10 @@ public class CourtpickerController {
     private SingleRateDAO singleRateDAO;
     @Inject
     private CustomerUserGroupDAO customerUserGroupDAO;
+    @Inject
+    private SubscriptionDAO subscriptionDAO;
+    @Inject
+    private SubscriptionRateDAO subscriptionRateDAO;
     @Inject
     private UtilizationCalculator utilizationCalculator;
     @Inject
@@ -215,7 +222,13 @@ public class CourtpickerController {
             @RequestParam String fromDateTime, @RequestParam String toDateTime) throws ParseException {
         return calculateSingleReservationPrice(customerId, courtId, fromDateTime, toDateTime);
     }
-   
+    
+    @RequestMapping(value="/api/getSubscriptionReservationPrice", method=RequestMethod.GET)
+    public @ResponseBody BigDecimal getSubscriptionReservationPrice(@RequestParam Integer customerId, @RequestParam Integer subscriptionId, 
+            @RequestParam String fromTime, @RequestParam String toTime, @RequestParam String weekDay) throws ParseException {
+        return calculateSubscriptionReservationPrice(customerId, subscriptionId, fromTime, toTime, weekDay);
+    }
+
     @RequestMapping(value="/api/singleReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean singleReservation(@RequestParam Integer customerId, @RequestParam Integer courtId, 
             @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam String displayName, @RequestParam String comment) throws ParseException {
@@ -362,6 +375,42 @@ public class CourtpickerController {
         Date toDate = dateTimeFormat.parse(toDateTime);
         
         BigDecimal price = priceCalculator.calculateReservationPrice(fromDate, toDate, new Date(), userGroupIds, courtCategory.getBookingUnit(), courtCategoryRates);
+        return price;
+    }
+    
+    private BigDecimal calculateSubscriptionReservationPrice(Integer customerId, Integer subscriptionId, String fromTime, String toTime, String weekDay) throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        
+        // the specific date is irrelevant for subscription price calculation - only weekday and time are of interest
+        // thus, I am able to specifiy fixed days for Monday to Sunday and add the dynamic time
+        String dateString;
+        if(weekDay.toUpperCase().equals("MON")) {
+            dateString = "09.06.2014";
+        } else if (weekDay.toUpperCase().equals("TUE")) {
+            dateString = "10.06.2014";
+        } else if (weekDay.toUpperCase().equals("WED")) {
+            dateString = "11.06.2014";
+        } else if (weekDay.toUpperCase().equals("THU")) {
+            dateString = "12.06.2014";
+        } else if (weekDay.toUpperCase().equals("FRI")) {
+            dateString = "13.06.2014";
+        } else if (weekDay.toUpperCase().equals("SAT")) {
+            dateString = "14.06.2014";
+        } else {
+            dateString = "15.06.2014";
+        }        
+        Date fromDate = dateTimeFormat.parse(dateString + " " + fromTime);
+        Date toDate = dateTimeFormat.parse(dateString + " " + toTime);
+
+        Subscription subscription = subscriptionDAO.get(subscriptionId);
+        CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
+        List<Integer> userGroupIds = customerUserGroupDAO.getUserGroupIds(customerId);
+        List<Rate> subscriptionRates = new ArrayList<Rate>();
+        for (Rate subscriptionRate : subscriptionRateDAO.getAll(subscriptionId)) {
+            subscriptionRates.add(subscriptionRate);
+        }
+        
+        BigDecimal price = priceCalculator.calculateReservationPrice(fromDate, toDate, new Date(), userGroupIds, courtCategory.getBookingUnit(), subscriptionRates);
         return price;
     }
 }

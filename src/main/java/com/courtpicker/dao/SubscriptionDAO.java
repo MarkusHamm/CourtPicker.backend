@@ -27,6 +27,16 @@ public class SubscriptionDAO {
         List<Subscription> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
+
+    public Subscription get(int id) {
+        String query = "select * from roger.subscription where id=?";
+        List<Subscription> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
+        
+        if (matches.size() == 0) {
+            return null;
+        }
+        return matches.get(0);
+    }
     
     public Subscription persist(Subscription subscription) {
         String query = "";
