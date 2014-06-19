@@ -32,6 +32,7 @@ import com.courtpicker.dao.SingleRateDAO;
 import com.courtpicker.dao.SingleReservationDAO;
 import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.dao.SubscriptionRateDAO;
+import com.courtpicker.dao.SubscriptionReservationDAO;
 import com.courtpicker.dao.SubscriptionReservationPeriodDAO;
 import com.courtpicker.exception.UserAlreadyExistsException;
 import com.courtpicker.model.Authority;
@@ -43,6 +44,7 @@ import com.courtpicker.model.Rate;
 import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.Subscription;
+import com.courtpicker.model.SubscriptionReservation;
 import com.courtpicker.model.SubscriptionReservationPeriod;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
@@ -65,7 +67,7 @@ public class CourtpickerController {
     @Inject
     private SingleReservationDAO singleReservationDAO;
     @Inject
-    private SubscriptionReservationPeriodDAO subscriptionReservationPeriodDAO;
+    SubscriptionReservationDAO subscriptionReservationDAO;
     @Inject
     private SingleRateDAO singleRateDAO;
     @Inject
@@ -170,7 +172,7 @@ public class CourtpickerController {
         CourtCategory courtCategory = courtCategoryDAO.get(courtCategoryId);
         List<Court> courts = courtDAO.getAllCourts(courtCategoryId);
         List<SingleReservation> singleReservations = singleReservationDAO.getReservationsForCourtCategory(courtCategoryId, fromDate, toDate);
-        List<SubscriptionReservationPeriod> subscrReservations = subscriptionReservationPeriodDAO.getReservationsForCourtCategory(courtCategoryId, fromDate, toDate);
+        List<SubscriptionReservation> subscrReservations = subscriptionReservationDAO.getReservationsForCourtCategory(courtCategoryId, fromDate, toDate);
         
         return utilizationCalculator.calculateDayUtilization(courtCategory, courts, fromDate, toDate, currentDate, singleReservations, subscrReservations);
     }
@@ -188,7 +190,7 @@ public class CourtpickerController {
         List<Court> courts = new ArrayList<Court>();
         courts.add(court);
         List<SingleReservation> singleReservations = singleReservationDAO.getReservationsForCourt(courtId, fromDate, toDate);
-        List<SubscriptionReservationPeriod> subscrReservations = subscriptionReservationPeriodDAO.getReservationsForCourt(courtId, fromDate, toDate);
+        List<SubscriptionReservation> subscrReservations = subscriptionReservationDAO.getReservationsForCourt(courtId, fromDate, toDate);
         
         return utilizationCalculator.calculateDayUtilization(courtCategory, courts, fromDate, toDate, currentDate, singleReservations, subscrReservations);
     }
@@ -209,7 +211,7 @@ public class CourtpickerController {
                 Court court = courtDAO.get(courtId);
                 CourtCategory courtCategory = courtCategoryDAO.get(court.getCourtCategoryId());
                 List<SingleReservation> singleReservations = singleReservationDAO.getReservationsForCourt(courtId, earliestDateOfDay, latestDateOfDay);
-                List<SubscriptionReservationPeriod> subscrReservations = subscriptionReservationPeriodDAO.getReservationsForCourt(courtId, earliestDateOfDay, latestDateOfDay);
+                List<SubscriptionReservation> subscrReservations = subscriptionReservationDAO.getReservationsForCourt(courtId, earliestDateOfDay, latestDateOfDay);
                 result.add(utilizationCalculator.calculateCourtUtilization(court, realDate, courtCategory, currentDate, singleReservations, subscrReservations));            
             }
         }
@@ -228,6 +230,25 @@ public class CourtpickerController {
             @RequestParam String fromTime, @RequestParam String toTime, @RequestParam String weekDay) throws ParseException {
         return calculateSubscriptionReservationPrice(customerId, subscriptionId, fromTime, toTime, weekDay);
     }
+    
+    @RequestMapping(value="/api/getCurrentSubscriptions", method=RequestMethod.GET)
+    public @ResponseBody List<Subscription> getCurrentSubscriptions(@RequestParam Integer courtCategoryId) throws ParseException {
+        List<Subscription> subscriptions = subscriptionDAO.getAll(courtCategoryId);
+        List<Subscription> currentSubscriptions = new ArrayList<Subscription>();
+        
+        Date currentDate = new Date();
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        
+        for (Subscription subscription : subscriptions) {
+            Date bookableFrom = dateTimeFormat.parse(subscription.getBookableFrom() + " 00:00");
+            Date bookableTo = dateTimeFormat.parse(subscription.getBookableTo() + " 23:59");
+            if (currentDate.after(bookableFrom) && currentDate.before(bookableTo)) {
+                currentSubscriptions.add(subscription);
+            }
+        }
+        
+        return currentSubscriptions;
+    }   
 
     @RequestMapping(value="/api/singleReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean singleReservation(@RequestParam Integer customerId, @RequestParam Integer courtId, 
