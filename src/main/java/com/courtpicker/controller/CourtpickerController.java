@@ -49,6 +49,7 @@ import com.courtpicker.model.SubscriptionReservationPeriod;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
 import com.courtpicker.uimodel.SingleReservationInfo;
+import com.courtpicker.uimodel.SubscriptionAvailability;
 import com.courtpicker.uimodel.TimeSlot;
 import com.courtpicker.uimodel.Utilization;
 
@@ -217,7 +218,23 @@ public class CourtpickerController {
         }
         
         return result;
-    }   
+    }
+    
+    @RequestMapping(value="/api/getSubscriptionAvailability", method=RequestMethod.GET)
+    public @ResponseBody List<SubscriptionAvailability> getSubscriptionAvailability(@RequestParam Integer subscriptionId, @RequestParam Integer bookingUnits) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        
+        Subscription subscription = subscriptionDAO.get(subscriptionId);
+        CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
+        List<Court> courts = courtDAO.getAllCourts(courtCategory.getId());        
+        Date fromDate = dateHelper.getEarliestDateOfDay(dateFormat.parse(subscription.getPeriodStart()));
+        Date toDate = dateHelper.getLatestDateOfDay(dateFormat.parse(subscription.getPeriodEnd()));
+        
+        List<SingleReservation> singleReservations = singleReservationDAO.getReservationsForCourtCategory(courtCategory.getId(), fromDate, toDate);
+        List<SubscriptionReservation> subscriptionReservations = subscriptionReservationDAO.getReservationsForCourtCategory(courtCategory.getId(), fromDate, toDate);
+
+        return utilizationCalculator.calculateSubscriptionAvailabilityUtilization(courtCategory, courts, singleReservations, subscriptionReservations, bookingUnits);
+    }    
     
     @RequestMapping(value="/api/getSingleReservationPrice", method=RequestMethod.GET)
     public @ResponseBody BigDecimal getSingleReservationPrice(@RequestParam Integer customerId, @RequestParam Integer courtId, 
