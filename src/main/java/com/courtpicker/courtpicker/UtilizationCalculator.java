@@ -19,6 +19,8 @@ import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.SubscriptionReservation;
+import com.courtpicker.uimodel.SubscriptionAvailability;
+import com.courtpicker.uimodel.SubscriptionAvailabilityDetail;
 import com.courtpicker.uimodel.TimeSlot;
 import com.courtpicker.uimodel.Utilization;
 import com.sun.net.httpserver.Authenticator.Success;
@@ -149,43 +151,66 @@ public class UtilizationCalculator {
         return utilization;
     }
     
-    public List<Utilization> calculateSubscriptionAvailabilityUtilization(CourtCategory courtCategory, List<Court> courts, 
-            List<SingleReservation> singleReservations, List<SubscriptionReservation> subscrReservations) throws ParseException {
-        /*
+    public List<SubscriptionAvailability> calculateSubscriptionAvailabilityUtilization(CourtCategory courtCategory, List<Court> courts, 
+            List<SingleReservation> singleReservations, List<SubscriptionReservation> subscriptionReservations, Integer bookingUnits) throws ParseException {
         List<Integer> courtIds = new ArrayList<Integer>();
         for (Court court : courts) {
             courtIds.add(court.getId());
         }
         Date irrelevantDate = new Date();
+        Calendar cal = new GregorianCalendar();
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         
         HashMap<Integer, Utilization> utilizations = new HashMap<Integer, Utilization>();
         // utilizations Mon-Sun
-        utilizations.put(2, createEmptyUtilization(irrelevantDate, "Mon", courtCategory, courtIds));
-        utilizations.put(3, createEmptyUtilization(irrelevantDate, "Tue", courtCategory, courtIds));
-        utilizations.put(4, createEmptyUtilization(irrelevantDate, "Wed", courtCategory, courtIds));
-        utilizations.put(5, createEmptyUtilization(irrelevantDate, "Thu", courtCategory, courtIds));
-        utilizations.put(6, createEmptyUtilization(irrelevantDate, "Fri", courtCategory, courtIds));
-        utilizations.put(7, createEmptyUtilization(irrelevantDate, "Sat", courtCategory, courtIds));
-        utilizations.put(1, createEmptyUtilization(irrelevantDate, "Sun", courtCategory, courtIds));
+        utilizations.put(2, createEmptyUtilization(irrelevantDate, "Mo", courtCategory, courtIds));
+        utilizations.put(3, createEmptyUtilization(irrelevantDate, "Di", courtCategory, courtIds));
+        utilizations.put(4, createEmptyUtilization(irrelevantDate, "Mi", courtCategory, courtIds));
+        utilizations.put(5, createEmptyUtilization(irrelevantDate, "Do", courtCategory, courtIds));
+        utilizations.put(6, createEmptyUtilization(irrelevantDate, "Fr", courtCategory, courtIds));
+        utilizations.put(7, createEmptyUtilization(irrelevantDate, "Sa", courtCategory, courtIds));
+        utilizations.put(1, createEmptyUtilization(irrelevantDate, "So", courtCategory, courtIds));
         
         // apply single reservations
-        Calendar cal = new GregorianCalendar();
         for (SingleReservation reservation : singleReservations) {
             cal.setTime(reservation.getFromDate());
             Integer dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
             Utilization utilization = utilizations.get(dayOfWeek);
                     
             for (TimeSlot timeSlot : utilization.getTimeSlots()) {
-                if (doesSingleReservationMatchTimeSlot(timeSlot, utilization.getDate(), reservation)) {
+                if (doesSingleReservationMatchTimeSlotTime(timeSlot, reservation)) {
                     applySingleReservationToTimeSlot(timeSlot, reservation, courts.size());
                 }                       
             }
         }
         
         // apply subscription reservations
+        for (SubscriptionReservation reservation : subscriptionReservations) {
+            cal.setTime(dateFormat.parse(reservation.getPeriodStart()));
+            Integer dayOfWeek = cal.get(Calendar.DAY_OF_WEEK);
+            Utilization utilization = utilizations.get(dayOfWeek);
+                    
+            for (TimeSlot timeSlot : utilization.getTimeSlots()) {
+                if (doesSubscriptionReservationMatchTimeSlotTime(timeSlot, reservation)) {
+                    applySubscriptionReservationToTimeSlot(timeSlot, reservation, courts.size());
+                }                       
+            }
+        }
         
-        */
-        throw new NotImplementedException();
+        for (Utilization utilization : utilizations.values()) {
+            calculateMaxSlots(utilization);
+        }
+        
+        List<SubscriptionAvailability> result = new ArrayList<SubscriptionAvailability>();
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(2), bookingUnits));
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(3), bookingUnits));
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(4), bookingUnits));
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(5), bookingUnits));
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(6), bookingUnits));
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(7), bookingUnits));
+        result.add(convertUtilizationToSubscriptionAvailability(utilizations.get(1), bookingUnits));
+        
+        return result;
     }
     
     private void calculateMaxSlots(Utilization utilization) {
@@ -271,7 +296,23 @@ public class UtilizationCalculator {
         
         return false;
     }
-    
+
+    private Boolean doesSingleReservationMatchTimeSlotTime(TimeSlot timeSlot, SingleReservation reservation) throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        
+        Date timeSlotFromTime = dateTimeFormat.parse("01.01.1990 " + timeSlot.getFromTime());
+        Date timeSlotToTime = dateTimeFormat.parse("01.01.1990 " + timeSlot.getToTime());
+        Date reservationFromTime = dateTimeFormat.parse("01.01.1990 " + timeFormat.format(reservation.getFromDate()));
+        Date reservationToTime = dateTimeFormat.parse("01.01.1990 " + timeFormat.format(reservation.getToDate()));
+        
+        if (reservationToTime.after(timeSlotFromTime) && reservationFromTime.before(timeSlotToTime)) {
+            return true;
+        }
+        
+        return false;
+    }
+
     private boolean doesSubscriptionReservationMatchDate(SubscriptionReservation reservation, String date) throws ParseException {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Calendar cal = new GregorianCalendar();
@@ -311,6 +352,21 @@ public class UtilizationCalculator {
         return false;
     }
     
+    private Boolean doesSubscriptionReservationMatchTimeSlotTime(TimeSlot timeSlot, SubscriptionReservation reservation) throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        
+        Date timeSlotFromTime = dateTimeFormat.parse("01.01.1990 " + timeSlot.getFromTime());
+        Date timeSlotToTime = dateTimeFormat.parse("01.01.1990 " + timeSlot.getToTime());
+        Date reservationFromTime = dateTimeFormat.parse("01.01.1990 " + reservation.getFromTime());
+        Date reservationToTime = dateTimeFormat.parse("01.01.1990 " + reservation.getToTime());
+        
+        if (reservationToTime.after(timeSlotFromTime) && reservationFromTime.before(timeSlotToTime)) {
+            return true;
+        }
+        
+        return false;
+    }
+    
     private void applySingleReservationToTimeSlot(TimeSlot timeSlot, SingleReservation reservation, Integer initialFreeCourts) {
         applyReservationToTimeSlot(timeSlot, initialFreeCourts, reservation.getCourtId(), reservation.getDisplayName(), "SINGLE");
     }
@@ -336,4 +392,23 @@ public class UtilizationCalculator {
         timeSlot.setUtilization(utilization);
     }
     
+    private SubscriptionAvailability convertUtilizationToSubscriptionAvailability(Utilization utilization, Integer bookingUnits) {
+        SubscriptionAvailability avail = new SubscriptionAvailability();
+        avail.setWeekDay(utilization.getName());
+        
+        for (TimeSlot timeSlot : utilization.getTimeSlots()) {
+            if (!timeSlot.getOccupied() && timeSlot.getMaxSlots() >= bookingUnits) {
+                SubscriptionAvailabilityDetail availDetail = new SubscriptionAvailabilityDetail();
+                availDetail.setStartTime(timeSlot.getFromTime());
+                for (Integer freeCourtId : timeSlot.getFreeCourtIds()) {
+                    if (timeSlot.getMaxSlotsPerCourt().get(freeCourtId) >= bookingUnits) {
+                        availDetail.getFreeCourtIds().add(freeCourtId);
+                    }
+                }
+                avail.getDetail().add(availDetail);
+            }
+        }
+        
+        return avail;
+    }
 }

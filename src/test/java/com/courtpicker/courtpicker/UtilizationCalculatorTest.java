@@ -13,11 +13,13 @@ import java.util.Map;
 
 import org.junit.Test;
 
+import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.SubscriptionReservation;
 import com.courtpicker.model.SubscriptionReservationPeriod;
+import com.courtpicker.uimodel.SubscriptionAvailability;
 import com.courtpicker.uimodel.TimeSlot;
 import com.courtpicker.uimodel.Utilization;
 
@@ -762,4 +764,249 @@ public class UtilizationCalculatorTest {
         assertEquals(maxSlotsPerCourt, ts11to12.getMaxSlotsPerCourt());
         assertEquals(new Double(0), ts11to12.getUtilization());
     }
+    
+    @Test
+    public void calculateSubscriptionAvailabilityUtilization_reservationsProcessedCorrectlyFor1hBookingUnit() throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        
+        Court court1 = new Court();
+        court1.setId(1);
+        Court court2 = new Court();
+        court2.setId(2);
+        List<Court> courts = new ArrayList<Court>();
+        courts.add(court1);
+        courts.add(court2);
+        
+        CourtCategory courtCategory = new CourtCategory();
+        courtCategory.setBookableFromTime("09:00");
+        courtCategory.setBookableToTime("12:00");
+        courtCategory.setBookingUnit(60);        
+        
+        List<SingleReservation> singleReservations = new ArrayList<SingleReservation>();
+        List<SubscriptionReservation> subscriptionReservations = new ArrayList<SubscriptionReservation>();
+         
+        SingleReservation sr1 = new SingleReservation();
+        sr1.setCourtId(2);
+        sr1.setFromDate(dateTimeFormat.parse("09.06.2014 10:00"));
+        sr1.setToDate(dateTimeFormat.parse("09.06.2014 11:00"));
+
+        SingleReservation sr2 = new SingleReservation();
+        sr2.setCourtId(1);
+        sr2.setFromDate(dateTimeFormat.parse("10.06.2014 10:00"));
+        sr2.setToDate(dateTimeFormat.parse("10.06.2014 11:00"));
+
+        SingleReservation sr3 = new SingleReservation();
+        sr3.setCourtId(1);
+        sr3.setFromDate(dateTimeFormat.parse("15.06.2014 09:00"));
+        sr3.setToDate(dateTimeFormat.parse("15.06.2014 10:00"));
+
+        SingleReservation sr4 = new SingleReservation();
+        sr4.setCourtId(1);
+        sr4.setFromDate(dateTimeFormat.parse("15.06.2014 10:00"));
+        sr4.setToDate(dateTimeFormat.parse("15.06.2014 11:00"));
+
+        SingleReservation sr5 = new SingleReservation();
+        sr5.setCourtId(1);
+        sr5.setFromDate(dateTimeFormat.parse("16.06.2014 10:00"));
+        sr5.setToDate(dateTimeFormat.parse("16.06.2014 11:00"));
+
+        SingleReservation sr6 = new SingleReservation();
+        sr6.setCourtId(1);
+        sr6.setFromDate(dateTimeFormat.parse("17.06.2014 10:00"));
+        sr6.setToDate(dateTimeFormat.parse("17.06.2014 11:00"));
+
+        SingleReservation sr7 = new SingleReservation();
+        sr7.setCourtId(1);
+        sr7.setFromDate(dateTimeFormat.parse("18.06.2014 10:00"));
+        sr7.setToDate(dateTimeFormat.parse("18.06.2014 11:00"));
+
+        SingleReservation sr8 = new SingleReservation();
+        sr8.setCourtId(2);
+        sr8.setFromDate(dateTimeFormat.parse("18.06.2014 10:00"));
+        sr8.setToDate(dateTimeFormat.parse("18.06.2014 11:00"));
+        
+        singleReservations.add(sr1);
+        singleReservations.add(sr2);
+        singleReservations.add(sr3);
+        singleReservations.add(sr4);
+        singleReservations.add(sr5);
+        singleReservations.add(sr6);
+        singleReservations.add(sr7);
+        singleReservations.add(sr8);
+        
+        SubscriptionReservation sur1 = new SubscriptionReservation();
+        sur1.setCourtId(2);
+        sur1.setPeriodStart("08.06.2014");
+        sur1.setPeriodEnd("06.07.2014");
+        sur1.setFromTime("10:00");
+        sur1.setToTime("11:00");
+
+        SubscriptionReservation sur2 = new SubscriptionReservation();
+        sur2.setCourtId(2);
+        sur2.setPeriodStart("08.06.2014");
+        sur2.setPeriodEnd("06.07.2014");
+        sur2.setFromTime("11:00");
+        sur2.setToTime("12:00");
+        
+        subscriptionReservations.add(sur1);
+        subscriptionReservations.add(sur2);
+        
+        List<SubscriptionAvailability> avail = calculator.calculateSubscriptionAvailabilityUtilization(courtCategory, courts, singleReservations, subscriptionReservations, 1);
+        
+        assertEquals(7, avail.size());
+        
+        SubscriptionAvailability monday = avail.get(0);
+        assertEquals("Mo", monday.getWeekDay());
+        assertEquals(2, monday.getDetail().size());
+        assertEquals("09:00", monday.getDetail().get(0).getStartTime());
+        assertEquals(Arrays.asList(1,2), monday.getDetail().get(0).getFreeCourtIds());
+        assertEquals("11:00", monday.getDetail().get(1).getStartTime());
+        assertEquals(Arrays.asList(1,2), monday.getDetail().get(1).getFreeCourtIds());
+        
+        SubscriptionAvailability tuesday = avail.get(1);
+        assertEquals("Di", tuesday.getWeekDay());
+        assertEquals(3, tuesday.getDetail().size());
+        assertEquals("09:00", tuesday.getDetail().get(0).getStartTime());
+        assertEquals(Arrays.asList(1,2), tuesday.getDetail().get(0).getFreeCourtIds());
+        assertEquals("10:00", tuesday.getDetail().get(1).getStartTime());
+        assertEquals(Arrays.asList(2), tuesday.getDetail().get(1).getFreeCourtIds());
+        assertEquals("11:00", tuesday.getDetail().get(2).getStartTime());
+        assertEquals(Arrays.asList(1,2), tuesday.getDetail().get(2).getFreeCourtIds());
+
+        SubscriptionAvailability wednesday = avail.get(2);
+        assertEquals("Mi", wednesday.getWeekDay());
+        assertEquals(2, wednesday.getDetail().size());
+        assertEquals("09:00", wednesday.getDetail().get(0).getStartTime());
+        assertEquals(Arrays.asList(1,2), wednesday.getDetail().get(0).getFreeCourtIds());
+        assertEquals("11:00", wednesday.getDetail().get(1).getStartTime());
+        assertEquals(Arrays.asList(1,2), wednesday.getDetail().get(1).getFreeCourtIds());
+        
+        SubscriptionAvailability thursday = avail.get(3);
+        assertEquals("Do", thursday.getWeekDay());
+        assertEquals(3, thursday.getDetail().size());
+        
+        SubscriptionAvailability sunday = avail.get(6);
+        assertEquals("So", sunday.getWeekDay());
+        assertEquals(2, sunday.getDetail().size());
+        assertEquals("09:00", sunday.getDetail().get(0).getStartTime());
+        assertEquals(Arrays.asList(2), sunday.getDetail().get(0).getFreeCourtIds());
+        assertEquals("11:00", sunday.getDetail().get(1).getStartTime());
+        assertEquals(Arrays.asList(1), sunday.getDetail().get(1).getFreeCourtIds());
+    }
+    
+    @Test
+    public void calculateSubscriptionAvailabilityUtilization_reservationsProcessedCorrectlyFor2hBookingUnit() throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        
+        Court court1 = new Court();
+        court1.setId(1);
+        Court court2 = new Court();
+        court2.setId(2);
+        List<Court> courts = new ArrayList<Court>();
+        courts.add(court1);
+        courts.add(court2);
+        
+        CourtCategory courtCategory = new CourtCategory();
+        courtCategory.setBookableFromTime("09:00");
+        courtCategory.setBookableToTime("12:00");
+        courtCategory.setBookingUnit(60);        
+        
+        List<SingleReservation> singleReservations = new ArrayList<SingleReservation>();
+        List<SubscriptionReservation> subscriptionReservations = new ArrayList<SubscriptionReservation>();
+         
+        SingleReservation sr1 = new SingleReservation();
+        sr1.setCourtId(2);
+        sr1.setFromDate(dateTimeFormat.parse("09.06.2014 10:00"));
+        sr1.setToDate(dateTimeFormat.parse("09.06.2014 11:00"));
+
+        SingleReservation sr2 = new SingleReservation();
+        sr2.setCourtId(1);
+        sr2.setFromDate(dateTimeFormat.parse("10.06.2014 10:00"));
+        sr2.setToDate(dateTimeFormat.parse("10.06.2014 11:00"));
+
+        SingleReservation sr3 = new SingleReservation();
+        sr3.setCourtId(1);
+        sr3.setFromDate(dateTimeFormat.parse("15.06.2014 09:00"));
+        sr3.setToDate(dateTimeFormat.parse("15.06.2014 10:00"));
+
+        SingleReservation sr4 = new SingleReservation();
+        sr4.setCourtId(1);
+        sr4.setFromDate(dateTimeFormat.parse("15.06.2014 10:00"));
+        sr4.setToDate(dateTimeFormat.parse("15.06.2014 11:00"));
+
+        SingleReservation sr5 = new SingleReservation();
+        sr5.setCourtId(1);
+        sr5.setFromDate(dateTimeFormat.parse("16.06.2014 10:00"));
+        sr5.setToDate(dateTimeFormat.parse("16.06.2014 11:00"));
+
+        SingleReservation sr6 = new SingleReservation();
+        sr6.setCourtId(1);
+        sr6.setFromDate(dateTimeFormat.parse("17.06.2014 10:00"));
+        sr6.setToDate(dateTimeFormat.parse("17.06.2014 11:00"));
+
+        SingleReservation sr7 = new SingleReservation();
+        sr7.setCourtId(1);
+        sr7.setFromDate(dateTimeFormat.parse("18.06.2014 10:00"));
+        sr7.setToDate(dateTimeFormat.parse("18.06.2014 11:00"));
+
+        SingleReservation sr8 = new SingleReservation();
+        sr8.setCourtId(2);
+        sr8.setFromDate(dateTimeFormat.parse("18.06.2014 10:00"));
+        sr8.setToDate(dateTimeFormat.parse("18.06.2014 11:00"));
+        
+        singleReservations.add(sr1);
+        singleReservations.add(sr2);
+        singleReservations.add(sr3);
+        singleReservations.add(sr4);
+        singleReservations.add(sr5);
+        singleReservations.add(sr6);
+        singleReservations.add(sr7);
+        singleReservations.add(sr8);
+        
+        SubscriptionReservation sur1 = new SubscriptionReservation();
+        sur1.setCourtId(2);
+        sur1.setPeriodStart("08.06.2014");
+        sur1.setPeriodEnd("06.07.2014");
+        sur1.setFromTime("10:00");
+        sur1.setToTime("11:00");
+
+        SubscriptionReservation sur2 = new SubscriptionReservation();
+        sur2.setCourtId(2);
+        sur2.setPeriodStart("08.06.2014");
+        sur2.setPeriodEnd("06.07.2014");
+        sur2.setFromTime("11:00");
+        sur2.setToTime("12:00");
+        
+        subscriptionReservations.add(sur1);
+        subscriptionReservations.add(sur2);
+        
+        List<SubscriptionAvailability> avail = calculator.calculateSubscriptionAvailabilityUtilization(courtCategory, courts, singleReservations, subscriptionReservations, 2);
+        
+        assertEquals(7, avail.size());
+        
+        SubscriptionAvailability monday = avail.get(0);
+        assertEquals("Mo", monday.getWeekDay());
+        assertEquals(0, monday.getDetail().size());
+        
+        SubscriptionAvailability tuesday = avail.get(1);
+        assertEquals("Di", tuesday.getWeekDay());
+        assertEquals(2, tuesday.getDetail().size());
+        assertEquals("09:00", tuesday.getDetail().get(0).getStartTime());
+        assertEquals(Arrays.asList(2), tuesday.getDetail().get(0).getFreeCourtIds());
+        assertEquals("10:00", tuesday.getDetail().get(1).getStartTime());
+        assertEquals(Arrays.asList(2), tuesday.getDetail().get(1).getFreeCourtIds());
+
+        SubscriptionAvailability wednesday = avail.get(2);
+        assertEquals("Mi", wednesday.getWeekDay());
+        assertEquals(0, wednesday.getDetail().size());
+        
+        SubscriptionAvailability thursday = avail.get(3);
+        assertEquals("Do", thursday.getWeekDay());
+        assertEquals(2, thursday.getDetail().size());
+        
+        SubscriptionAvailability sunday = avail.get(6);
+        assertEquals("So", sunday.getWeekDay());
+        assertEquals(0, sunday.getDetail().size());
+    }
+
 }
