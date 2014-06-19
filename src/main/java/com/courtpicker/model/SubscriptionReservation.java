@@ -9,10 +9,12 @@ public class SubscriptionReservation {
     private Integer customerId;
     private String customerName;
     private Integer courtId;
-    private Date periodStart;
-    private Date periodEnd;
-    private Time fromTime;
-    private Time toTime;
+    // date format: DD.MM.YYYY
+    private String periodStart;
+    private String periodEnd;
+    // time format: HH:MM
+    private String fromTime;
+    private String toTime;
     private Date reservationDate;
     private Integer reservingCustomerId;
     private String displayName;
@@ -75,38 +77,6 @@ public class SubscriptionReservation {
 
     public void setCourtId(Integer courtId) {
         this.courtId = courtId;
-    }
-
-    public Date getPeriodStart() {
-        return periodStart;
-    }
-
-    public void setPeriodStart(Date periodStart) {
-        this.periodStart = periodStart;
-    }
-
-    public Date getPeriodEnd() {
-        return periodEnd;
-    }
-
-    public void setPeriodEnd(Date periodEnd) {
-        this.periodEnd = periodEnd;
-    }
-
-    public Time getFromTime() {
-        return fromTime;
-    }
-
-    public void setFromTime(Time fromTime) {
-        this.fromTime = fromTime;
-    }
-
-    public Time getToTime() {
-        return toTime;
-    }
-
-    public void setToTime(Time toTime) {
-        this.toTime = toTime;
     }
 
     public Date getReservationDate() {
@@ -187,5 +157,37 @@ public class SubscriptionReservation {
 
     public void setComment(String comment) {
         this.comment = comment;
+    }
+
+    public String getPeriodStart() {
+        return periodStart;
+    }
+
+    public void setPeriodStart(String periodStart) {
+        this.periodStart = periodStart;
+    }
+
+    public String getPeriodEnd() {
+        return periodEnd;
+    }
+
+    public void setPeriodEnd(String periodEnd) {
+        this.periodEnd = periodEnd;
+    }
+
+    public String getFromTime() {
+        return fromTime;
+    }
+
+    public void setFromTime(String fromTime) {
+        this.fromTime = fromTime;
+    }
+
+    public String getToTime() {
+        return toTime;
+    }
+
+    public void setToTime(String toTime) {
+        this.toTime = toTime;
     }
 }

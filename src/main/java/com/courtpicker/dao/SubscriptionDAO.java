@@ -27,7 +27,7 @@ public class SubscriptionDAO {
         List<Subscription> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
-
+    
     public Subscription get(int id) {
         String query = "select * from roger.subscription where id=?";
         List<Subscription> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);

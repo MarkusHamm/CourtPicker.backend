@@ -16,10 +16,10 @@ public class SubscriptionReservationRowMapper implements RowMapper<SubscriptionR
         res.setCustomerId(rs.getInt("customerid"));
         res.setCustomerName(rs.getString("customername"));
         res.setCourtId(rs.getInt("courtid"));
-        res.setPeriodStart(new Date(rs.getTimestamp("periodstart").getTime()));
-        res.setPeriodEnd(new Date(rs.getTimestamp("periodend").getTime()));
-        res.setFromTime(rs.getTime("fromtime"));
-        res.setToTime(rs.getTime("totime"));
+        res.setPeriodStart(rs.getString("periodstart"));
+        res.setPeriodEnd(rs.getString("periodend"));
+        res.setFromTime(rs.getString("fromtime"));
+        res.setToTime(rs.getString("totime"));
         res.setReservationDate(new Date(rs.getTimestamp("reservationdate").getTime()));
         res.setReservingCustomerId(rs.getInt("reservingcustomerid"));
         res.setDisplayName(rs.getString("displayname"));
