@@ -280,6 +280,7 @@ public class CourtpickerController {
         if (currentReservations.size() != 0) {
             return false;
         }
+        // TODO: check subscription reservations as well
         
         SingleReservation res = new SingleReservation();
         res.setCustomerId(customerId);
