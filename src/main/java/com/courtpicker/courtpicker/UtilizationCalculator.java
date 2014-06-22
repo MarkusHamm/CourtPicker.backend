@@ -212,7 +212,7 @@ public class UtilizationCalculator {
         
         return result;
     }
-    
+        
     private void calculateMaxSlots(Utilization utilization) {
         int resultTimeSlotIndex = 0;
         int compareTimeSlotIndex = 0;

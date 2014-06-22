@@ -5,6 +5,7 @@ import java.util.Date;
 import java.util.GregorianCalendar;
 import java.util.Locale;
 
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
 
@@ -63,6 +64,34 @@ public class DateHelper {
         cal.set(Calendar.MINUTE, 59);
         cal.set(Calendar.SECOND, 0);
         cal.set(Calendar.MILLISECOND, 0);
+        
+        return cal.getTime();
+    }
+    
+    public Date getNextWeekDay(Date date, int dayOfWeek) {
+        Calendar cal = new GregorianCalendar(Locale.GERMANY);
+        cal.setTime(date);
+        
+        int diff = dayOfWeek - cal.get(Calendar.DAY_OF_WEEK);
+        if (diff < 0) {
+            diff = diff + 7;
+        }
+        
+        cal.add(Calendar.DAY_OF_MONTH, diff);
+        
+        return cal.getTime();
+    }
+    
+    public Date getPreviousWeekDay(Date date, int dayOfWeek) {
+        Calendar cal = new GregorianCalendar(Locale.GERMANY);
+        cal.setTime(date);
+        
+        int diff = cal.get(Calendar.DAY_OF_WEEK) - dayOfWeek;
+        if (diff < 0) {
+            diff = diff + 7;
+        }
+        
+        cal.add(Calendar.DAY_OF_MONTH, -diff);
         
         return cal.getTime();
     }

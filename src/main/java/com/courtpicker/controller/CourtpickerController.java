@@ -4,6 +4,7 @@ import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -50,6 +51,7 @@ import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
 import com.courtpicker.uimodel.SingleReservationInfo;
 import com.courtpicker.uimodel.SubscriptionAvailability;
+import com.courtpicker.uimodel.SubscriptionAvailabilityDetail;
 import com.courtpicker.uimodel.TimeSlot;
 import com.courtpicker.uimodel.Utilization;
 
@@ -244,8 +246,15 @@ public class CourtpickerController {
     
     @RequestMapping(value="/api/getSubscriptionReservationPrice", method=RequestMethod.GET)
     public @ResponseBody BigDecimal getSubscriptionReservationPrice(@RequestParam Integer customerId, @RequestParam Integer subscriptionId, 
-            @RequestParam String fromTime, @RequestParam String toTime, @RequestParam String weekDay) throws ParseException {
-        return calculateSubscriptionReservationPrice(customerId, subscriptionId, fromTime, toTime, weekDay);
+            @RequestParam String fromTime, @RequestParam Integer bookingUnits, @RequestParam String weekDay) throws ParseException {
+        
+        // FIXME: It is ugly to fetch the courtcategory here and again in the sub-routines
+        int calendarWeekDay = getCalendarWeekDayForString(weekDay);
+        Subscription subscription = subscriptionDAO.get(subscriptionId);
+        CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
+        String toTime = calculateSubscriptionReservationEndTime(fromTime, bookingUnits, courtCategory);
+        
+        return calculateSubscriptionReservationPrice(customerId, subscriptionId, fromTime, toTime, calendarWeekDay);
     }
     
     @RequestMapping(value="/api/getCurrentSubscriptions", method=RequestMethod.GET)
@@ -276,11 +285,9 @@ public class CourtpickerController {
         Date reservationDate = new Date();
         BigDecimal price = calculateSingleReservationPrice(customerId, courtId, fromDateTime, toDateTime);
 
-        List<SingleReservation> currentReservations = singleReservationDAO.getReservationsForCourt(courtId, fromDate, toDate);
-        if (currentReservations.size() != 0) {
+        if (!isSingleReservationBookable(courtId, fromDate, toDate)) {
             return false;
         }
-        // TODO: check subscription reservations as well
         
         SingleReservation res = new SingleReservation();
         res.setCustomerId(customerId);
@@ -312,8 +319,7 @@ public class CourtpickerController {
         Date toDate = dateTimeFormat.parse(toDateTime);
         Date reservationDate = new Date();
 
-        List<SingleReservation> currentReservations = singleReservationDAO.getReservationsForCourt(courtId, fromDate, toDate);
-        if (currentReservations.size() != 0) {
+        if (!isSingleReservationBookable(courtId, fromDate, toDate)) {
             return false;
         }
         
@@ -353,13 +359,48 @@ public class CourtpickerController {
         singleReservationDAO.persist(res);
         return true;
     }
-    
-    /*
-    @RequestMapping(value="/api/getAllUser", method=RequestMethod.GET)
-    public @ResponseBody List<Customer> getAllUser() {
-        return customerDAO.getAll();
+
+    @RequestMapping(value="/api/subscriptionReservation", method=RequestMethod.POST)
+    public @ResponseBody Boolean subscriptionReservation(@RequestParam Integer subscriptionId, @RequestParam Integer customerId, 
+            @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, 
+            @RequestParam Integer bookingUnits, @RequestParam String displayName, @RequestParam String comment) throws ParseException {        
+        Subscription subscription = subscriptionDAO.get(subscriptionId);
+        CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
+        int calendarWeekDay = getCalendarWeekDayForString(weekDay);
+        
+        String reservationPeriodStart = calculateSuscriptionReservationStartDate(subscription.getPeriodStart(), calendarWeekDay);
+        String reservationPeriodEnd = calculateSuscriptionReservationEndDate(subscription.getPeriodEnd(), calendarWeekDay);
+        String reservationStartTime = startTime;
+        String reservationEndTime = calculateSubscriptionReservationEndTime(startTime, bookingUnits, courtCategory);
+        
+        BigDecimal calcReservationPrice = calculateSubscriptionReservationPrice(customerId, subscriptionId, reservationStartTime, reservationEndTime, calendarWeekDay);
+
+        if (!isSubscriptionReservationBookable(subscriptionId, courtId, startTime, bookingUnits, calendarWeekDay)) {
+            return false;
+        }
+        
+        SubscriptionReservation res = new SubscriptionReservation();
+        res.setCustomerId(customerId);
+        res.setCourtId(courtId);
+        res.setPeriodStart(reservationPeriodStart);
+        res.setPeriodEnd(reservationPeriodEnd);
+        res.setFromTime(reservationStartTime);
+        res.setToTime(reservationEndTime);
+        res.setReservationDate(new Date());
+        res.setReservingCustomerId(customerId);
+        res.setDisplayName(displayName);
+        res.setPaid(false);
+        res.setDeleted(false);
+        res.setPrice(calcReservationPrice);
+        res.setComment(comment);
+        res.setCustomerName(null);
+        res.setCalculatedPrice(calcReservationPrice);
+        res.setPaymentDate(null);
+        res.setPaymentOptionId(null);
+        
+        subscriptionReservationDAO.persist(res);
+        return true;
     }
-    */
     
     @RequestMapping(value="/api/getAllUserExtract", method=RequestMethod.GET)
     public @ResponseBody List<CustomerExtract> getAllUserExtract() {
@@ -417,27 +458,14 @@ public class CourtpickerController {
         return price;
     }
     
-    private BigDecimal calculateSubscriptionReservationPrice(Integer customerId, Integer subscriptionId, String fromTime, String toTime, String weekDay) throws ParseException {
+    private BigDecimal calculateSubscriptionReservationPrice(Integer customerId, Integer subscriptionId, String fromTime, String toTime, int calendarWeekDay) throws ParseException {
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
         
         // the specific date is irrelevant for subscription price calculation - only weekday and time are of interest
-        // thus, I am able to specifiy fixed days for Monday to Sunday and add the dynamic time
-        String dateString;
-        if(weekDay.toUpperCase().equals("MON")) {
-            dateString = "09.06.2014";
-        } else if (weekDay.toUpperCase().equals("TUE")) {
-            dateString = "10.06.2014";
-        } else if (weekDay.toUpperCase().equals("WED")) {
-            dateString = "11.06.2014";
-        } else if (weekDay.toUpperCase().equals("THU")) {
-            dateString = "12.06.2014";
-        } else if (weekDay.toUpperCase().equals("FRI")) {
-            dateString = "13.06.2014";
-        } else if (weekDay.toUpperCase().equals("SAT")) {
-            dateString = "14.06.2014";
-        } else {
-            dateString = "15.06.2014";
-        }        
+        // thus, I am able to specifiy any Monday or Sunday, etc. and add the dynamic time
+        String dateString = dateFormat.format(dateHelper.getNextWeekDay(new Date(), calendarWeekDay));
+                
         Date fromDate = dateTimeFormat.parse(dateString + " " + fromTime);
         Date toDate = dateTimeFormat.parse(dateString + " " + toTime);
 
@@ -451,5 +479,117 @@ public class CourtpickerController {
         
         BigDecimal price = priceCalculator.calculateReservationPrice(fromDate, toDate, new Date(), userGroupIds, courtCategory.getBookingUnit(), subscriptionRates);
         return price;
+    }
+    
+    private String calculateSubscriptionReservationEndTime(String startTime, Integer bookingUnits, CourtCategory courtCategory) throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        
+        Integer bookingMinutes = courtCategory.getBookingUnit() * bookingUnits;
+        Date startDate = dateTimeFormat.parse("01.01.2014 " + startTime);
+        Date endDate = dateHelper.addMinutes(startDate, bookingMinutes);
+                
+        return timeFormat.format(endDate);
+    }
+
+    private String calculateSuscriptionReservationEndDate(String subscriptionEnd, int calendarWeekDay) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date subscriptionEndDate = dateFormat.parse(subscriptionEnd);
+        Date reservationEndDate = dateHelper.getPreviousWeekDay(subscriptionEndDate, calendarWeekDay);
+        return dateFormat.format(reservationEndDate);
+    }
+
+    private String calculateSuscriptionReservationStartDate(String subscriptionStart, int calendarWeekDay) throws ParseException {
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        Date subscriptionStartDate = dateFormat.parse(subscriptionStart);
+        Date reservationStartDate = dateHelper.getNextWeekDay(subscriptionStartDate, calendarWeekDay);
+        return dateFormat.format(reservationStartDate);
+    }
+    
+    private int getCalendarWeekDayForString(String weekDayString) {
+        if (weekDayString.toUpperCase().equals("MON")) {
+            return Calendar.MONDAY;
+        }
+        else if (weekDayString.toUpperCase().equals("TUE")) {
+            return Calendar.TUESDAY;
+        }
+        else if (weekDayString.toUpperCase().equals("WED")) {
+            return Calendar.WEDNESDAY;
+        }
+        else if (weekDayString.toUpperCase().equals("THU")) {
+            return Calendar.THURSDAY;
+        }
+        else if (weekDayString.toUpperCase().equals("FRI")) {
+            return Calendar.FRIDAY;
+        }
+        else if (weekDayString.toUpperCase().equals("SAT")) {
+            return Calendar.SATURDAY;
+        }
+        return Calendar.SUNDAY;
+    }
+    
+    private boolean isSingleReservationBookable(Integer courtId, Date fromDate, Date toDate) throws ParseException {
+        SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
+        SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+        SimpleDateFormat timeFormat = new SimpleDateFormat("HH:mm");
+        
+        // check single reservation overlaps
+        List<SingleReservation> singleReservations = singleReservationDAO.getReservationsForCourt(courtId, fromDate, toDate);
+        if (singleReservations.size() != 0) {
+            return false;
+        }
+
+        // check subscription overlaps
+        List<SubscriptionReservation> subscriptionReservations = subscriptionReservationDAO.getReservationsForCourt(courtId, fromDate, toDate);
+        int reservationWeekDay = dateHelper.getDayOfWeek(fromDate);
+        for (SubscriptionReservation subscriptionReservation : subscriptionReservations) {
+            Date subscriptionStartDate = dateFormat.parse(subscriptionReservation.getPeriodStart());
+            
+            if (reservationWeekDay == dateHelper.getDayOfWeek(subscriptionStartDate)) {
+                Date subscriptionStartTime = dateTimeFormat.parse("01.01.2014 " + subscriptionReservation.getFromTime());
+                Date subscriptionEndTime = dateTimeFormat.parse("01.01.2014 " + subscriptionReservation.getToTime());
+                Date fromDateHelper = dateTimeFormat.parse("01.01.2014 " + timeFormat.format(fromDate));
+                Date toDateHelper = dateTimeFormat.parse("01.01.2014 " + timeFormat.format(toDate));
+                
+                if (subscriptionEndTime.after(fromDateHelper) && subscriptionStartTime.before(toDateHelper)) {
+                    return false;
+                }
+            }
+        }
+        
+        return true;
+    }
+    
+    private boolean isSubscriptionReservationBookable(Integer subscriptionId, Integer courtId, String startTime, Integer bookingUnits, Integer calenderWeekDay) throws ParseException {
+        // re-check availabilty right before booking
+        List<SubscriptionAvailability> subscriptionAvailabilities = getSubscriptionAvailability(subscriptionId, bookingUnits);
+        SubscriptionAvailability subscriptionAvailability = null;
+        SubscriptionAvailabilityDetail subscriptionAvailabilityDetail = null;
+        
+        switch (calenderWeekDay) {
+            case Calendar.MONDAY: subscriptionAvailability = subscriptionAvailabilities.get(0); break;
+            case Calendar.TUESDAY: subscriptionAvailability = subscriptionAvailabilities.get(1); break;
+            case Calendar.WEDNESDAY: subscriptionAvailability = subscriptionAvailabilities.get(2); break;
+            case Calendar.THURSDAY: subscriptionAvailability = subscriptionAvailabilities.get(3); break;
+            case Calendar.FRIDAY: subscriptionAvailability = subscriptionAvailabilities.get(4); break;
+            case Calendar.SATURDAY: subscriptionAvailability = subscriptionAvailabilities.get(5); break;
+            case Calendar.SUNDAY: subscriptionAvailability = subscriptionAvailabilities.get(6); break;
+            default: subscriptionAvailability = null;
+        }
+        if (subscriptionAvailability == null) {
+            return false;
+        }
+        
+        for (SubscriptionAvailabilityDetail detail : subscriptionAvailability.getDetail()) {
+            if (detail.getStartTime().equals(startTime)) {
+                subscriptionAvailabilityDetail = detail;
+            }
+        }
+        
+        if (subscriptionAvailabilityDetail != null && subscriptionAvailabilityDetail.getFreeCourtIds().contains(courtId)) {
+            return true;
+        }
+        
+        return false;
     }
 }

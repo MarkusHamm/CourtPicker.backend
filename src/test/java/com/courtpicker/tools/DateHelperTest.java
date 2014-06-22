@@ -111,4 +111,46 @@ public class DateHelperTest {
         Date year2012 = dateHelper.setYear(year2014, 2012);
         assertEquals("24.03.2012 11:35", dateFormat.format(year2012));
     }
+    
+    @Test
+    public void getNextWeekDay_returnsSameDayIfPassedDateIsOfGivenWeekday() throws ParseException {
+        Date sunday = dateFormat.parse("22.06.2014 12:00");
+        Date result = dateHelper.getNextWeekDay(sunday, Calendar.SUNDAY);
+        assertEquals("22.06.2014 12:00", dateFormat.format(result));
+    }
+    
+    @Test
+    public void getNextWeekDay_returnsCorrectResultWithoutPassingWeekBoundary() throws ParseException {
+        Date date = dateFormat.parse("18.06.2014 12:00");
+        Date result = dateHelper.getNextWeekDay(date, Calendar.FRIDAY);
+        assertEquals("20.06.2014 12:00", dateFormat.format(result));
+    }
+        
+    @Test
+    public void getNextWeekDay_returnsCorrectResultWithPassingWeekBoundary() throws ParseException {
+        Date date = dateFormat.parse("20.06.2014 12:00");
+        Date result = dateHelper.getNextWeekDay(date, Calendar.WEDNESDAY);
+        assertEquals("25.06.2014 12:00", dateFormat.format(result));
+    }
+    
+    @Test
+    public void getPreviousWeekDay_returnsSameDayIfPassedDateIsOfGivenWeekday() throws ParseException {
+        Date sunday = dateFormat.parse("22.06.2014 12:00");
+        Date result = dateHelper.getPreviousWeekDay(sunday, Calendar.SUNDAY);
+        assertEquals("22.06.2014 12:00", dateFormat.format(result));        
+    }
+    
+    @Test
+    public void getPreviousWeekDay_returnsCorrectResultWitoutPassingWeekBoundary() throws ParseException {
+        Date date = dateFormat.parse("20.06.2014 12:00");
+        Date result = dateHelper.getPreviousWeekDay(date, Calendar.TUESDAY);
+        assertEquals("17.06.2014 12:00", dateFormat.format(result));
+    }
+        
+    @Test
+    public void getPreviousWeekDay_returnsCorrectResultWithPassingWeekBoundary() throws ParseException {
+        Date date = dateFormat.parse("24.06.2014 12:00");
+        Date result = dateHelper.getPreviousWeekDay(date, Calendar.THURSDAY);
+        assertEquals("19.06.2014 12:00", dateFormat.format(result));
+    }
 }
