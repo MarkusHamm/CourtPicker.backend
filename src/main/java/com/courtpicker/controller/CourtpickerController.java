@@ -363,7 +363,8 @@ public class CourtpickerController {
     @RequestMapping(value="/api/subscriptionReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean subscriptionReservation(@RequestParam Integer subscriptionId, @RequestParam Integer customerId, 
             @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, 
-            @RequestParam Integer bookingUnits, @RequestParam String displayName, @RequestParam String comment) throws ParseException {        
+            @RequestParam Integer bookingUnits, @RequestParam String displayName, @RequestParam String comment) throws ParseException {  
+        
         Subscription subscription = subscriptionDAO.get(subscriptionId);
         CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
         int calendarWeekDay = getCalendarWeekDayForString(weekDay);
@@ -402,6 +403,67 @@ public class CourtpickerController {
         return true;
     }
     
+    @RequestMapping(value="/api/subscriptionReservationAdmin", method=RequestMethod.POST)
+    public @ResponseBody Boolean subscriptionReservationAdmin(@RequestParam String customerInputType, @RequestParam(required=false) Integer customerId, @RequestParam String customerName, 
+            @RequestParam Boolean createUserAccount, @RequestParam String createUserAccountEmail, @RequestParam Integer subscriptionId, @RequestParam Integer reservingCustomerId, 
+            @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, @RequestParam Integer bookingUnits, @RequestParam Boolean overridePrice, 
+            @RequestParam BigDecimal customPrice, @RequestParam String displayName, @RequestParam String comment) throws ParseException {
+        
+        Subscription subscription = subscriptionDAO.get(subscriptionId);
+        CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
+        int calendarWeekDay = getCalendarWeekDayForString(weekDay);
+        
+        String reservationPeriodStart = calculateSuscriptionReservationStartDate(subscription.getPeriodStart(), calendarWeekDay);
+        String reservationPeriodEnd = calculateSuscriptionReservationEndDate(subscription.getPeriodEnd(), calendarWeekDay);
+        String reservationStartTime = startTime;
+        String reservationEndTime = calculateSubscriptionReservationEndTime(startTime, bookingUnits, courtCategory);
+        
+        Integer dbCustomerId = null;
+        String dbCustomerName = null;
+        if (customerInputType.toUpperCase().equals("NAME") && !createUserAccount) {
+            dbCustomerName = customerName;
+        }
+        else if (customerInputType.toUpperCase().equals("NAME") && createUserAccount) {
+            dbCustomerId = userAccountManager.createOrGetMinimalUser(createUserAccountEmail, customerName).getId();
+        }
+        else {
+            dbCustomerId = customerId;
+        }
+
+        BigDecimal calcReservationPrice = calculateSubscriptionReservationPrice(customerId, subscriptionId, reservationStartTime, reservationEndTime, calendarWeekDay);
+        BigDecimal price = calcReservationPrice;
+        if (overridePrice) {
+            price = customPrice;
+        }        
+        
+        if (!isSubscriptionReservationBookable(subscriptionId, courtId, startTime, bookingUnits, calendarWeekDay)) {
+            return false;
+        }
+
+        SubscriptionReservation res = new SubscriptionReservation();
+        res.setCustomerId(dbCustomerId);
+        res.setCourtId(courtId);
+        res.setPeriodStart(reservationPeriodStart);
+        res.setPeriodEnd(reservationPeriodEnd);
+        res.setFromTime(reservationStartTime);
+        res.setToTime(reservationEndTime);
+        res.setReservationDate(new Date());
+        res.setReservingCustomerId(reservingCustomerId);
+        res.setDisplayName(displayName);
+        res.setPaid(false);
+        res.setDeleted(false);
+        res.setPrice(price);
+        res.setComment(comment);
+        res.setCustomerName(dbCustomerName);
+        res.setCalculatedPrice(calcReservationPrice);
+        res.setPaymentDate(null);
+        res.setPaymentOptionId(null);
+        
+        subscriptionReservationDAO.persist(res);
+        return true;
+    }
+
+        
     @RequestMapping(value="/api/getAllUserExtract", method=RequestMethod.GET)
     public @ResponseBody List<CustomerExtract> getAllUserExtract() {
         return customerDAO.getAllExctract();

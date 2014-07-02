@@ -1,0 +1,1 @@
+ALTER TABLE roger.subscriptionreservation ALTER COLUMN customerid DROP NOT NULL;
