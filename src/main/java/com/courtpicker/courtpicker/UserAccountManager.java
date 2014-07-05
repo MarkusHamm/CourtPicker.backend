@@ -119,14 +119,14 @@ public class UserAccountManager {
     }
     
     private Customer createUser(Customer user) throws UserAlreadyExistsException {
-        Customer customerWithSameUserName = customerDAO.getByUserName(user.getUserName());
         Customer customerWithSameEmail = customerDAO.getByEmail(user.getEmail());
+        Customer customerWithSameUserName = customerDAO.getByUserName(user.getUserName());       
         
-        if (customerWithSameUserName != null) {
-            throw new UserAlreadyExistsException("User with same username already exists", customerWithSameUserName);
-        }
         if (customerWithSameEmail != null) {
             throw new UserAlreadyExistsException("User with same email already exists", customerWithSameEmail);
+        }
+        if (customerWithSameUserName != null) {
+            throw new UserAlreadyExistsException("User with same username already exists", customerWithSameUserName);
         }
         
         return customerDAO.persist(user);
