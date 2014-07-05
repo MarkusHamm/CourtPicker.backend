@@ -13,6 +13,7 @@ public class SubscriptionReservationRowMapper implements RowMapper<SubscriptionR
     public SubscriptionReservation mapRow(ResultSet rs, int rowNum) throws SQLException {
         SubscriptionReservation res = new SubscriptionReservation();
         res.setId(rs.getInt("id"));
+        res.setSubscriptionId(rs.getInt("subscriptionid"));
         res.setCustomerId(rs.getInt("customerid"));
         res.setCustomerName(rs.getString("customername"));
         res.setCourtId(rs.getInt("courtid"));

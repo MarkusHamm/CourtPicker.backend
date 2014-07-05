@@ -6,6 +6,7 @@ import java.util.Date;
 
 public class SubscriptionReservation {
     private Integer id;
+    private Integer subscriptionId;
     private Integer customerId;
     private String customerName;
     private Integer courtId;
@@ -28,6 +29,7 @@ public class SubscriptionReservation {
 
     public SubscriptionReservation() {
         this.id = null;
+        this.subscriptionId = null;
         this.customerId = null;
         this.customerName = null;
         this.courtId = null;
@@ -53,6 +55,14 @@ public class SubscriptionReservation {
 
     public void setId(Integer id) {
         this.id = id;
+    }
+
+    public Integer getSubscriptionId() {
+        return subscriptionId;
+    }
+
+    public void setSubscriptionId(Integer subscriptionId) {
+        this.subscriptionId = subscriptionId;
     }
 
     public Integer getCustomerId() {

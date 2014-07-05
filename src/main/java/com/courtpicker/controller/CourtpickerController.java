@@ -52,6 +52,7 @@ import com.courtpicker.tools.MailEngine;
 import com.courtpicker.uimodel.SingleReservationInfo;
 import com.courtpicker.uimodel.SubscriptionAvailability;
 import com.courtpicker.uimodel.SubscriptionAvailabilityDetail;
+import com.courtpicker.uimodel.SubscriptionReservationInfo;
 import com.courtpicker.uimodel.TimeSlot;
 import com.courtpicker.uimodel.Utilization;
 
@@ -381,6 +382,7 @@ public class CourtpickerController {
         }
         
         SubscriptionReservation res = new SubscriptionReservation();
+        res.setSubscriptionId(subscriptionId);
         res.setCustomerId(customerId);
         res.setCourtId(courtId);
         res.setPeriodStart(reservationPeriodStart);
@@ -441,6 +443,7 @@ public class CourtpickerController {
         }
 
         SubscriptionReservation res = new SubscriptionReservation();
+        res.setSubscriptionId(subscriptionId);
         res.setCustomerId(dbCustomerId);
         res.setCourtId(courtId);
         res.setPeriodStart(reservationPeriodStart);
@@ -501,6 +504,35 @@ public class CourtpickerController {
         }
         
         singleReservationDAO.persist(reservation);
+    }
+    
+    @RequestMapping(value="/api/getSubscriptionReservationInfosForCustomer", method=RequestMethod.GET)
+    public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCustomer(@RequestParam Integer customerId) {
+        return subscriptionReservationDAO.getSubscriptionReservationInfosForCustomer(customerId);
+    }
+    
+    @RequestMapping(value="/api/getSubscriptionReservationInfosForCpInstance", method=RequestMethod.GET)
+    public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCpInstance(@RequestParam Integer cpInstanceId) {
+        return subscriptionReservationDAO.getSubscriptionReservationInfosForCpInstance(cpInstanceId);
+    }
+    
+    @RequestMapping(value="/api/cancelSubscriptionReservation", method=RequestMethod.POST)
+    public @ResponseBody void cancelSubscriptionReservation(@RequestParam Integer reservationId) {
+        subscriptionReservationDAO.cancelReservation(reservationId);
+    }
+    
+    @RequestMapping(value="/api/paySubscriptionReservation", method=RequestMethod.POST)
+    public @ResponseBody void paySubscriptionReservation(@RequestParam Integer reservationId, @RequestParam Integer paymentOptionId,
+            @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice) {
+        SubscriptionReservation reservation = subscriptionReservationDAO.get(reservationId);
+        reservation.setPaid(true);
+        reservation.setPaymentDate(new Date());
+        reservation.setPaymentOptionId(paymentOptionId);
+        if (overridePrice) {
+            reservation.setPrice(customPrice);
+        }
+        
+        subscriptionReservationDAO.persist(reservation);
     }
     
     private BigDecimal calculateSingleReservationPrice(Integer customerId, Integer courtId, String fromDateTime, String toDateTime) throws ParseException {
