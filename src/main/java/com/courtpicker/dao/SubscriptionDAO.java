@@ -28,6 +28,13 @@ public class SubscriptionDAO {
         return matches;
     }
     
+    public List<Subscription> getAllByInstance(int cpInstanceId) {
+        String query = "select * from roger.subscription where courtcategoryid in " +
+                "(select id from roger.courtcategory where cpinstanceid=?)";
+        List<Subscription> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, rowMapper);
+        return matches;      
+    }
+    
     public Subscription get(int id) {
         String query = "select * from roger.subscription where id=?";
         List<Subscription> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);

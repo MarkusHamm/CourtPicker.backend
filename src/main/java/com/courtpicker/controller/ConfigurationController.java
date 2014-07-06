@@ -294,6 +294,12 @@ public class ConfigurationController {
     List<Subscription> getSubscriptions(@RequestParam Integer courtCategoryId) {
         return subscriptionDAO.getAll(courtCategoryId);
     }
+    
+    @RequestMapping(value = "/api/getSubscriptionsByInstance", method = RequestMethod.GET)
+    public @ResponseBody
+    List<Subscription> getSubscriptionsByInstance(@RequestParam Integer cpInstanceId) {
+        return subscriptionDAO.getAllByInstance(cpInstanceId);
+    }
 
     @RequestMapping(value = "/api/saveSubscription", method = RequestMethod.POST)
     public @ResponseBody
