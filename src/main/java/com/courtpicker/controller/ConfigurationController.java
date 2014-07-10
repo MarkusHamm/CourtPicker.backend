@@ -1,6 +1,7 @@
 package com.courtpicker.controller;
 
 import java.io.IOException;
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
 
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -45,14 +47,19 @@ import com.courtpicker.model.PaymentOption;
 import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.Subscription;
 import com.courtpicker.model.SubscriptionRate;
-import com.courtpicker.model.SubscriptionRatePeriod;
 import com.courtpicker.model.UserGroup;
 import com.courtpicker.model.Webdesign;
 import com.courtpicker.model.WebdesignFile;
+import com.courtpicker.security.UserInfo;
 import com.courtpicker.tools.FileHandler;
 
 @Controller
-public class ConfigurationController {
+@Scope("singleton")
+public class ConfigurationController implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    @Inject
+    private UserInfo userInfo;
     @Inject
     private CPInstanceDAO cpInstanceDAO;
     @Inject

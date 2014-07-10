@@ -1,5 +1,6 @@
 package com.courtpicker.controller;
 
+import java.io.Serializable;
 import java.math.BigDecimal;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -8,11 +9,12 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
-import java.util.UUID;
 
 import javax.inject.Inject;
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -34,19 +36,16 @@ import com.courtpicker.dao.SingleReservationDAO;
 import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionReservationDAO;
-import com.courtpicker.dao.SubscriptionReservationPeriodDAO;
-import com.courtpicker.exception.UserAlreadyExistsException;
 import com.courtpicker.model.Authority;
 import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.Customer;
 import com.courtpicker.model.CustomerExtract;
 import com.courtpicker.model.Rate;
-import com.courtpicker.model.SingleRate;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.Subscription;
 import com.courtpicker.model.SubscriptionReservation;
-import com.courtpicker.model.SubscriptionReservationPeriod;
+import com.courtpicker.security.UserInfo;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
 import com.courtpicker.uimodel.SingleReservationInfo;
@@ -57,7 +56,12 @@ import com.courtpicker.uimodel.TimeSlot;
 import com.courtpicker.uimodel.Utilization;
 
 @Controller
-public class CourtpickerController {
+@Scope("singleton")
+public class CourtpickerController implements Serializable {
+    private static final long serialVersionUID = 1L;
+    
+    @Inject
+    private UserInfo userInfo;
     @Inject
     private CourtCategoryDAO courtCategoryDAO;
     @Inject
@@ -90,6 +94,15 @@ public class CourtpickerController {
     private MailEngine mailEngine;
     @Inject
     private UserAccountManager userAccountManager;
+    
+    @RequestMapping(value="/api/test", method=RequestMethod.GET)
+    public @ResponseBody String test(HttpSession session) throws Exception {
+        String response = "SID " + session.getId() + " logged in: " + (userInfo.isLoggedIn() ? "true" : "false");
+        
+        userInfo.setLoggedIn(true);
+        
+        return response;
+    }
     
     @RequestMapping(value="/api/registerUser", method=RequestMethod.POST)
     public @ResponseBody Customer registerUser(@RequestParam String userName, @RequestParam String password, 
