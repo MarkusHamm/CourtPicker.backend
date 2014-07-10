@@ -98,8 +98,7 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/test", method=RequestMethod.GET)
     public @ResponseBody String test(HttpSession session) throws Exception {
         String response = "SID " + session.getId() + " logged in: " + (userInfo.isLoggedIn() ? "true" : "false");
-        
-        userInfo.setLoggedIn(true);
+        response += " logged in user: " + (userInfo.getLoggedInUser() == null ? "null" : userInfo.getLoggedInUser().getUserName());
         
         return response;
     }
@@ -120,9 +119,30 @@ public class CourtpickerController implements Serializable {
         return customerDAO.persist(user);
     }
     
-    @RequestMapping(value="/api/getUserByCredentials", method=RequestMethod.GET)
-    public @ResponseBody Customer getUserByCredentials(@RequestParam String username, @RequestParam String password) throws Exception {
-        return customerDAO.getByUserCredentials(username, DigestUtils.md5Hex(password));
+    @RequestMapping(value="/api/login", method=RequestMethod.POST)
+    public @ResponseBody Customer login(@RequestParam String username, @RequestParam String password) throws Exception {
+        Customer user = customerDAO.getByUserCredentials(username, DigestUtils.md5Hex(password));
+        
+        if (user == null) {
+            userInfo.setLoggedIn(false);
+            userInfo.setLoggedInUser(null);
+            userInfo.setUserAuthorities(null);
+            return null;
+        }
+        
+        userInfo.setLoggedIn(true);
+        userInfo.setLoggedInUser(user);
+        Map<Integer, List<String>> userAuthorities = authorityDAO.getAllAuthorities(user.getId());
+        userInfo.setUserAuthorities(userAuthorities);
+        return user;
+    }
+    
+    @RequestMapping(value="/api/logout", method=RequestMethod.POST)
+    public @ResponseBody Customer logout() throws Exception {
+        userInfo.setLoggedIn(false);
+        userInfo.setLoggedInUser(null);
+        userInfo.setUserAuthorities(null);
+        return null;
     }
     
     @RequestMapping(value="/api/changeUserPassword", method=RequestMethod.POST)
