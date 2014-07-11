@@ -48,6 +48,7 @@ import com.courtpicker.model.SubscriptionReservation;
 import com.courtpicker.security.UserInfo;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
+import com.courtpicker.uimodel.AuthStatus;
 import com.courtpicker.uimodel.SingleReservationInfo;
 import com.courtpicker.uimodel.SubscriptionAvailability;
 import com.courtpicker.uimodel.SubscriptionAvailabilityDetail;
@@ -144,6 +145,17 @@ public class CourtpickerController implements Serializable {
         userInfo.setUserAuthorities(null);
         return null;
     }
+    
+    @RequestMapping(value="/api/getAuthStatus", method=RequestMethod.GET)
+    public @ResponseBody AuthStatus getAuthStatus(@RequestParam Integer cpInstanceId) throws Exception {
+        AuthStatus authStatus = new AuthStatus();
+        authStatus.setLoggedIn(userInfo.isLoggedIn());
+        authStatus.setLoggedInUser(userInfo.getLoggedInUser());
+        if (userInfo.isLoggedIn() && userInfo.getUserAuthorities().containsKey(cpInstanceId)) {
+            authStatus.setAuthorities(userInfo.getUserAuthorities().get(cpInstanceId));
+        }
+        return authStatus;
+    }    
     
     @RequestMapping(value="/api/changeUserPassword", method=RequestMethod.POST)
     public @ResponseBody String changeUserPassword(@RequestParam Integer userId, @RequestParam String oldPassword, @RequestParam String newPassword) {
