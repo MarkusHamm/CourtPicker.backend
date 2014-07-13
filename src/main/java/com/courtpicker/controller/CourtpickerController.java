@@ -37,6 +37,7 @@ import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionReservationDAO;
 import com.courtpicker.model.Authority;
+import com.courtpicker.model.CPInstance;
 import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
 import com.courtpicker.model.Customer;
@@ -167,15 +168,18 @@ public class CourtpickerController implements Serializable {
         return authorityDAO.getAuthorities(userId, cpInstanceId);
     }
     
+    /*
     @RequestMapping(value="/api/getAllAuthorities", method=RequestMethod.GET)
     public @ResponseBody Map<Integer, List<String>> getAllAuthorities(@RequestParam Integer userId) throws Exception {
         return authorityDAO.getAllAuthorities(userId);
     }
+    */
     
     @RequestMapping(value="/api/associateUserWithCpInstance", method=RequestMethod.POST)
     public @ResponseBody void associateUserWithCpInstance(@RequestParam Integer cpInstanceId, @RequestParam Integer userId) {
         boolean authoritiesContainAdmin = false;
         List<Authority> authorities = authorityDAO.getCpInstanceAuthorities(cpInstanceId);
+        CPInstance cpInstance = cpInstanceDAO.get(cpInstanceId);
         
         for (Authority authority : authorities) {
             if (authority.getAuthority().toUpperCase().equals("ADMIN")) {
@@ -185,6 +189,9 @@ public class CourtpickerController implements Serializable {
         
         if (!authoritiesContainAdmin) {
             authorityDAO.authorizeUser(cpInstanceId, userId, "ADMIN");
+            cpInstance.setLicence("trial");
+            cpInstance.setLicenceStartDate(new Date());
+            cpInstanceDAO.persist(cpInstance);
         }
     }
     

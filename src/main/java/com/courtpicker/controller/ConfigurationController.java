@@ -19,7 +19,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-import org.springframework.web.servlet.ModelAndView;
 
 import com.courtpicker.configurator.CssDesign;
 import com.courtpicker.configurator.CssDesignFactory;
@@ -38,6 +37,7 @@ import com.courtpicker.dao.SubscriptionRatePeriodDAO;
 import com.courtpicker.dao.UserGroupDAO;
 import com.courtpicker.dao.WebdesignDAO;
 import com.courtpicker.dao.WebdesignFileDAO;
+import com.courtpicker.exception.UserNotAuthorizedException;
 import com.courtpicker.model.CPInstance;
 import com.courtpicker.model.Court;
 import com.courtpicker.model.CourtCategory;
@@ -50,6 +50,7 @@ import com.courtpicker.model.SubscriptionRate;
 import com.courtpicker.model.UserGroup;
 import com.courtpicker.model.Webdesign;
 import com.courtpicker.model.WebdesignFile;
+import com.courtpicker.security.AuthorizationChecker;
 import com.courtpicker.security.UserInfo;
 import com.courtpicker.tools.FileHandler;
 
@@ -60,6 +61,8 @@ public class ConfigurationController implements Serializable {
     
     @Inject
     private UserInfo userInfo;
+    @Inject
+    private AuthorizationChecker authorizationChecker;
     @Inject
     private CPInstanceDAO cpInstanceDAO;
     @Inject
@@ -134,8 +137,9 @@ public class ConfigurationController implements Serializable {
 
     @RequestMapping(value = "/api/saveCpInstance", method = RequestMethod.POST)
     public @ResponseBody
-    CPInstance updateCpInstance(@RequestBody CPInstance cpInstance) {
-        return cpInstanceDAO.persist(cpInstance);
+    CPInstance updateCpInstance(@RequestBody CPInstance cpInstance) throws UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAuthorizedToModifyCpInstance(cpInstance.getId());
+        return cpInstanceDAO.persistWithoutLicenceInfo(cpInstance);
     }
 
     @RequestMapping(value = "/api/getCpInstanceByShortName", method = RequestMethod.GET)
@@ -144,6 +148,7 @@ public class ConfigurationController implements Serializable {
         return cpInstanceDAO.getByShortName(shortName);
     }
 
+    /*
     @RequestMapping("createNewInstance")
     public ModelAndView createNewInstance(HttpServletRequest request, HttpServletResponse response) throws IOException {
         CPInstance cpInstance = new CPInstance();
@@ -194,6 +199,7 @@ public class ConfigurationController implements Serializable {
     public ModelAndView configureDesign(HttpServletRequest request, HttpServletResponse response) {
         return new ModelAndView("configureDesign");
     }
+    */
 
     @RequestMapping(value = "/api/getCourtCategories", method = RequestMethod.GET)
     public @ResponseBody
