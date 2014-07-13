@@ -209,14 +209,16 @@ public class ConfigurationController implements Serializable {
 
     @RequestMapping(value = "/api/saveCourtCategory", method = RequestMethod.POST)
     public @ResponseBody
-    CourtCategory saveCourtCategory(@RequestBody CourtCategory courtCategory) {
-        return courtCategoryDAO.persist(courtCategory);
+    CourtCategory saveCourtCategory(@RequestBody CourtCategory courtCategory) throws UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAllowedToModifyCourtCategory(courtCategory.getId(), courtCategory.getCpInstanceId());
+    	return courtCategoryDAO.persist(courtCategory);
     }
 
     @RequestMapping(value = "/api/deleteCourtCategory", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteCourtCategory(@RequestParam Integer id) {
-        courtCategoryDAO.delete(id);
+    void deleteCourtCategory(@RequestParam Integer id) throws UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAllowedToModifyCourtCategory(id, null);
+    	courtCategoryDAO.delete(id);
     }
 
     @RequestMapping(value = "/api/getCourts", method = RequestMethod.GET)
@@ -227,13 +229,15 @@ public class ConfigurationController implements Serializable {
 
     @RequestMapping(value = "/api/saveCourt", method = RequestMethod.POST)
     public @ResponseBody
-    Court saveCourt(@RequestBody Court court) {
+    Court saveCourt(@RequestBody Court court) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyCourt(court.getId(), court.getCourtCategoryId());
         return courtDAO.persist(court);
     }
 
     @RequestMapping(value = "/api/deleteCourt", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteCourt(@RequestParam Integer id) {
+    void deleteCourt(@RequestParam Integer id) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyCourt(id, null);
         courtDAO.delete(id);
     }
 
@@ -246,7 +250,8 @@ public class ConfigurationController implements Serializable {
     @RequestMapping(value = "/api/saveWebdesign", method = RequestMethod.POST)
     public @ResponseBody
     Webdesign saveWebdesign(HttpServletRequest request, HttpServletResponse response, @RequestBody Webdesign webdesign)
-            throws IOException {
+            throws IOException, UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyWebdesign(webdesign.getId(), webdesign.getCpInstanceId());
         return persistAndApplyWebdesign(webdesign, request);
     }
 
@@ -292,14 +297,16 @@ public class ConfigurationController implements Serializable {
 
     @RequestMapping(value = "/api/saveSingleRate", method = RequestMethod.POST)
     public @ResponseBody
-    SingleRate saveSingleRate(@RequestBody SingleRate rate) {
+    SingleRate saveSingleRate(@RequestBody SingleRate rate) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifySingleRate(rate.getId(), rate.getCourtCategoryId());
         return singleRateDAO.persist(rate);
     }
 
     @RequestMapping(value = "/api/deleteSingleRate", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteSingleRate(@RequestParam Integer id) {
-        singleRateDAO.delete(id);
+    void deleteSingleRate(@RequestParam Integer id) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifySingleRate(id, null);
+    	singleRateDAO.delete(id);
     }
 
     @RequestMapping(value = "/api/getSubscriptions", method = RequestMethod.GET)
@@ -313,19 +320,21 @@ public class ConfigurationController implements Serializable {
     List<Subscription> getSubscriptionsByInstance(@RequestParam Integer cpInstanceId) {
         return subscriptionDAO.getAllByInstance(cpInstanceId);
     }
-
+    
     @RequestMapping(value = "/api/saveSubscription", method = RequestMethod.POST)
     public @ResponseBody
-    Subscription saveSubscription(@RequestBody Subscription subscription) {
+    Subscription saveSubscription(@RequestBody Subscription subscription) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifySubscription(subscription.getId(), subscription.getCourtCategoryId());
         return subscriptionDAO.persist(subscription);
     }
 
     @RequestMapping(value = "/api/deleteSubscription", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteSubscription(@RequestParam Integer id) {
-        subscriptionDAO.delete(id);
+    void deleteSubscription(@RequestParam Integer id) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifySubscription(id, null);
+    	subscriptionDAO.delete(id);
     }
-    
+        
     @RequestMapping(value = "/api/getSubscriptionRates", method = RequestMethod.GET)
     public @ResponseBody
     List<SubscriptionRate> getSubscriptionRates(@RequestParam Integer subscriptionId) {
@@ -334,13 +343,15 @@ public class ConfigurationController implements Serializable {
 
     @RequestMapping(value = "/api/saveSubscriptionRate", method = RequestMethod.POST)
     public @ResponseBody
-    SubscriptionRate saveSubscriptionRate(@RequestBody SubscriptionRate subscriptionRate) {
+    SubscriptionRate saveSubscriptionRate(@RequestBody SubscriptionRate subscriptionRate) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifySubscriptionRate(subscriptionRate.getId(), subscriptionRate.getSubscriptionId());
         return subscriptionRateDAO.persist(subscriptionRate);
     }
 
     @RequestMapping(value = "/api/deleteSubscriptionRate", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteSubscriptionRate(@RequestParam Integer id) {
+    void deleteSubscriptionRate(@RequestParam Integer id) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifySubscriptionRate(id, null);
         subscriptionRateDAO.delete(id);
     }
     
@@ -369,18 +380,20 @@ public class ConfigurationController implements Serializable {
     List<UserGroup> getUserGroups(@RequestParam Integer cpInstanceId) {
         return userGroupDAO.getUserGroups(cpInstanceId);
     }
-
+    
     @RequestMapping(value = "/api/saveUserGroup", method = RequestMethod.POST)
     public @ResponseBody
-    UserGroup saveUserGroup(@RequestBody UserGroup userGroup) {
+    UserGroup saveUserGroup(@RequestBody UserGroup userGroup) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyUserGroup(userGroup.getId(), userGroup.getCpInstanceId());
         return userGroupDAO.persist(userGroup);
     }
 
     @RequestMapping(value = "/api/deleteUserGroup", method = RequestMethod.POST)
     public @ResponseBody
-    void deleteUserGroup(@RequestParam Integer id) {
+    void deleteUserGroup(@RequestParam Integer id) throws UserNotAuthorizedException {
         // If I delete a userGroup I have to delete its customer mappings as
         // well
+    	authorizationChecker.checkLoggedInUserAllowedToModifyUserGroup(id, null);
         userGroupDAO.delete(id);
         customerUserGroupDAO.deleteEntries(id);
     }
@@ -391,15 +404,19 @@ public class ConfigurationController implements Serializable {
         return customerUserGroupDAO.getUserGroupCustomerExtract(userGroupId);
     }
 
+    // TODO: continue here
+    
     @RequestMapping(value = "/api/addUserToUserGroup", method = RequestMethod.POST)
     public @ResponseBody
-    void addUserGroupUser(@RequestParam Integer userGroupId, @RequestParam Integer userId) {
+    void addUserGroupUser(@RequestParam Integer userGroupId, @RequestParam Integer userId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyUserGroup(userGroupId, null);
         customerUserGroupDAO.addCustomerToUserGroup(userGroupId, userId);
     }
 
     @RequestMapping(value = "/api/removeUserFromUserGroup", method = RequestMethod.POST)
     public @ResponseBody
-    void removeUserFromUserGroup(@RequestParam Integer userGroupId, @RequestParam Integer userId) {
+    void removeUserFromUserGroup(@RequestParam Integer userGroupId, @RequestParam Integer userId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyUserGroup(userGroupId, null);
         customerUserGroupDAO.removeCustomerFromUserGroup(userGroupId, userId);
     }
 
@@ -411,13 +428,15 @@ public class ConfigurationController implements Serializable {
 
     @RequestMapping(value = "/api/savePaymentOption", method = RequestMethod.POST)
     public @ResponseBody
-    PaymentOption savePaymentOption(@RequestBody PaymentOption paymentOption) {
+    PaymentOption savePaymentOption(@RequestBody PaymentOption paymentOption) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyPaymentOption(paymentOption.getId(), paymentOption.getCpInstanceId());
         return paymentOptionDAO.persist(paymentOption);
     }
 
     @RequestMapping(value = "/api/deletePaymentOption", method = RequestMethod.POST)
     public @ResponseBody
-    void deletePaymentOption(@RequestParam Integer id) {
+    void deletePaymentOption(@RequestParam Integer id) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAllowedToModifyPaymentOption(id, null);
         paymentOptionDAO.delete(id);
     }
     

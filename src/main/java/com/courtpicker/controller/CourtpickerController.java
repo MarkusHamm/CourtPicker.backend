@@ -36,6 +36,7 @@ import com.courtpicker.dao.SingleReservationDAO;
 import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionReservationDAO;
+import com.courtpicker.exception.UserNotAuthorizedException;
 import com.courtpicker.model.Authority;
 import com.courtpicker.model.CPInstance;
 import com.courtpicker.model.Court;
@@ -46,6 +47,7 @@ import com.courtpicker.model.Rate;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.model.Subscription;
 import com.courtpicker.model.SubscriptionReservation;
+import com.courtpicker.security.AuthorizationChecker;
 import com.courtpicker.security.UserInfo;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
@@ -64,6 +66,8 @@ public class CourtpickerController implements Serializable {
     
     @Inject
     private UserInfo userInfo;
+    @Inject
+    private AuthorizationChecker authorizationChecker;
     @Inject
     private CourtCategoryDAO courtCategoryDAO;
     @Inject
@@ -117,7 +121,8 @@ public class CourtpickerController implements Serializable {
     }
     
     @RequestMapping(value="/api/updateUser", method=RequestMethod.POST)
-    public @ResponseBody Customer updateUser(@RequestBody Customer user) {
+    public @ResponseBody Customer updateUser(@RequestBody Customer user) throws UserNotAuthorizedException {
+    	authorizationChecker.checkUserIsLoggedInUser(user.getId());
         return customerDAO.persist(user);
     }
     
@@ -159,12 +164,14 @@ public class CourtpickerController implements Serializable {
     }    
     
     @RequestMapping(value="/api/changeUserPassword", method=RequestMethod.POST)
-    public @ResponseBody String changeUserPassword(@RequestParam Integer userId, @RequestParam String oldPassword, @RequestParam String newPassword) {
-        return userAccountManager.changeUserPassword(userId, oldPassword, newPassword);
+    public @ResponseBody String changeUserPassword(@RequestParam Integer userId, @RequestParam String oldPassword, @RequestParam String newPassword) throws UserNotAuthorizedException {
+        authorizationChecker.checkUserIsLoggedInUser(userId);
+    	return userAccountManager.changeUserPassword(userId, oldPassword, newPassword);
     }
     
     @RequestMapping(value="/api/getAuthorities", method=RequestMethod.GET)
     public @ResponseBody List<String> getAuthorities(@RequestParam Integer userId, @RequestParam Integer cpInstanceId) throws Exception {
+    	authorizationChecker.checkUserIsLoggedInUser(userId);
         return authorityDAO.getAuthorities(userId, cpInstanceId);
     }
     
@@ -196,13 +203,15 @@ public class CourtpickerController implements Serializable {
     }
     
     @RequestMapping(value="/api/authorizeUser", method=RequestMethod.POST)
-    public @ResponseBody void authorizeUser(@RequestParam Integer cpInstanceId, @RequestParam Integer userId, @RequestParam String authority) {
-        authorityDAO.authorizeUser(cpInstanceId, userId, authority);
+    public @ResponseBody void authorizeUser(@RequestParam Integer cpInstanceId, @RequestParam Integer userId, @RequestParam String authority) throws UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAuthorizedToModifyCpInstance(cpInstanceId);
+    	authorityDAO.authorizeUser(cpInstanceId, userId, authority);
     }
     
     @RequestMapping(value="/api/deAuthorizeUser", method=RequestMethod.POST)
-    public @ResponseBody void deAuthorizeUser(@RequestParam Integer cpInstanceId, @RequestParam Integer userId, @RequestParam String authority) {
-        authorityDAO.deAuthorizeUser(cpInstanceId, userId, authority);
+    public @ResponseBody void deAuthorizeUser(@RequestParam Integer cpInstanceId, @RequestParam Integer userId, @RequestParam String authority) throws UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAuthorizedToModifyCpInstance(cpInstanceId);
+    	authorityDAO.deAuthorizeUser(cpInstanceId, userId, authority);
     }
     
     @RequestMapping(value="/api/forgotPasswordRequest", method=RequestMethod.GET)
@@ -331,7 +340,9 @@ public class CourtpickerController implements Serializable {
 
     @RequestMapping(value="/api/singleReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean singleReservation(@RequestParam Integer customerId, @RequestParam Integer courtId, 
-            @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam String displayName, @RequestParam String comment) throws ParseException {
+            @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
+    	authorizationChecker.checkUserIsLoggedInUser(customerId);
+    	
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Date fromDate = dateTimeFormat.parse(fromDateTime);
         Date toDate = dateTimeFormat.parse(toDateTime);
@@ -365,8 +376,9 @@ public class CourtpickerController implements Serializable {
     public @ResponseBody Boolean singleReservationAdmin(@RequestParam String customerInputType, @RequestParam(required=false) Integer customerId, @RequestParam String customerName, 
             @RequestParam Boolean createUserAccount, @RequestParam String createUserAccountEmail, @RequestParam Integer reservingCustomerId, @RequestParam Integer courtId, 
             @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice,
-            @RequestParam String displayName, @RequestParam String comment) throws ParseException {
-        
+            @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAllowedToModifyCourt(courtId, null);
+    	
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Date fromDate = dateTimeFormat.parse(fromDateTime);
         Date toDate = dateTimeFormat.parse(toDateTime);
@@ -416,8 +428,9 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/subscriptionReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean subscriptionReservation(@RequestParam Integer subscriptionId, @RequestParam Integer customerId, 
             @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, 
-            @RequestParam Integer bookingUnits, @RequestParam String displayName, @RequestParam String comment) throws ParseException {  
-        
+            @RequestParam Integer bookingUnits, @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {  
+        authorizationChecker.checkUserIsLoggedInUser(customerId);
+    	
         Subscription subscription = subscriptionDAO.get(subscriptionId);
         CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
         int calendarWeekDay = getCalendarWeekDayForString(weekDay);
@@ -461,8 +474,9 @@ public class CourtpickerController implements Serializable {
     public @ResponseBody Boolean subscriptionReservationAdmin(@RequestParam String customerInputType, @RequestParam(required=false) Integer customerId, @RequestParam String customerName, 
             @RequestParam Boolean createUserAccount, @RequestParam String createUserAccountEmail, @RequestParam Integer subscriptionId, @RequestParam Integer reservingCustomerId, 
             @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, @RequestParam Integer bookingUnits, @RequestParam Boolean overridePrice, 
-            @RequestParam BigDecimal customPrice, @RequestParam String displayName, @RequestParam String comment) throws ParseException {
-        
+            @RequestParam BigDecimal customPrice, @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
+        authorizationChecker.checkLoggedInUserAllowedToModifyCourt(courtId, null);
+    	
         Subscription subscription = subscriptionDAO.get(subscriptionId);
         CourtCategory courtCategory = courtCategoryDAO.get(subscription.getCourtCategoryId());
         int calendarWeekDay = getCalendarWeekDayForString(weekDay);
@@ -525,28 +539,34 @@ public class CourtpickerController implements Serializable {
     }
     
     @RequestMapping(value="/api/getAdminUserExtract", method=RequestMethod.GET)
-    public @ResponseBody List<CustomerExtract> getAdminUserExtract(@RequestParam Integer cpInstanceId) {
+    public @ResponseBody List<CustomerExtract> getAdminUserExtract(@RequestParam Integer cpInstanceId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAuthorizedToModifyCpInstance(cpInstanceId);
         return customerDAO.getAdminUserExctract(cpInstanceId);
     }    
     
     @RequestMapping(value="/api/getSingleReservationInfosForCustomer", method=RequestMethod.GET)
-    public @ResponseBody List<SingleReservationInfo> getSingleReservationInfosForCustomer(@RequestParam Integer customerId) {
+    public @ResponseBody List<SingleReservationInfo> getSingleReservationInfosForCustomer(@RequestParam Integer customerId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkUserIsLoggedInUser(customerId);
         return singleReservationDAO.getSingleReservationInfosForCustomer(customerId);
     }
     
     @RequestMapping(value="/api/getSingleReservationInfosForCpInstance", method=RequestMethod.GET)
-    public @ResponseBody List<SingleReservationInfo> getSingleReservationInfosForCpInstance(@RequestParam Integer cpInstanceId) {
+    public @ResponseBody List<SingleReservationInfo> getSingleReservationInfosForCpInstance(@RequestParam Integer cpInstanceId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAuthorizedToModifyCpInstance(cpInstanceId);
         return singleReservationDAO.getSingleReservationInfosForCpInstance(cpInstanceId);
     }
-    
+        
     @RequestMapping(value="/api/cancelSingleReservation", method=RequestMethod.POST)
-    public @ResponseBody void cancelSingleReservation(@RequestParam Integer reservationId) {
+    public @ResponseBody void cancelSingleReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAuthorizedToCancelSingleReservation(reservationId);    	
         singleReservationDAO.cancelReservation(reservationId);
     }
     
     @RequestMapping(value="/api/paySingleReservation", method=RequestMethod.POST)
     public @ResponseBody void paySingleReservation(@RequestParam Integer reservationId, @RequestParam Integer paymentOptionId,
-            @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice) {
+            @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserIsAdminBySubscriptionReservation(reservationId);
+    	
         SingleReservation reservation = singleReservationDAO.get(reservationId);
         reservation.setPaid(true);
         reservation.setPaymentDate(new Date());
@@ -559,23 +579,28 @@ public class CourtpickerController implements Serializable {
     }
     
     @RequestMapping(value="/api/getSubscriptionReservationInfosForCustomer", method=RequestMethod.GET)
-    public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCustomer(@RequestParam Integer customerId) {
+    public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCustomer(@RequestParam Integer customerId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkUserIsLoggedInUser(customerId);
         return subscriptionReservationDAO.getSubscriptionReservationInfosForCustomer(customerId);
     }
     
     @RequestMapping(value="/api/getSubscriptionReservationInfosForCpInstance", method=RequestMethod.GET)
-    public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCpInstance(@RequestParam Integer cpInstanceId) {
+    public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCpInstance(@RequestParam Integer cpInstanceId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAuthorizedToModifyCpInstance(cpInstanceId);
         return subscriptionReservationDAO.getSubscriptionReservationInfosForCpInstance(cpInstanceId);
     }
     
     @RequestMapping(value="/api/cancelSubscriptionReservation", method=RequestMethod.POST)
-    public @ResponseBody void cancelSubscriptionReservation(@RequestParam Integer reservationId) {
+    public @ResponseBody void cancelSubscriptionReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserAuthorizedToCancelSubscriptionReservation(reservationId);
         subscriptionReservationDAO.cancelReservation(reservationId);
     }
     
     @RequestMapping(value="/api/paySubscriptionReservation", method=RequestMethod.POST)
     public @ResponseBody void paySubscriptionReservation(@RequestParam Integer reservationId, @RequestParam Integer paymentOptionId,
-            @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice) {
+            @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserIsAdminBySubscriptionReservation(reservationId);
+    	
         SubscriptionReservation reservation = subscriptionReservationDAO.get(reservationId);
         reservation.setPaid(true);
         reservation.setPaymentDate(new Date());

@@ -8,6 +8,7 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.courtpicker.model.Court;
 import com.courtpicker.model.SubscriptionRate;
 import com.courtpicker.model.SubscriptionRatePeriod;
 
@@ -23,6 +24,16 @@ public class SubscriptionRateDAO {
         rowMapper = new SubscriptionRateRowMapper();
     }
 
+    public SubscriptionRate get(Integer id) {
+        String query = "select * from roger.subscriptionrate where id=?";
+        List<SubscriptionRate> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
+        
+        if (matches.size() == 0) {
+            return null;
+        }
+        
+        return matches.get(0);
+    }
     public List<SubscriptionRate> getAll(Integer subscriptionId) {
         String query = "select * from roger.subscriptionrate where subscriptionid=?";
         List<SubscriptionRate> matches = jdbcTemplate.query(query, new Object[] { subscriptionId }, rowMapper);

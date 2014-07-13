@@ -1,5 +1,7 @@
 package com.courtpicker.dao;
 
+import java.util.List;
+
 import javax.inject.Inject;
 
 import org.springframework.context.annotation.Scope;
@@ -7,6 +9,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
+import com.courtpicker.model.Court;
 import com.courtpicker.model.Webdesign;
 
 @Component("webdesignDAO")
@@ -21,6 +24,17 @@ public class WebdesignDAO {
         rowMapper = new WebdesignRowMapper();
     }
 
+    public Webdesign get(Integer id) {
+        String query = "select * from roger.webdesign where id=?";
+        List<Webdesign> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
+        
+        if (matches.size() == 0) {
+            return null;
+        }
+        
+        return matches.get(0);
+    }
+    
     public Webdesign getWebdesign(int cpInstanceId) {
         Webdesign webdesign = null;
         String query = "select * from roger.webdesign where cpinstanceid=?";
