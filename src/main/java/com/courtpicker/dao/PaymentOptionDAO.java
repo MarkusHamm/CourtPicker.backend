@@ -25,7 +25,7 @@ public class PaymentOptionDAO {
     }
     
     public PaymentOption get(Integer id) {
-        String query = "select * from roger.payentoption where id=?";
+        String query = "select * from roger.paymentoption where id=?";
         List<PaymentOption> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {

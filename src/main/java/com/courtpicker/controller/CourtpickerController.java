@@ -565,7 +565,7 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/paySingleReservation", method=RequestMethod.POST)
     public @ResponseBody void paySingleReservation(@RequestParam Integer reservationId, @RequestParam Integer paymentOptionId,
             @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice) throws UserNotAuthorizedException {
-    	authorizationChecker.checkLoggedInUserIsAdminBySubscriptionReservation(reservationId);
+    	authorizationChecker.checkLoggedInUserIsAdminBySingleReservation(reservationId);
     	
         SingleReservation reservation = singleReservationDAO.get(reservationId);
         reservation.setPaid(true);

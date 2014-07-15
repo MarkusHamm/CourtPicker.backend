@@ -65,19 +65,13 @@ public class AuthorizationChecker {
             throw new UserNotAuthorizedException();
         }
     }
-    
+
     public void checkLoggedInUserAuthorizedToModifyCpInstance(Integer cpInstanceId) throws UserNotAuthorizedException {
         // creation of cpInstance is not allowed - only update
         if (cpInstanceId == null) {
             throw new UserNotAuthorizedException("Manual create of CpInstance not allowed");
         }
-        
-        CPInstance cpInstance = cpInstanceDAO.get(cpInstanceId);
-        // if licence is not 'created' any more only instance admins are allowed to modify the instance
-        if (!cpInstance.getLicence().toUpperCase().equals("CREATED")) {
-            checkUserLoggedIn();
-            checkCpInstanceAccess(cpInstanceId);
-        }
+        checkCpInstanceAccess(cpInstanceId);
     }
     
     public void checkLoggedInUserAuthorizedToCancelSingleReservation(Integer reservationId) throws UserNotAuthorizedException {
@@ -129,60 +123,50 @@ public class AuthorizationChecker {
     }    
     
     public void checkLoggedInUserAllowedToModifyCourtCategory(Integer courtCategoryId, Integer refCPInstanceId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkCourtCategoryAccess(courtCategoryId);
     	checkCpInstanceAccess(refCPInstanceId);    	
     }
     
     public void checkLoggedInUserAllowedToModifyCourt(Integer courtId, Integer refCourtCategoryId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkCourtAccess(courtId);
     	checkCourtCategoryAccess(refCourtCategoryId);    	
     }
     
     public void checkLoggedInUserAllowedToModifyWebdesign(Integer webdesignId, Integer refCPInstanceId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkWebdesignAccess(webdesignId);
     	checkCpInstanceAccess(refCPInstanceId);    	
     }
     
     public void checkLoggedInUserAllowedToModifySingleRate(Integer singleRateId, Integer refCourtCategoryId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkSingleRateAccess(singleRateId);
     	checkCourtCategoryAccess(refCourtCategoryId);    	
     }    
 
     public void checkLoggedInUserAllowedToModifySubscription(Integer subscriptionId, Integer refCourtCategoryId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkSubscriptionAccess(subscriptionId);
     	checkCourtCategoryAccess(refCourtCategoryId);    	
     }       
     
     public void checkLoggedInUserAllowedToModifySubscriptionRate(Integer subscriptionRateId, Integer subscriptionId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkSubscriptionRateAccess(subscriptionRateId);
     	checkSubscriptionAccess(subscriptionId);    	
     }
     
     public void checkLoggedInUserAllowedToModifyUserGroup(Integer userGroupId, Integer refCpInstanceId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkUserGroupAccess(userGroupId);
     	checkCpInstanceAccess(refCpInstanceId);    	
     }   
     
     public void checkLoggedInUserAllowedToModifyPaymentOption(Integer paymentOptionId, Integer refCpInstanceId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkPaymentOptionAccess(paymentOptionId);
     	checkCpInstanceAccess(refCpInstanceId);    	
     }   
     
     public void checkLoggedInUserIsAdminBySingleReservation(Integer singleReservationId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkSingleReservationAccess(singleReservationId);
     }
     
     public void checkLoggedInUserIsAdminBySubscriptionReservation(Integer subscriptionReservationId) throws UserNotAuthorizedException {
-    	checkUserLoggedIn();
     	checkSubscriptionReservationAccess(subscriptionReservationId);
     }
     
@@ -258,6 +242,14 @@ public class AuthorizationChecker {
 
     private void checkCpInstanceAccess(Integer cpInstanceId) throws UserNotAuthorizedException {
         if (cpInstanceId != null) {
+            CPInstance cpInstance = cpInstanceDAO.get(cpInstanceId);
+            
+            // skip authorization checks for cpInstances in config state
+            if (cpInstance == null || cpInstance.getLicence().toUpperCase().equals("CONFIG")) {
+                return;
+            }
+            
+            checkUserLoggedIn();
         	List<String> instanceAuthorities = userInfo.getUserAuthorities().get(cpInstanceId);
             if (instanceAuthorities == null || !instanceAuthorities.contains("ADMIN")) {
                 throw new UserNotAuthorizedException("User not authorized"); 
