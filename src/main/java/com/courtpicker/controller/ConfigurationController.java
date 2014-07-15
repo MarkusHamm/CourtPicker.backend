@@ -131,6 +131,13 @@ public class ConfigurationController implements Serializable {
          * webdesignFile.setType("logo"); webdesignFile.setContent(null);
          * webdesignFileDAO.persist(webdesignFile);
          */
+        
+        PaymentOption standardPaymentOption = new PaymentOption();
+        standardPaymentOption.setCpInstanceId(cpInstance.getId());
+        standardPaymentOption.setActive(true);
+        standardPaymentOption.setName("Bar");
+        standardPaymentOption.setDeleted(false);
+        paymentOptionDAO.persist(standardPaymentOption);
 
         return cpInstance;
     }

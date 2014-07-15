@@ -9,7 +9,6 @@ import org.springframework.context.annotation.Scope;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Component;
 
-import com.courtpicker.model.Court;
 import com.courtpicker.model.SingleReservation;
 import com.courtpicker.uimodel.SingleReservationInfo;
 
