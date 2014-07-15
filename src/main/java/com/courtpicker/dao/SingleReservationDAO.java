@@ -39,8 +39,9 @@ public class SingleReservationDAO {
     }
 
     public List<SingleReservation> getReservationsForCourt(Integer courtId, Date fromDate, Date toDate) {
-        String query = "select * from roger.singlereservation where courtid=? "
-                + "and todate>? and fromdate<?";
+        String query = "select * from roger.singlereservation where courtid=? " +
+                "and todate>? and fromdate<? " +
+                "and deleted=false";
         List<SingleReservation> matches = jdbcTemplate.query(query, new Object[] { courtId, fromDate, toDate },
                 rowMapper);
         return matches;
@@ -48,7 +49,8 @@ public class SingleReservationDAO {
     
     public List<SingleReservation> getReservationsForCourtCategory(Integer courtCategoryId, Date fromDate, Date toDate) {
         String query = "select * from roger.singlereservation r, roger.court c " +
-        		"where r.courtid = c.id and c.courtcategoryid=? and r.todate>? and r.fromdate<?";
+        		"where r.courtid = c.id and c.courtcategoryid=? and r.todate>? and r.fromdate<? " +
+        		"and deleted=false";
         List<SingleReservation> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId, fromDate, toDate },
                 rowMapper);
         return matches;

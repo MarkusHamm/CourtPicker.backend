@@ -6,7 +6,6 @@ import javax.inject.Inject;
 
 import org.springframework.stereotype.Component;
 
-import com.courtpicker.dao.AuthorityDAO;
 import com.courtpicker.dao.CPInstanceDAO;
 import com.courtpicker.dao.CourtCategoryDAO;
 import com.courtpicker.dao.CourtDAO;
