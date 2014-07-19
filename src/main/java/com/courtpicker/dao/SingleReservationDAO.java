@@ -49,7 +49,7 @@ public class SingleReservationDAO {
     public List<SingleReservation> getReservationsForCourtCategory(Integer courtCategoryId, Date fromDate, Date toDate) {
         String query = "select * from roger.singlereservation r, roger.court c " +
         		"where r.courtid = c.id and c.courtcategoryid=? and r.todate>? and r.fromdate<? " +
-        		"and deleted=false";
+        		"and r.deleted=false";
         List<SingleReservation> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId, fromDate, toDate },
                 rowMapper);
         return matches;

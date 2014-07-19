@@ -24,7 +24,7 @@ public class CourtDAO {
     }
 
     public List<Court> getAllCourts(Integer courtCategoryId) {
-        String query = "select * from roger.court where courtcategoryid=? order by ordernr";
+        String query = "select * from roger.court where courtcategoryid=? and deleted=false order by ordernr";
         List<Court> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
@@ -61,13 +61,13 @@ public class CourtDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.court where id=?";
+        String query = "update roger.court set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
     
     public Integer getNrOfCourts(Integer cpInstanceId) {
         String query = "select count(1) from roger.court where courtcategoryid in " +
-        		"(select id from roger.courtcategory where cpinstanceid=?)";
+        		"(select id from roger.courtcategory where cpinstanceid=?) and deleted=false";
         Integer result = jdbcTemplate.queryForObject(query, new Object[] { cpInstanceId }, Integer.class);
         return result;
     }

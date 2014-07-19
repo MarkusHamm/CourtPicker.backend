@@ -23,7 +23,7 @@ public class CourtCategoryDAO {
     }
 
     public List<CourtCategory> getAllCourtCategories(int cpInstanceId) {
-        String query = "select * from roger.courtcategory where cpinstanceid=? order by ordernr";
+        String query = "select * from roger.courtcategory where cpinstanceid=? and deleted=false order by ordernr";
         List<CourtCategory> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, rowMapper);
         return matches;
     }
@@ -63,7 +63,7 @@ public class CourtCategoryDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.courtcategory where id=?";
+        String query = "update roger.courtcategory set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 

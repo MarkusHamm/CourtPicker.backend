@@ -51,7 +51,7 @@ public class SubscriptionReservationDAO {
     public List<SubscriptionReservation> getReservationsForCourtCategory(Integer courtCategoryId, Date fromDate, Date toDate) {
         String query = "select * from roger.subscriptionreservation r, roger.court c " +
                 "where r.courtid = c.id and c.courtcategoryid=? and r.periodend>=? and r.periodstart<=? " +
-                "and deleted=false";
+                "and r.deleted=false";
         List<SubscriptionReservation> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId, fromDate, toDate },
                 rowMapper);
         return matches;

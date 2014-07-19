@@ -24,7 +24,7 @@ public class UserGroupDAO {
     }
 
     public UserGroup get(Integer id) {
-        String query = "select * from roger.usergroup where id=?";
+        String query = "select * from roger.usergroup where id=? and deleted=false";
         List<UserGroup> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -35,7 +35,7 @@ public class UserGroupDAO {
     }
 
     public List<UserGroup> getUserGroups(Integer cpInstanceId) {
-        String query = "select * from roger.usergroup where cpinstanceid=?";
+        String query = "select * from roger.usergroup where cpinstanceid=? and deleted=false";
         List<UserGroup> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, rowMapper);
         return matches;
     }
@@ -60,7 +60,7 @@ public class UserGroupDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.usergroup where id=?";
+        String query = "update roger.usergroup set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
     

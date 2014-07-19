@@ -23,14 +23,14 @@ public class SubscriptionDAO {
     }
 
     public List<Subscription> getAll(int courtCategoryId) {
-        String query = "select * from roger.subscription where courtcategoryid=? order by ordernr";
+        String query = "select * from roger.subscription where courtcategoryid=? and deleted=false order by ordernr";
         List<Subscription> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
     
     public List<Subscription> getAllByInstance(int cpInstanceId) {
         String query = "select * from roger.subscription where courtcategoryid in " +
-                "(select id from roger.courtcategory where cpinstanceid=?)";
+                "(select id from roger.courtcategory where cpinstanceid=?) and deleted=false";
         List<Subscription> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, rowMapper);
         return matches;      
     }
@@ -69,7 +69,7 @@ public class SubscriptionDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.subscription where id=?";
+        String query = "update roger.subscription set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 
