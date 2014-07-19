@@ -50,14 +50,14 @@ public class CPMailSender {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("user", user);
         String body = applyModelToTemplate("accountCreated.vm", model);
-        mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Account Created", body);
+        mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Account erstellt", body);
     }
 
     public void sendMinimalAccountCreatedMail(Customer user) {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("user", user);
         String body = applyModelToTemplate("minimalAccountCreated.vm", model);
-        mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Account Created", body);
+        mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Account erstellt", body);
     }
     
     public void sendPasswordForgottenMail(Customer user, String newPassword) {
@@ -65,7 +65,7 @@ public class CPMailSender {
         model.put("user", user);
         model.put("newPassword", newPassword);
         String body = applyModelToTemplate("passwordForgotten.vm", model);
-        mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Password Forgotten", body);
+        mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Passwort vergessen", body);
     }
     
     public void sendSingleReservationDoneMail(SingleReservation reservation) {
@@ -73,7 +73,7 @@ public class CPMailSender {
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
 
         String body = applyModelToTemplate("singleReservationDone.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Reservation", body);
+        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Reservierung", body);
     }
     
     public void sendSingleReservationCancelMail(SingleReservation reservation) {
@@ -81,7 +81,7 @@ public class CPMailSender {
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
 
         String body = applyModelToTemplate("singleReservationCancelled.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Reservation Storniert", body);
+        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Stornierung", body);
     }
 
     public void sendSubscriptionReservationDoneMail(SubscriptionReservation reservation) throws ParseException {
@@ -89,7 +89,7 @@ public class CPMailSender {
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
         
         String body = applyModelToTemplate("subscriptionReservationDone.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Reservation", body);
+        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Reservierung", body);
     }
 
     public void sendSubscriptionReservationCancelMail(SubscriptionReservation reservation) throws ParseException {
@@ -97,7 +97,7 @@ public class CPMailSender {
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
         
         String body = applyModelToTemplate("subscriptionReservationCancelled.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Reservation Cancelled", body);
+        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Stornierung", body);
     }
     
     private Map<String, Object> getSubscriptionReservationTemplateModel(SubscriptionReservation reservation)

@@ -115,13 +115,13 @@ public class DateHelper {
     public String getDayOfWeekString(Date date) {
         int day = getDayOfWeek(date);
         switch(day) {
-            case 0: return "Montag";
-            case 1: return "Dienstag";
-            case 2: return "Mittwoch";
-            case 3: return "Donnerstag";
-            case 4: return "Freitag";
-            case 5: return "Samstag";
-            case 6: return "Sonntag";
+            case Calendar.MONDAY: return "Montag";
+            case Calendar.TUESDAY: return "Dienstag";
+            case Calendar.WEDNESDAY: return "Mittwoch";
+            case Calendar.THURSDAY: return "Donnerstag";
+            case Calendar.FRIDAY: return "Freitag";
+            case Calendar.SATURDAY: return "Samstag";
+            case Calendar.SUNDAY: return "Sonntag";
             default: return "Unbekannt";
         }
     }

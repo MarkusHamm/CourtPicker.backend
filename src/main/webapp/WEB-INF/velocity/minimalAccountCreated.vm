@@ -3,10 +3,13 @@
         <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
     </head>
     <body>
-        <h1>Courtpicker Account Created</h1>
+        <h1>CourtPicker Account erstellt</h1>
         <p>
-            A courtpicker account was created for you . <br/>
-            You can login with user: $user.userName and password: temp
+            Ein CourtPicker Account wurde für sie erstellt. <br/>
+            Sie können sich mit dem Benutzernamen: $user.userName und dem passwort: temp einloggen.
+        </p>
+        <p>
+            Sie können das Passwort jederzeit im Kundenbereich ändern.
         </p>
     </body>
 </html>

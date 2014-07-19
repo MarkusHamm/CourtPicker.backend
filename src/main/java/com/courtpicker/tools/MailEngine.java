@@ -1,23 +1,15 @@
 package com.courtpicker.tools;
 
-import java.util.HashMap;
-import java.util.Map;
-
 import javax.inject.Inject;
 import javax.mail.internet.MimeMessage;
 
-import org.apache.commons.lang.NotImplementedException;
-import org.apache.velocity.app.VelocityEngine;
 import org.springframework.context.annotation.Scope;
-import org.springframework.mail.MailSender;
 import org.springframework.mail.SimpleMailMessage;
 import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.mail.javamail.MimeMessageHelper;
 import org.springframework.mail.javamail.MimeMessagePreparator;
+import org.springframework.scheduling.annotation.Async;
 import org.springframework.stereotype.Component;
-import org.springframework.ui.velocity.VelocityEngineUtils;
-
-import com.courtpicker.model.Customer;
 
 @Component("mailEngine")
 @Scope("singleton")
@@ -27,6 +19,7 @@ public class MailEngine {
     // has to match with the mailSender server settings (in config file)
     private final String fromEmail = "markus.hamm@gmx.at";
             
+    @Async
     public void sendHtmlMail(final String to, final String cc, final String bcc, final String subject, final String text) {
         MimeMessagePreparator preparator = new MimeMessagePreparator() {
             public void prepare(MimeMessage mimeMessage) throws Exception {
@@ -48,6 +41,7 @@ public class MailEngine {
         mailSender.send(preparator);
     }
     
+    @Async
     public void sendTextMail(String to, String cc, String bcc, String subject, String text) {
         SimpleMailMessage message = new SimpleMailMessage();
         message.setFrom(fromEmail);

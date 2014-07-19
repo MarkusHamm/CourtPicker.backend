@@ -3,13 +3,13 @@
         <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
     </head>
     <body>
-        <h1>Courtpicker Account Created</h1>
+        <h1>CourtPicker Account erstellt</h1>
         <p>
-            You can login with user name: $user.userName
+            Sie können sich mit folgendem Benutzernamen einloggen: $user.userName
         </p>
         <p>
-            Before login please activate your user via the following link: <br/>
-            <a href="http://mycourtpicker.com/app/cp.html#/activateUser?userId=$user.id&activationCode=$user.activationCode">activate user</a>
+            Bevor sie sich einloggen, müssen sie ihren Account mit folgendem Link aktivieren: <br/>
+            <a href="http://mycourtpicker.com/app/cp.html#/activateUser?userId=$user.id&activationCode=$user.activationCode">Account aktivieren</a>
         </p>
     </body>
 </html>
