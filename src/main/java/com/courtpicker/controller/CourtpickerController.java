@@ -49,6 +49,7 @@ import com.courtpicker.model.Subscription;
 import com.courtpicker.model.SubscriptionReservation;
 import com.courtpicker.security.AuthorizationChecker;
 import com.courtpicker.security.UserInfo;
+import com.courtpicker.tools.CPMailSender;
 import com.courtpicker.tools.DateHelper;
 import com.courtpicker.tools.MailEngine;
 import com.courtpicker.uimodel.AuthStatus;
@@ -97,17 +98,9 @@ public class CourtpickerController implements Serializable {
     @Inject
     private DateHelper dateHelper;
     @Inject
-    private MailEngine mailEngine;
+    private CPMailSender cpMailSender;
     @Inject
     private UserAccountManager userAccountManager;
-    
-    @RequestMapping(value="/api/test", method=RequestMethod.GET)
-    public @ResponseBody String test(HttpSession session) throws Exception {
-        String response = "SID " + session.getId() + " logged in: " + (userInfo.isLoggedIn() ? "true" : "false");
-        response += " logged in user: " + (userInfo.getLoggedInUser() == null ? "null" : userInfo.getLoggedInUser().getUserName());
-        
-        return response;
-    }
     
     @RequestMapping(value="/api/registerUser", method=RequestMethod.POST)
     public @ResponseBody Customer registerUser(@RequestParam String userName, @RequestParam String password, 
@@ -369,6 +362,8 @@ public class CourtpickerController implements Serializable {
         res.setComment(comment);
         
         singleReservationDAO.persist(res);
+        cpMailSender.sendSingleReservationDoneMail(res);
+        
         return true;
     }
     
@@ -422,6 +417,8 @@ public class CourtpickerController implements Serializable {
         res.setComment(comment);
         
         singleReservationDAO.persist(res);
+        cpMailSender.sendSingleReservationDoneMail(res);
+        
         return true;
     }
 
@@ -467,6 +464,8 @@ public class CourtpickerController implements Serializable {
         res.setPaymentOptionId(null);
         
         subscriptionReservationDAO.persist(res);
+        cpMailSender.sendSubscriptionReservationDoneMail(res);
+        
         return true;
     }
     
@@ -529,6 +528,8 @@ public class CourtpickerController implements Serializable {
         res.setPaymentOptionId(null);
         
         subscriptionReservationDAO.persist(res);
+        cpMailSender.sendSubscriptionReservationDoneMail(res);
+        
         return true;
     }
 
@@ -559,7 +560,9 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/cancelSingleReservation", method=RequestMethod.POST)
     public @ResponseBody void cancelSingleReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException {
     	authorizationChecker.checkLoggedInUserAuthorizedToCancelSingleReservation(reservationId);    	
-        singleReservationDAO.cancelReservation(reservationId);
+        SingleReservation singleReservation = singleReservationDAO.get(reservationId);
+    	singleReservationDAO.cancelReservation(reservationId);
+    	cpMailSender.sendSingleReservationCancelMail(singleReservation);
     }
     
     @RequestMapping(value="/api/paySingleReservation", method=RequestMethod.POST)
@@ -591,9 +594,11 @@ public class CourtpickerController implements Serializable {
     }
     
     @RequestMapping(value="/api/cancelSubscriptionReservation", method=RequestMethod.POST)
-    public @ResponseBody void cancelSubscriptionReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException {
+    public @ResponseBody void cancelSubscriptionReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException, ParseException {
     	authorizationChecker.checkLoggedInUserAuthorizedToCancelSubscriptionReservation(reservationId);
-        subscriptionReservationDAO.cancelReservation(reservationId);
+        SubscriptionReservation subscriptionReservation = subscriptionReservationDAO.get(reservationId);
+    	subscriptionReservationDAO.cancelReservation(reservationId);
+    	cpMailSender.sendSubscriptionReservationCancelMail(subscriptionReservation);
     }
     
     @RequestMapping(value="/api/paySubscriptionReservation", method=RequestMethod.POST)

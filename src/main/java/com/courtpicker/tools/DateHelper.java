@@ -112,6 +112,20 @@ public class DateHelper {
         return cal.get(Calendar.DAY_OF_WEEK);
     }
     
+    public String getDayOfWeekString(Date date) {
+        int day = getDayOfWeek(date);
+        switch(day) {
+            case 0: return "Montag";
+            case 1: return "Dienstag";
+            case 2: return "Mittwoch";
+            case 3: return "Donnerstag";
+            case 4: return "Freitag";
+            case 5: return "Samstag";
+            case 6: return "Sonntag";
+            default: return "Unbekannt";
+        }
+    }
+    
     public int getYear(Date date) {
         Calendar cal = new GregorianCalendar(Locale.GERMANY);
         cal.setTime(date);

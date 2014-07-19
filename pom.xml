@@ -50,6 +50,13 @@
 		    <version>2.2.2</version>
 		</dependency>
 		
+		<!-- velocity templating engine -->
+		<dependency>
+		    <groupId>org.apache.velocity</groupId>
+		    <artifactId>velocity</artifactId>
+		    <version>1.7</version>
+		</dependency>		
+		
 		<!-- Roo dependencies -->
 		<dependency>
 			<groupId>org.springframework.roo</groupId>

@@ -1,0 +1,22 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
+    </head>
+    <body>
+        <h1>Courtpicker Abo Reservierung Storniert</h1>
+        <p>
+            Hiermit bestätigen wir Ihnen die Stornierung Ihrer Abo Reserverierung:
+        </p>
+        <p>
+            Anlage: $cpInstanceName <br/>
+            Abo: $subscriptionName <br/>
+            Platz: $courtName <br/>
+            Von-Bis: $fromToDate <br/>
+            Wochentag: $weekDay
+            Von: $fromTime <br/>
+            Bis: $toTime <br/>
+            Preis: $price <br/>
+            Reservierungsnummer: $reservationId
+        </p>
+    </body>
+</html>

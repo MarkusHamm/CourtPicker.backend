@@ -1,0 +1,20 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
+    </head>
+    <body>
+        <h1>Courtpicker Reservierung Storniert</h1>
+        <p>
+            Hiermit bestätigen wir Die Stornierung Ihrer Reservierung:
+        </p>
+        <p>
+            Anlage: $cpInstanceName <br/>
+            Platz: $courtName <br/>
+            Datum: $date <br/>
+            Von: $fromTime <br/>
+            Bis: $toTime <br/>
+            Preis: $price <br/>
+            Reservierungsnummer: $reservationId
+        </p>
+    </body>
+</html>

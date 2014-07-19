@@ -7,11 +7,11 @@ import javax.inject.Inject;
 import org.apache.commons.codec.digest.DigestUtils;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Component;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.exception.UserAlreadyExistsException;
 import com.courtpicker.model.Customer;
+import com.courtpicker.tools.CPMailSender;
 import com.courtpicker.tools.MailEngine;
 
 @Component("userAccountManager")
@@ -20,7 +20,7 @@ public class UserAccountManager {
     @Inject
     private CustomerDAO customerDAO;
     @Inject 
-    private MailEngine mailEngine;
+    private CPMailSender cpMailSender;
 
     public Customer registerUser(String userName, String password, String email, String firstName, String lastName) throws UserAlreadyExistsException {
         Customer customer = new Customer();
@@ -32,12 +32,7 @@ public class UserAccountManager {
         customer.setActivationCode(UUID.randomUUID().toString());
         
         Customer registeredCustomer = createUser(customer);
-        
-        mailEngine.sendMail("matthiasheindl@gmx.at", customer.getEmail(), "", "", "Courtpicker Account Created", 
-                "A courtpicker account was created for you. You can login with user: " + customer.getUserName() + "\n\n" + 
-                "Before login please activate your user via the following link: \n" + 
-                "<a href='http://mycourtpicker.com/app/cp.html#/activateUser?userId=" + registeredCustomer.getId() + 
-                "&activationCode=" + registeredCustomer.getActivationCode() + "'>avtivate user</a>");
+        cpMailSender.sendAccountCreatedMail(registeredCustomer);
         
         return registeredCustomer;
     }
@@ -74,8 +69,8 @@ public class UserAccountManager {
             return e.getExistingUser();
         }
         
-        mailEngine.sendMail("matthiasheindl@gmx.at", "markus.hamm@gmail.com", "", "", "Courtpicker Account Created", 
-                "A courtpicker account was created for you. You can login with user: " + customer.getUserName() + " and password: temp");
+        cpMailSender.sendMinimalAccountCreatedMail(customer);
+
         return customer;
     }
     
@@ -90,13 +85,9 @@ public class UserAccountManager {
         String newPasswordMd5Encoded = DigestUtils.md5Hex(newPassword);
         customer.setPassword(newPasswordMd5Encoded);
         
-        customerDAO.persist(customer);
+        customerDAO.persist(customer);        
+        cpMailSender.sendPasswordForgottenMail(customer, newPassword);
         
-        String emailBody = "Ihr CourtPicker Passwort für den Benutzer " + customer.getUserName() + " " +
-        		"wurde neu generiert. Es lautet nun: " + newPassword + "\n\n" +
-        		"Sie können das Passwort jederzeit im Kundenbereich ändern.";
-        
-        mailEngine.sendMail("matthiasheindl@gmx.at", email, "", "", "CourtPicker: Ihr neues Passwort", emailBody);
         return true;        
     }
     

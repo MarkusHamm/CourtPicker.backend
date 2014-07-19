@@ -1,0 +1,15 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
+    </head>
+    <body>
+        <h1>Courtpicker Account Created</h1>
+        <p>
+            You can login with user name: $user.userName
+        </p>
+        <p>
+            Before login please activate your user via the following link: <br/>
+            <a href="http://mycourtpicker.com/app/cp.html#/activateUser?userId=$user.id&activationCode=$user.activationCode">activate user</a>
+        </p>
+    </body>
+</html>

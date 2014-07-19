@@ -1,0 +1,12 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
+    </head>
+    <body>
+        <h1>Courtpicker Account Created</h1>
+        <p>
+            A courtpicker account was created for you . <br/>
+            You can login with user: $user.userName and password: temp
+        </p>
+    </body>
+</html>
