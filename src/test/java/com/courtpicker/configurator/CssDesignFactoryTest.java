@@ -16,6 +16,7 @@ public class CssDesignFactoryTest {
         webdesign.setControlsColor("BBBBBB");
         webdesign.setLinkColor("#FFFFFF");
         webdesign.setCtSelectBackgroundColor("#FFFFFF");
+        webdesign.setReservableHourColor("#666666");
         
         CssColorMixer cssColorMixer = new CssColorMixer();
         CssDefinitionGenerator cssDefinitionGenerator = new CssDefinitionGenerator();

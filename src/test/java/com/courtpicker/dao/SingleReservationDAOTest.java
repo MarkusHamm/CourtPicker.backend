@@ -127,7 +127,7 @@ public class SingleReservationDAOTest extends BaseDAOTest {
     @Test
     public void persist_updatesIfIdIsNotNull() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.rate where id=-1");        
+        jdbcTemplate.execute("DELETE FROM roger.singlerate where id=-1");        
         jdbcTemplate.execute("INSERT INTO roger.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
                 "reservationdate, reservingcustomerid, displayname, paid, deleted, calculatedprice, price, comment, paymentdate, paymentoptionid) VALUES " +
                 "(-1, -2, 'xx', -2, '2014-01-01 18:00:00', '2014-01-01 20:00:00', '2014-01-01 09:00:00', -2, 'name', " +

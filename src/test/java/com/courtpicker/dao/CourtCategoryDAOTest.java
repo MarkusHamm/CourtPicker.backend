@@ -128,6 +128,7 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         assertEquals(0, rowCount);
     }
     
+    /*
     @Test
     public void delete_existingIdDeltesAsRequested() {
         // set-up
@@ -140,4 +141,5 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         
         assertEquals(0, rowCount);
     }
+    */
 }
