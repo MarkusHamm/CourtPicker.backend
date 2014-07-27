@@ -14,6 +14,7 @@ import javax.inject.Inject;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.digest.DigestUtils;
+import org.apache.commons.lang.NotImplementedException;
 import org.springframework.context.annotation.Scope;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
@@ -36,6 +37,7 @@ import com.courtpicker.dao.SingleReservationDAO;
 import com.courtpicker.dao.SubscriptionDAO;
 import com.courtpicker.dao.SubscriptionRateDAO;
 import com.courtpicker.dao.SubscriptionReservationDAO;
+import com.courtpicker.exception.UserAlreadyExistsException;
 import com.courtpicker.exception.UserNotAuthorizedException;
 import com.courtpicker.model.Authority;
 import com.courtpicker.model.CPInstance;
@@ -101,11 +103,17 @@ public class CourtpickerController implements Serializable {
     private CPMailSender cpMailSender;
     @Inject
     private UserAccountManager userAccountManager;
-    
+
     @RequestMapping(value="/api/registerUser", method=RequestMethod.POST)
-    public @ResponseBody Customer registerUser(@RequestParam String userName, @RequestParam String password, 
+    public @ResponseBody Boolean registerUser(@RequestParam String userName, @RequestParam String password, 
             @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName) throws Exception {
-        return userAccountManager.registerUser(userName, password, email, firstName, lastName);
+        try {
+            userAccountManager.registerUser(userName, password, email, firstName, lastName);
+        }
+        catch (UserAlreadyExistsException e) {
+            return false;
+        }
+        return true;
     }
     
     @RequestMapping(value="/api/activateUser", method=RequestMethod.POST)
