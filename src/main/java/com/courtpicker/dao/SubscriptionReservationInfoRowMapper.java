@@ -6,6 +6,7 @@ import java.util.Date;
 
 import org.springframework.jdbc.core.RowMapper;
 
+import com.courtpicker.uimodel.SingleReservationInfo;
 import com.courtpicker.uimodel.SubscriptionReservationInfo;
 
 public class SubscriptionReservationInfoRowMapper implements RowMapper<SubscriptionReservationInfo> {
@@ -27,10 +28,6 @@ public class SubscriptionReservationInfoRowMapper implements RowMapper<Subscript
         res.setFromTime(rs.getString("fromtime"));
         res.setToTime(rs.getString("totime"));
         res.setReservationDate(new Date(rs.getTimestamp("reservationdate").getTime()));        
-        res.setCustomerId(rs.getInt("customerid"));
-        res.setCustomerFirstName(rs.getString("customerfirstname"));
-        res.setCustomerLastName(rs.getString("customerlastname"));
-        res.setCustomerUserName(rs.getString("customerusername"));
         res.setPrice(rs.getBigDecimal("price"));
         res.setPaid(rs.getBoolean("paid"));
         Date paymentDateTimeStamp = rs.getTimestamp("paymentdate");
@@ -38,7 +35,40 @@ public class SubscriptionReservationInfoRowMapper implements RowMapper<Subscript
         res.setPaymentOptionId(rs.getInt("paymentoptionid"));
         res.setPaymentOptionName(rs.getString("paymentoptionname"));
         res.setComment(rs.getString("comment"));
+        setCustomerInfo(rs, res);
         
         return res;    
+    }
+    
+    private void setCustomerInfo(ResultSet rs, SubscriptionReservationInfo res) throws SQLException {
+        Integer customerId = rs.getInt("customerid");
+        res.setCustomerId(customerId);
+        
+        // Attention: If db-column value is null 0 is returend from rs.getInt(...)
+        if (customerId != 0) {
+            res.setCustomerFirstName(rs.getString("customerfirstname"));
+            res.setCustomerLastName(rs.getString("customerlastname"));
+            res.setCustomerUserName(rs.getString("customerusername"));            
+        }
+        else {
+            res.setCustomerUserName(null);
+            String reservationCustomerName = rs.getString("reservationcustomername");
+            
+            if (reservationCustomerName != null && reservationCustomerName.length() > 0) {
+                String[] splittedReservationCustomerName = reservationCustomerName.split(" ", 2);
+                
+                if (splittedReservationCustomerName.length == 1) {
+                    res.setCustomerLastName(splittedReservationCustomerName[0]);
+                }
+                else {
+                    res.setCustomerFirstName(splittedReservationCustomerName[0]);
+                    res.setCustomerLastName(splittedReservationCustomerName[1]);
+                }
+            }
+            else {
+                res.setCustomerFirstName("");
+                res.setCustomerLastName("");
+            }
+        }
     }
 }

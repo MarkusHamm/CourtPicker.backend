@@ -91,7 +91,7 @@ public class SingleReservationDAO {
             "select " +
             "sr.id, ci.id as cpinstanceid, ci.name as cpinstancename, cc.id as courtcategoryid, cc.name as courtcategoryname, sr.courtid, co.name as courtname, " +
             "sr.fromdate, sr.todate, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
-            "cu.username as customerusername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
+            "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
             "from " +
             "roger.singlereservation sr " +
             "left outer join roger.court co on (sr.courtid=co.id) " +
@@ -111,7 +111,7 @@ public class SingleReservationDAO {
             "select " +
             "sr.id, ci.id as cpinstanceid, ci.name as cpinstancename, cc.id as courtcategoryid, cc.name as courtcategoryname, sr.courtid, co.name as courtname, " +
             "sr.fromdate, sr.todate, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
-            "cu.username as customerusername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
+            "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
             "from " +
             "roger.singlereservation sr " +
             "left outer join roger.court co on (sr.courtid=co.id) " +

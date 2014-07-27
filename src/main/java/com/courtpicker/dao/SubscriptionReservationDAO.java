@@ -96,7 +96,7 @@ public class SubscriptionReservationDAO {
                 "sr.id, ci.id as cpinstanceid, ci.name as cpinstancename, su.id as subscriptionid, su.name as subscriptionname, " +
                 "cc.id as courtcategoryid, cc.name as courtcategoryname, sr.courtid, co.name as courtname, sr.periodstart, sr.periodend, " +
                 "sr.fromtime, sr.totime, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
-                "cu.username as customerusername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
+                "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
                 "from " +
                 "roger.subscriptionreservation sr " +
                 "left outer join roger.subscription su on (sr.subscriptionid=su.id) " +
@@ -118,7 +118,7 @@ public class SubscriptionReservationDAO {
                 "sr.id, ci.id as cpinstanceid, ci.name as cpinstancename, su.id as subscriptionid, su.name as subscriptionname, " +
                 "cc.id as courtcategoryid, cc.name as courtcategoryname, sr.courtid, co.name as courtname, sr.periodstart, sr.periodend, " +
                 "sr.fromtime, sr.totime, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
-                "cu.username as customerusername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
+                "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
                 "from " +
                 "roger.subscriptionreservation sr " +
                 "left outer join roger.subscription su on (sr.subscriptionid=su.id) " +

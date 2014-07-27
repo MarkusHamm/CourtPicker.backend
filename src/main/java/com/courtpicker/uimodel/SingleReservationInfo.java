@@ -160,7 +160,7 @@ public class SingleReservationInfo {
 		this.customerLastName = customerLastName;
 	}
 
-	public BigDecimal getPrice() {
+    public BigDecimal getPrice() {
         return price;
     }
 

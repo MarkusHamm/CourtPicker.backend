@@ -71,33 +71,41 @@ public class CPMailSender {
     public void sendSingleReservationDoneMail(SingleReservation reservation) {
         Map<String, Object> model = getSingleReservationTemplateModel(reservation);
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
-
-        String body = applyModelToTemplate("singleReservationDone.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Reservierung", body);
+        
+        if (reservationUser != null) {
+            String body = applyModelToTemplate("singleReservationDone.vm", model);
+            mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Reservierung", body);
+        }
     }
     
     public void sendSingleReservationCancelMail(SingleReservation reservation) {
         Map<String, Object> model = getSingleReservationTemplateModel(reservation);
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
 
-        String body = applyModelToTemplate("singleReservationCancelled.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Stornierung", body);
+        if (reservationUser != null) {
+            String body = applyModelToTemplate("singleReservationCancelled.vm", model);
+            mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Stornierung", body);
+        }
     }
 
     public void sendSubscriptionReservationDoneMail(SubscriptionReservation reservation) throws ParseException {
         Map<String, Object> model = getSubscriptionReservationTemplateModel(reservation);        
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
         
-        String body = applyModelToTemplate("subscriptionReservationDone.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Reservierung", body);
+        if (reservationUser != null) {
+            String body = applyModelToTemplate("subscriptionReservationDone.vm", model);
+            mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Reservierung", body);
+        }
     }
 
     public void sendSubscriptionReservationCancelMail(SubscriptionReservation reservation) throws ParseException {
         Map<String, Object> model = getSubscriptionReservationTemplateModel(reservation);        
         Customer reservationUser = customerDAO.get(reservation.getCustomerId());
-        
-        String body = applyModelToTemplate("subscriptionReservationCancelled.vm", model);
-        mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Stornierung", body);
+
+        if (reservationUser != null) {
+            String body = applyModelToTemplate("subscriptionReservationCancelled.vm", model);
+            mailEngine.sendHtmlMail(reservationUser.getEmail(), null, null, "CourtPicker Abo Stornierung", body);
+        }
     }
     
     private Map<String, Object> getSubscriptionReservationTemplateModel(SubscriptionReservation reservation)
