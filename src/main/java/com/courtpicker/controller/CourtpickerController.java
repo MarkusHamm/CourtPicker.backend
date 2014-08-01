@@ -341,7 +341,7 @@ public class CourtpickerController implements Serializable {
 
     @RequestMapping(value="/api/singleReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean singleReservation(@RequestParam Integer customerId, @RequestParam Integer courtId, 
-            @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
+            @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
     	authorizationChecker.checkUserIsLoggedInUser(customerId);
     	
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -362,7 +362,7 @@ public class CourtpickerController implements Serializable {
         res.setToDate(toDate);
         res.setReservationDate(reservationDate);
         res.setReservingCustomerId(customerId);
-        res.setDisplayName(displayName);
+        res.setDisplayName(getDisplayNameForCustomer(customerId));
         res.setPaid(false);
         res.setDeleted(false);
         res.setCalculatedPrice(price);
@@ -378,8 +378,7 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/singleReservationAdmin", method=RequestMethod.POST)
     public @ResponseBody Boolean singleReservationAdmin(@RequestParam String customerInputType, @RequestParam(required=false) Integer customerId, @RequestParam String customerName, 
             @RequestParam Boolean createUserAccount, @RequestParam String createUserAccountEmail, @RequestParam Integer reservingCustomerId, @RequestParam Integer courtId, 
-            @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice,
-            @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
+            @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam Boolean overridePrice, @RequestParam BigDecimal customPrice, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
         authorizationChecker.checkLoggedInUserAllowedToModifyCourt(courtId, null);
     	
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
@@ -401,6 +400,14 @@ public class CourtpickerController implements Serializable {
         }
         else {
             dbCustomerId = customerId;
+        }
+        
+        String displayName = "";
+        if (dbCustomerId != null) {
+            displayName = getDisplayNameForCustomer(dbCustomerId);
+        }
+        else {
+            displayName = dbCustomerName;
         }
         
         BigDecimal calculatedPrice = calculateSingleReservationPrice(customerId, courtId, fromDateTime, toDateTime);
@@ -433,7 +440,7 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/subscriptionReservation", method=RequestMethod.POST)
     public @ResponseBody Boolean subscriptionReservation(@RequestParam Integer subscriptionId, @RequestParam Integer customerId, 
             @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, 
-            @RequestParam Integer bookingUnits, @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {  
+            @RequestParam Integer bookingUnits, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {  
         authorizationChecker.checkUserIsLoggedInUser(customerId);
     	
         Subscription subscription = subscriptionDAO.get(subscriptionId);
@@ -461,7 +468,7 @@ public class CourtpickerController implements Serializable {
         res.setToTime(reservationEndTime);
         res.setReservationDate(new Date());
         res.setReservingCustomerId(customerId);
-        res.setDisplayName(displayName);
+        res.setDisplayName(getDisplayNameForCustomer(customerId));
         res.setPaid(false);
         res.setDeleted(false);
         res.setPrice(calcReservationPrice);
@@ -481,7 +488,7 @@ public class CourtpickerController implements Serializable {
     public @ResponseBody Boolean subscriptionReservationAdmin(@RequestParam String customerInputType, @RequestParam(required=false) Integer customerId, @RequestParam String customerName, 
             @RequestParam Boolean createUserAccount, @RequestParam String createUserAccountEmail, @RequestParam Integer subscriptionId, @RequestParam Integer reservingCustomerId, 
             @RequestParam Integer courtId, @RequestParam String weekDay, @RequestParam String startTime, @RequestParam Integer bookingUnits, @RequestParam Boolean overridePrice, 
-            @RequestParam BigDecimal customPrice, @RequestParam String displayName, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
+            @RequestParam BigDecimal customPrice, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
         authorizationChecker.checkLoggedInUserAllowedToModifyCourt(courtId, null);
     	
         Subscription subscription = subscriptionDAO.get(subscriptionId);
@@ -503,6 +510,14 @@ public class CourtpickerController implements Serializable {
         }
         else {
             dbCustomerId = customerId;
+        }
+        
+        String displayName = "";
+        if (dbCustomerId != null) {
+            displayName = getDisplayNameForCustomer(dbCustomerId);
+        }
+        else {
+            displayName = dbCustomerName;
         }
 
         BigDecimal calcReservationPrice = calculateSubscriptionReservationPrice(customerId, subscriptionId, reservationStartTime, reservationEndTime, calendarWeekDay);
@@ -623,6 +638,12 @@ public class CourtpickerController implements Serializable {
         }
         
         subscriptionReservationDAO.persist(reservation);
+    }
+    
+    private String getDisplayNameForCustomer(Integer customerId) {
+        Customer customer = customerDAO.get(customerId);
+        String displayName = customer.getFirstName() + " " + customer.getLastName();
+        return displayName;
     }
     
     private BigDecimal calculateSingleReservationPrice(Integer customerId, Integer courtId, String fromDateTime, String toDateTime) throws ParseException {
