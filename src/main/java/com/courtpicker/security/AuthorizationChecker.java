@@ -60,7 +60,7 @@ public class AuthorizationChecker {
     public void checkUserIsLoggedInUser(Integer userId) throws UserNotAuthorizedException {
         checkUserLoggedIn();
         checkParameterNotNull(userId);
-        if (userId != userInfo.getLoggedInUser().getId()) {
+        if (!userId.equals(userInfo.getLoggedInUser().getId())) {
             throw new UserNotAuthorizedException();
         }
     }
