@@ -94,8 +94,8 @@ public class CssDesignFactory {
         buttonHoverCssDef.add("background-color", "#" + baseColor);
         buttonHoverCssDef.add("background-image", "none");
         buttonHoverCssDef.add("color", "#" + webdesign.getControlsTextColor());
-        cssdesign.put(".button:hover", buttonHoverCssDef);
-        cssdesign.put(".buttonThinRound:hover", buttonHoverCssDef);       
+        cssdesign.put(".button:hover:enabled", buttonHoverCssDef);
+        cssdesign.put(".buttonThinRound:hover:enabled", buttonHoverCssDef);       
         
         CssDefinition lightOptionDefaultCssDef = new CssDefinition();
         lightOptionDefaultCssDef.add("background-color", "#" + contrastColor);
@@ -106,7 +106,7 @@ public class CssDesignFactory {
         lightOptionActiveCssDef.add("background-color", "#" + baseColor);
         lightOptionActiveCssDef.add("color", "#" + webdesign.getControlsTextColor());
         cssdesign.put(".buttonLightSelected", lightOptionActiveCssDef);
-        cssdesign.put(".buttonLight:hover", lightOptionActiveCssDef);
+        cssdesign.put(".buttonLight:hover:enabled", lightOptionActiveCssDef);
         
         CssDefinition inputBorderCssDef = new CssDefinition();
         inputBorderCssDef.add("border", "1px solid #" + baseColor);
