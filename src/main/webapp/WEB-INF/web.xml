@@ -10,20 +10,19 @@
   <context-param>
     <param-name>contextConfigLocation</param-name>
     <param-value>
-			/WEB-INF/tck-roger-servlet.xml
-			/WEB-INF/security.xml
+			/WEB-INF/courtpicker-servlet.xml
 	</param-value>
   </context-param>
   <listener>
     <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
   </listener>
   <servlet>
-    <servlet-name>tck-roger</servlet-name>
+    <servlet-name>courtpicker</servlet-name>
     <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
     <load-on-startup>1</load-on-startup>
   </servlet>
   <servlet-mapping id="ServletMapping_1294160712749">
-    <servlet-name>tck-roger</servlet-name>
+    <servlet-name>courtpicker</servlet-name>
     <url-pattern>*.htm</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
@@ -47,23 +46,11 @@
     <url-pattern>*.jpg</url-pattern>
   </servlet-mapping>
   <servlet-mapping>
-    <servlet-name>tck-roger</servlet-name>
+    <servlet-name>courtpicker</servlet-name>
     <url-pattern>/</url-pattern>
   </servlet-mapping>
-  <filter>
-    <filter-name>Roger</filter-name>
-    <filter-class>org.acegisecurity.util.FilterToBeanProxy</filter-class>
-    <init-param>
-      <param-name>targetClass</param-name>
-      <param-value>org.acegisecurity.util.FilterChainProxy</param-value>
-    </init-param>
-  </filter>
-  <filter-mapping>
-    <filter-name>Roger</filter-name>
-    <url-pattern>/*</url-pattern>
-  </filter-mapping>
   
-  	<welcome-file-list>
-  		<welcome-file>index.htm</welcome-file>
-	</welcome-file-list>
+  <welcome-file-list>
+  	<welcome-file>index.htm</welcome-file>
+  </welcome-file-list>
 </web-app>

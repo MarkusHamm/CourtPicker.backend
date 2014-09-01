@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xmlns:context="http://www.springframework.org/schema/context"
+	xmlns:mvc="http://www.springframework.org/schema/mvc"
+	xmlns:task="http://www.springframework.org/schema/task" 
+	xsi:schemaLocation="http://www.springframework.org/schema/beans
+		http://www.springframework.org/schema/beans/spring-beans-3.0.xsd
+        http://www.springframework.org/schema/context
+        http://www.springframework.org/schema/context/spring-context-3.0.xsd
+        http://www.springframework.org/schema/mvc
+        http://www.springframework.org/schema/mvc/spring-mvc-3.0.xsd
+        http://www.springframework.org/schema/aop         
+        http://www.springframework.org/schema/aop/spring-aop-3.0.xsd
+        http://www.springframework.org/schema/task 
+        http://www.springframework.org/schema/task/spring-task-3.0.xsd">
+
+<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource">
+	<property name="driverClassName" value="org.postgresql.Driver" />
+	<property name="url" value="jdbc:postgresql://localhost:5432/roger" />
+	<property name="username" value="roger" />
+	<property name="password" value="avarel1" />
+</bean>
+
+<bean id="jdbcTemplate" class="org.springframework.jdbc.core.JdbcTemplate">
+	<property name="dataSource" ref="dataSource" />
+</bean>
+  
+<!-- allow annotation based configuration -->
+<context:annotation-config/>
+<context:component-scan base-package="com.courtpicker"/>
+
+<task:annotation-driven/>
+
+<bean class="org.springframework.web.servlet.mvc.annotation.DefaultAnnotationHandlerMapping">
+</bean>
+<bean class="org.springframework.web.servlet.mvc.annotation.AnnotationMethodHandlerAdapter">
+    <property name = "messageConverters">
+        <list>
+        	<ref bean="stringHttpMessageConverter"/>
+            <bean class="org.springframework.http.converter.json.MappingJacksonHttpMessageConverter">
+                <property name="objectMapper" ref="jsonObjectMapper"/>
+            </bean>
+        </list>
+    </property>
+</bean>
+
+<bean id="jsonObjectMapper" class="org.codehaus.jackson.map.ObjectMapper"/>
+
+<bean class="org.springframework.web.servlet.mvc.SimpleControllerHandlerAdapter"/>
+<bean id="stringHttpMessageConverter" 
+       class="org.springframework.http.converter.StringHttpMessageConverter">
+       <property name="supportedMediaTypes" value="text/plain;charset=UTF-8"/>
+</bean>
+	
+<!-- spring multipart fileupload support -->
+<bean id="multipartResolver"
+	  class="org.springframework.web.multipart.commons.CommonsMultipartResolver">
+	  <property name="maxUploadSize" value="5000000"/>
+</bean>
+
+<!-- an HTTP Session-scoped bean exposed as a proxy -->
+<bean id="userInfo" class="com.courtpicker.security.UserInfo" scope="session">
+      <!-- this next element effects the proxying of the surrounding bean -->
+      <aop:scoped-proxy/>
+</bean>
+
+<bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
+	<property name="host" value="mail.gmx.net"/>
+	<property name="username" value="markus.hamm@gmx.at" />
+	<property name="password" value="grf7v6d8" />
+	<property name="port" value="465" />
+	<property name="protocol" value="smtps" />
+	<property name="defaultEncoding" value="UTF-8"/> 
+	
+	<property name="javaMailProperties">
+		<props> 
+			<prop key="mail.smtp.starttls.enable">true</prop>
+			<prop key ="mail.smtps.auth">true</prop>
+		</props>
+	</property>
+</bean>
+
+<bean id="velocityEngine" class="org.springframework.ui.velocity.VelocityEngineFactoryBean">
+    <property name="resourceLoaderPath" value="/WEB-INF/velocity/"/>
+</bean>
+
+<!-- the following enables multi-language support -->
+<mvc:interceptors>
+    <bean class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+        <property name="paramName" value="lang" />
+    </bean>
+</mvc:interceptors>
+
+<bean id="messageSource"
+    class="org.springframework.context.support.ReloadableResourceBundleMessageSource">
+    <property name="basename" value="WEB-INF/classes/messages" />
+</bean>
+ 
+<bean id="localeChangeInterceptor"
+    class="org.springframework.web.servlet.i18n.LocaleChangeInterceptor">
+    <property name="paramName" value="lang"></property>
+</bean>
+ 
+<bean id="localeResolver"
+    class="org.springframework.web.servlet.i18n.CookieLocaleResolver">
+    <property name="defaultLocale" value="de"/>
+</bean>
+
+<!-- HOMEPAGE -->
+<bean id="viewResolver" class="org.springframework.web.servlet.view.UrlBasedViewResolver">
+  <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>
+  <property name="prefix" value="/WEB-INF/views/"/>
+  <property name="suffix" value=".jsp"/>
+</bean>
+
+<mvc:view-controller path="/index.htm" view-name="index"></mvc:view-controller>
+<mvc:view-controller path="/benefits.htm" view-name="benefits"></mvc:view-controller>
+<mvc:view-controller path="/features.htm" view-name="features"></mvc:view-controller>
+<mvc:view-controller path="/pricelist.htm" view-name="pricelist"></mvc:view-controller>
+<mvc:view-controller path="/courtsearch.htm" view-name="courtsearch"></mvc:view-controller>
+<mvc:view-controller path="/references.htm" view-name="references"></mvc:view-controller>
+<mvc:view-controller path="/whycourtpicker.htm" view-name="whycourtpicker"></mvc:view-controller>
+<mvc:view-controller path="/ueberuns.htm" view-name="ueberuns"></mvc:view-controller>
+<mvc:view-controller path="/contact.htm" view-name="contact"></mvc:view-controller>
+<mvc:view-controller path="/agb.htm" view-name="agb"></mvc:view-controller>
+<mvc:view-controller path="/datasecuritystatement.htm" view-name="datasecuritystatement"></mvc:view-controller>
+<!-- /HOMEPAGE -->
+
+</beans>

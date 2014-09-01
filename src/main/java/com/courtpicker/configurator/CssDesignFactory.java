@@ -36,7 +36,7 @@ public class CssDesignFactory {
             cssDefBody.add("background", "none repeat scroll 0 0 #" + webdesign.getBackgroundColor());
         }
         else {
-            cssDefBody.add("background", "url(\"/tck-roger/resources/css/images/texturedBackground.jpg\") repeat scroll 0 -20px #FFFFFF");
+            cssDefBody.add("background", "url(\"/courtpicker/resources/css/images/texturedBackground.jpg\") repeat scroll 0 -20px #FFFFFF");
         }        
         cssdesign.put("body", cssDefBody);
         
