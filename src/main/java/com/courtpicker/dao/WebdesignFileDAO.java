@@ -25,7 +25,7 @@ public class WebdesignFileDAO {
 
     public WebdesignFile getWebdesignFile(int webdesignId, String type) {
         WebdesignFile webdesignFile = null;
-        String query = "select * from roger.webdesignfile where webdesignid=? and type=?";
+        String query = "select * from cp.webdesignfile where webdesignid=? and type=?";
         
         try {
             webdesignFile = jdbcTemplate.queryForObject(query, new Object[] { webdesignId, type }, rowMapper);
@@ -40,15 +40,15 @@ public class WebdesignFileDAO {
 
         // do an insert if id is NOT set
         if (webdesignFile.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.webdesignfile_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.webdesignfile_id_seq')");
             webdesignFile.setId(newRecordId);
-            query = "insert into roger.webdesignfile " +
+            query = "insert into cp.webdesignfile " +
                     "(webdesignid, type, content, id) " +
                     "values (?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.webdesignfile set webdesignid=?, type=?, content=? where id=?";
+            query = "update cp.webdesignfile set webdesignid=?, type=?, content=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { webdesignFile.getWebdesignId(), webdesignFile.getType(),

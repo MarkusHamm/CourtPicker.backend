@@ -27,26 +27,26 @@ public class CustomerDAO {
     }
 
     public List<Customer> getAll() {
-        String query = "select * from roger.customer where enabled=true order by lastname asc";
+        String query = "select * from cp.customer where enabled=true order by lastname asc";
         List<Customer> matches = jdbcTemplate.query(query, new Object[] {}, rowMapper);
         return matches;
     }
     
     public List<CustomerExtract> getAllExctract() {
-        String query = "select * from roger.customer where enabled=true order by lastname asc";
+        String query = "select * from cp.customer where enabled=true order by lastname asc";
         List<CustomerExtract> matches = jdbcTemplate.query(query, new Object[] {}, extractRowMapper);
         return matches;
     }
     
     public List<CustomerExtract> getAdminUserExctract(Integer cpInstanceId) {
-        String query = "select * from roger.customer where id in " +
-        		"(select userid from roger.authority where cpinstanceid=? and authority='ADMIN')";
+        String query = "select * from cp.customer where id in " +
+        		"(select userid from cp.authority where cpinstanceid=? and authority='ADMIN')";
         List<CustomerExtract> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, extractRowMapper);
         return matches;
     }    
     
     public Customer get(Integer id) {
-        String query = "select * from roger.customer where id=?";
+        String query = "select * from cp.customer where id=?";
         List<Customer> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -57,7 +57,7 @@ public class CustomerDAO {
     }
     
     public Customer getByUserCredentials(String userName, String md5EncodedPassword) {
-        String query = "select * from roger.customer where lower(username)=? and password=? and enabled=?";
+        String query = "select * from cp.customer where lower(username)=? and password=? and enabled=?";
         List<Customer> matches = jdbcTemplate.query(query, new Object[] { userName.toLowerCase(), md5EncodedPassword, true }, rowMapper);
         
         if (matches.size() == 0) {
@@ -68,7 +68,7 @@ public class CustomerDAO {
     }
 
     public Customer getByNameAndEmail(String email, String firstName, String lastName) {
-        String query = "select * from roger.customer where lower(email)=? and lower(firstname)=? and lower(lastname)=?";
+        String query = "select * from cp.customer where lower(email)=? and lower(firstname)=? and lower(lastname)=?";
         List<Customer> matches = jdbcTemplate.query(query, new Object[] { email.toLowerCase(), firstName.toLowerCase(), lastName.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
@@ -79,7 +79,7 @@ public class CustomerDAO {
     }
     
     public Customer getByEmail(String email) {
-        String query = "select * from roger.customer where lower(email)=?";
+        String query = "select * from cp.customer where lower(email)=?";
         List<Customer> matches = jdbcTemplate.query(query, new Object[] { email.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
@@ -90,7 +90,7 @@ public class CustomerDAO {
     }
     
     public Customer getByUserName(String userName) {
-        String query = "select * from roger.customer where lower(username)=?";
+        String query = "select * from cp.customer where lower(username)=?";
         List<Customer> matches = jdbcTemplate.query(query, new Object[] { userName.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
@@ -105,15 +105,15 @@ public class CustomerDAO {
 
         // do an insert if id is NOT set
         if (customer.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.customer_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.customer_id_seq')");
             customer.setId(newRecordId);
-            query = "insert into roger.customer (username, password, enabled, firstname, lastname, " +
+            query = "insert into cp.customer (username, password, enabled, firstname, lastname, " +
             		"email, activationcode, street, zipcode, city, country, birthday, handynumber, phonenumber, id) " +
             		"values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.customer set username=?, password=?, enabled=?, firstname=?, lastname=?, email=?, " +
+            query = "update cp.customer set username=?, password=?, enabled=?, firstname=?, lastname=?, email=?, " +
             		"activationcode=?, street=?, zipcode=?, city=?, country=?, birthday=?, handynumber=?, phonenumber=? " +
             		"where id=?";
         }
@@ -127,7 +127,7 @@ public class CustomerDAO {
     }
    
     public void delete(Integer id) {
-        String query = "delete from roger.customer where id=?";
+        String query = "delete from cp.customer where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 

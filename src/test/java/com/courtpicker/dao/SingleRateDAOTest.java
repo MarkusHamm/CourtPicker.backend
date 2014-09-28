@@ -27,12 +27,12 @@ public class SingleRateDAOTest extends BaseDAOTest {
     @Test
     public void getRates_returnsFilledListInCorrectOrder_forAppropriateCourtCategory() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where courtcategoryid=-1");        
-        jdbcTemplate.execute("INSERT INTO roger.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where courtcategoryid=-1");        
+        jdbcTemplate.execute("INSERT INTO cp.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
         		             "cmon, ctue, cwed, cthu, cfri, csat, csun, cusergroupids, price, active, ordernr) " +
         		             "values (default, -1, 'name1', true, true, true, true, '01.01.', '31.12.', '08:00', '13:00', true, true, true, true, true, true, true, " +
         		             "'1,2', 11.99, true, 2)");
-        jdbcTemplate.execute("INSERT INTO roger.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
+        jdbcTemplate.execute("INSERT INTO cp.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
                              "cmon, ctue, cwed, cthu, cfri, csat, csun, cusergroupids, price, active, ordernr) " +
                              "values (default, -1, 'name2', false, false, false, false, '', '', '', '', false, false, false, false, false, false, false, " +
                              "'', 11.99, true, 1)");
@@ -88,13 +88,13 @@ public class SingleRateDAOTest extends BaseDAOTest {
         assertEquals(new Integer(2), rate2.getOrderNr());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where courtcategoryid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where courtcategoryid=-1");
     }
 
     @Test
     public void getRates_returnsEmptyList_forNotExistingCourtCategory() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where courtcategoryid=-1");        
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where courtcategoryid=-1");        
 
         // execute + assert
         List<SingleRate> rates = dao.getRates(-1);
@@ -104,7 +104,7 @@ public class SingleRateDAOTest extends BaseDAOTest {
     @Test
     public void persist_insertsIfIdIsNull() throws ParseException {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where courtcategoryid=-1");        
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where courtcategoryid=-1");        
 
         // execute + assert
         SingleRate rate = new SingleRate();
@@ -131,8 +131,8 @@ public class SingleRateDAOTest extends BaseDAOTest {
         rate.setcUserGroupIds(new ArrayList<Integer>(Arrays.asList(2,3)));
         rate = dao.persist(rate);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.singlerate where courtcategoryid=-1");
-        SingleRate dbRate = jdbcTemplate.query("SELECT * from roger.singlerate where courtcategoryid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.singlerate where courtcategoryid=-1");
+        SingleRate dbRate = jdbcTemplate.query("SELECT * from cp.singlerate where courtcategoryid=-1",
                 new SingleRateRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -160,14 +160,14 @@ public class SingleRateDAOTest extends BaseDAOTest {
         assertEquals(rate.getcUserGroupIds(), dbRate.getcUserGroupIds());        
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where courtcategoryid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where courtcategoryid=-1");
     }
     
     @Test
     public void persist_updatesIfIdIsNotNull() throws ParseException {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where id=-1");        
-        jdbcTemplate.execute("INSERT INTO roger.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where id=-1");        
+        jdbcTemplate.execute("INSERT INTO cp.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
                 "cmon, ctue, cwed, cthu, cfri, csat, csun, cusergroupids, price, active, ordernr) " +
                 "values (-1, -1, 'name1', true, true, true, true, '01.01.', '31.12.', '08:00', '13:00', true, true, true, true, true, true, true, " +
                 "'1,2', 11.99, true, 2)");        
@@ -198,8 +198,8 @@ public class SingleRateDAOTest extends BaseDAOTest {
         rate.setcUserGroupIds(new ArrayList<Integer>(Arrays.asList(2,3)));
         rate = dao.persist(rate);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.singlerate where id=-1");
-        SingleRate dbRate = jdbcTemplate.query("SELECT * from roger.singlerate where id=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.singlerate where id=-1");
+        SingleRate dbRate = jdbcTemplate.query("SELECT * from cp.singlerate where id=-1",
                 new SingleRateRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -227,17 +227,17 @@ public class SingleRateDAOTest extends BaseDAOTest {
         assertEquals(rate.getcUserGroupIds(), dbRate.getcUserGroupIds());        
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where id=-1");
     }
     
     @Test
     public void delete_nonExistingIdThrowsNoException() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where id=-1");
         
         // execute + assert
         dao.delete(-1);
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.singlerate where id=-1");
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.singlerate where id=-1");
         
         assertEquals(0, rowCount);
     }
@@ -245,15 +245,15 @@ public class SingleRateDAOTest extends BaseDAOTest {
     @Test
     public void delete_existingIdDeltesAsRequested() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.singlerate (id, courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, cdatefrom, cdateto, ctimefrom, ctimeto, " +
                 "cmon, ctue, cwed, cthu, cfri, csat, csun, cusergroupids, price, active, ordernr) " +
                 "values (-1, -1, 'name1', true, true, true, true, '01.01.', '31.12.', '08:00', '13:00', true, true, true, true, true, true, true, " +
                 "'1,2', 11.99, true, 2)");        
         
         // execute + assert
         dao.delete(-1);
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.singlerate where id=-1");
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.singlerate where id=-1");
         
         assertEquals(0, rowCount);
     }

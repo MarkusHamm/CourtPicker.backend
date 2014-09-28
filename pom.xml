@@ -349,9 +349,9 @@
 			    <artifactId>db-migration-maven-plugin</artifactId>
 			    <version>0.9.9-m5</version>
 			    <configuration>
-			      <url>jdbc:postgresql://localhost:5432/roger</url>
-			      <username>roger</username>
-			      <password>avarel1</password>
+			      <url>jdbc:postgresql://localhost:5432/courtpicker</url>
+			      <username>cpuser</username>
+			      <password>DidPfdcp-db</password>
 			      <versionTable>public."schema_version"</versionTable>
 			    </configuration>
 			    <dependencies>

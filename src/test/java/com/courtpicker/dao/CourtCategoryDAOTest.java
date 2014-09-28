@@ -19,10 +19,10 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
     @Test
     public void getAllCourtCategories_retrievedInCorrectOrder() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where cpinstanceid=-1");
-        jdbcTemplate.execute("INSERT INTO roger.courtcategory (id, cpinstanceid, ordernr, bookablefromtime, " +
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where cpinstanceid=-1");
+        jdbcTemplate.execute("INSERT INTO cp.courtcategory (id, cpinstanceid, ordernr, bookablefromtime, " +
         		"bookabletotime, bookingunit, name) values (default, -1, 2, '06:00', '23:00', 30, 'tennis')");
-        jdbcTemplate.execute("INSERT INTO roger.courtcategory (id, cpinstanceid, ordernr, bookablefromtime, " +
+        jdbcTemplate.execute("INSERT INTO cp.courtcategory (id, cpinstanceid, ordernr, bookablefromtime, " +
                 "bookabletotime, bookingunit, name) values (default, -1, 1, '05:00', '24:00', 60, 'fußball')");
 
         // execute + assert
@@ -46,13 +46,13 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         assertEquals(cat2.getBookingUnit(), Integer.valueOf(30));
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where cpinstanceid=-1");
     }
 
     @Test
     public void persist_courtCategoryWithoutIdIsInserted() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where cpinstanceid=-1");
 
         // execute + assert
         CourtCategory cc = new CourtCategory();
@@ -64,8 +64,8 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         cc.setBookingUnit(30);
         cc = dao.persist(cc);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.courtcategory where cpinstanceid=-1");
-        CourtCategory dbCC = jdbcTemplate.query("SELECT * from courtcategory where cpinstanceid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.courtcategory where cpinstanceid=-1");
+        CourtCategory dbCC = jdbcTemplate.query("SELECT * from cp.courtcategory where cpinstanceid=-1",
                 new CourtCategoryRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -78,14 +78,14 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         assertEquals(cc.getBookingUnit(), dbCC.getBookingUnit());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where cpinstanceid=-1");
     }
 
     @Test
     public void persist_courtCategoryWithIdIsUpdated() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.courtcategory (id, cpinstanceid, ordernr, bookablefromtime, " +
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.courtcategory (id, cpinstanceid, ordernr, bookablefromtime, " +
                 "bookabletotime, bookingunit, name) values (-1, -1, 2, '10:00', '12:00', 30, 'tennis')");
 
         // execute + assert
@@ -99,8 +99,8 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         cc.setBookingUnit(60);
         cc = dao.persist(cc);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.courtcategory where id=-1");
-        CourtCategory dbCC = jdbcTemplate.query("SELECT * from courtcategory where id=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.courtcategory where id=-1");
+        CourtCategory dbCC = jdbcTemplate.query("SELECT * from cp.courtcategory where id=-1",
                 new CourtCategoryRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -113,17 +113,17 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
         assertEquals(cc.getBookingUnit(), dbCC.getBookingUnit());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where id=-1");
     }
     
     @Test
     public void delete_nonExistingIdThrowsNoException() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where id=-1");
         
         // execute + assert
         dao.delete(-1);
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.courtcategory where id=-1");
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.courtcategory where id=-1");
         
         assertEquals(0, rowCount);
     }
@@ -132,12 +132,12 @@ public class CourtCategoryDAOTest extends BaseDAOTest {
     @Test
     public void delete_existingIdDeltesAsRequested() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.courtcategory (id, cpinstanceid, ordernr, name) values (-1, -1, 2, 'tennis')");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.courtcategory (id, cpinstanceid, ordernr, name) values (-1, -1, 2, 'tennis')");
         
         // execute + assert
         dao.delete(-1);
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.courtcategory where id=-1");
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.courtcategory where id=-1");
         
         assertEquals(0, rowCount);
     }

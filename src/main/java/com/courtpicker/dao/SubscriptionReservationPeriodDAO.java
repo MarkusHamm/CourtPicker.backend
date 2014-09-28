@@ -24,7 +24,7 @@ public class SubscriptionReservationPeriodDAO {
     }
 
     public List<SubscriptionReservationPeriod> getReservationsForCourt(Integer courtId, Date fromDate, Date toDate) {
-        String query = "select * from roger.subscriptionperiodreservation where courtid=? "
+        String query = "select * from cp.subscriptionperiodreservation where courtid=? "
                 + "and periodend>=? and periodstart<=?";
         List<SubscriptionReservationPeriod> matches = jdbcTemplate.query(query, new Object[] { courtId, fromDate, toDate },
                 rowMapper);
@@ -32,7 +32,7 @@ public class SubscriptionReservationPeriodDAO {
     }
     
     public List<SubscriptionReservationPeriod> getReservationsForCourtCategory(Integer courtCategoryId, Date fromDate, Date toDate) {
-        String query = "select * from roger.subscriptionperiodreservation r, roger.court c " +
+        String query = "select * from cp.subscriptionperiodreservation r, cp.court c " +
                 "where r.courtid = c.id and c.courtcategoryid=? and r.periodend>=? and r.periodstart<=?";
         List<SubscriptionReservationPeriod> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId, fromDate, toDate },
                 rowMapper);

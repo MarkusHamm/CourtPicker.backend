@@ -27,24 +27,24 @@ public class AuthorityDAO {
     }
 
     public void authorizeUser(Integer cpInstanceId, Integer userId, String authority) {
-        int newRecordId = jdbcTemplate.queryForInt("select nextval('authority_id_seq')");
-        String insert = "insert into roger.authority (id, userid, cpinstanceid, authority) values (?, ?, ?, ?)";
+        int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.authority_id_seq')");
+        String insert = "insert into cp.authority (id, userid, cpinstanceid, authority) values (?, ?, ?, ?)";
         jdbcTemplate.update(insert, new Object[] { newRecordId, userId, cpInstanceId, authority });
     }
     
     public void deAuthorizeUser(Integer cpInstanceId, Integer userId, String authority) {
-        String delete = "delete from roger.authority where userid=? and cpinstanceid=? and authority=?";
+        String delete = "delete from cp.authority where userid=? and cpinstanceid=? and authority=?";
         jdbcTemplate.update(delete, new Object[] { userId, cpInstanceId, authority });
     }    
     
     public List<Authority> getCpInstanceAuthorities(Integer cpInstanceId) {
-        String query = "select * from roger.authority where cpinstanceid=?";
+        String query = "select * from cp.authority where cpinstanceid=?";
         List<Authority> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, rowMapper);
         return matches;
     }
     
     public List<String> getAuthorities(Integer userId, Integer cpInstanceId) {
-        String query = "select * from roger.authority where userid=? and cpinstanceid=?";
+        String query = "select * from cp.authority where userid=? and cpinstanceid=?";
         List<Authority> matches = jdbcTemplate.query(query, new Object[] { userId, cpInstanceId }, rowMapper);
         
         List<String> authorities = new ArrayList<String>();
@@ -56,7 +56,7 @@ public class AuthorityDAO {
     }
         
     public Map<Integer, List<String>> getAllAuthorities(Integer userId) {
-        String query = "select * from roger.authority where userid=?";
+        String query = "select * from cp.authority where userid=?";
         List<Authority> matches = jdbcTemplate.query(query, new Object[] { userId }, rowMapper);
         
         Map<Integer, List<String>> result = new HashMap<Integer, List<String>>();

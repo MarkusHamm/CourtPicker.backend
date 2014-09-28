@@ -26,7 +26,7 @@ public class SingleRateDAO {
     }
     
     public SingleRate get(Integer id) {
-        String query = "select * from roger.singlerate where id=?";
+        String query = "select * from cp.singlerate where id=?";
         List<SingleRate> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -37,7 +37,7 @@ public class SingleRateDAO {
     }
 
     public List<SingleRate> getRates(Integer courtCategoryId) {
-        String query = "select * from roger.singlerate where courtcategoryid=? order by ordernr";
+        String query = "select * from cp.singlerate where courtcategoryid=? order by ordernr";
         List<SingleRate> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
@@ -47,15 +47,15 @@ public class SingleRateDAO {
 
         // do an insert if id is NOT set
         if (rate.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.singlerate_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.singlerate_id_seq')");
             rate.setId(newRecordId);
-            query = "insert into roger.singlerate (courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, " +
+            query = "insert into cp.singlerate (courtcategoryid, name, constraindate, constraintime, constrainweekday, constrainusergroup, " +
             		"cdatefrom, cdateto, ctimefrom, ctimeto, cmon, ctue, cwed, cthu, cfri, csat, csun, " +
             		"cusergroupids, price, active, ordernr, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.singlerate set courtcategoryid=?, name=?, constraindate=?, constraintime=?, constrainweekday=?, constrainusergroup=?, " +
+            query = "update cp.singlerate set courtcategoryid=?, name=?, constraindate=?, constraintime=?, constrainweekday=?, constrainusergroup=?, " +
             		"cdatefrom=?, cdateto=?, ctimefrom=?, ctimeto=?, cmon=?, ctue=?, cwed=?, cthu=?, cfri=?, csat=?, csun=?, " +
             		"cusergroupids=?, price=?, active=?, ordernr=? where id=?";
         }
@@ -69,7 +69,7 @@ public class SingleRateDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.singlerate where id=?";
+        String query = "delete from cp.singlerate where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 

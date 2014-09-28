@@ -15,7 +15,7 @@ public class CssFileDAO {
 
     public String getContent(int cpInstanceId) {
         String content = null;
-        String query = "select content from roger.cssfile where cpinstanceid=?";
+        String query = "select content from cp.cssfile where cpinstanceid=?";
         
         try {
             content = jdbcTemplate.queryForObject(query, new Object[] { cpInstanceId }, String.class);
@@ -27,16 +27,16 @@ public class CssFileDAO {
 
     public void persistContent(int cpInstanceId, String content) {
         String query = "";
-        String checkQuery = "select count(1) from roger.cssfile where cpinstanceid=?";
+        String checkQuery = "select count(1) from cp.cssfile where cpinstanceid=?";
         Integer existingRows = jdbcTemplate.queryForObject(checkQuery, new Object[] { cpInstanceId }, Integer.class);
         
         // update
         if (existingRows > 0) {
-            query = "update roger.cssfile set content=? where cpinstanceid=?";
+            query = "update cp.cssfile set content=? where cpinstanceid=?";
         }
         // create
         else {
-            query = "insert into roger.cssfile (id, content, cpinstanceid) values (default, ?, ?)";
+            query = "insert into cp.cssfile (id, content, cpinstanceid) values (default, ?, ?)";
         }
         
         jdbcTemplate.update(query, new Object[] { content, cpInstanceId });

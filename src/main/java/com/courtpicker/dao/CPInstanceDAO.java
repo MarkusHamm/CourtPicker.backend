@@ -29,13 +29,13 @@ public class CPInstanceDAO {
 
         // do an insert if id is NOT set
         if (cpInstance.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.cpinstance_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.cpinstance_id_seq')");
             cpInstance.setId(newRecordId);
-            query = "insert into roger.cpinstance (name, shortName, licence, licencestartdate, id) values (?, ?, ?, ?, ?)";
+            query = "insert into cp.cpinstance (name, shortName, licence, licencestartdate, id) values (?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.cpinstance set name=?, shortName=?, licence=?, licenceStartDate=? where id=?";
+            query = "update cp.cpinstance set name=?, shortName=?, licence=?, licenceStartDate=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { cpInstance.getName(), cpInstance.getShortName(), 
@@ -49,13 +49,13 @@ public class CPInstanceDAO {
 
         // do an insert if id is NOT set
         if (cpInstance.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.cpinstance_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.cpinstance_id_seq')");
             cpInstance.setId(newRecordId);
-            query = "insert into roger.cpinstance (name, shortName, id) values (?, ?, ?)";
+            query = "insert into cp.cpinstance (name, shortName, id) values (?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.cpinstance set name=?, shortName=? where id=?";
+            query = "update cp.cpinstance set name=?, shortName=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { cpInstance.getName(), cpInstance.getShortName(), cpInstance.getId() });
@@ -64,7 +64,7 @@ public class CPInstanceDAO {
     }
 
     public CPInstance get(Integer id) {
-        String query = "select * from roger.cpinstance where id=?";
+        String query = "select * from cp.cpinstance where id=?";
         List<CPInstance> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -75,7 +75,7 @@ public class CPInstanceDAO {
     }
     
     public CPInstance getByShortName(String shortName) {
-        String query = "select * from roger.cpinstance where lower(shortname)=?";
+        String query = "select * from cp.cpinstance where lower(shortname)=?";
         List<CPInstance> matches = jdbcTemplate.query(query, new Object[] { shortName }, rowMapper);
         
         if (matches.size() == 0) {

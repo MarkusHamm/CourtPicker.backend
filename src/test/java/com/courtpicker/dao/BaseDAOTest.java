@@ -9,9 +9,9 @@ public abstract class BaseDAOTest {
     public BaseDAOTest() throws Exception {
         DriverManagerDataSource dataSource = new DriverManagerDataSource();
         dataSource.setDriverClassName("org.postgresql.Driver");
-        dataSource.setUrl("jdbc:postgresql://localhost:5432/roger");
-        dataSource.setUsername("roger");
-        dataSource.setPassword("avarel1");
+        dataSource.setUrl("jdbc:postgresql://localhost:5432/courtpicker");
+        dataSource.setUsername("cpuser");
+        dataSource.setPassword("DidPfdcp-db");
         
         jdbcTemplate = new JdbcTemplate();
         jdbcTemplate.setDataSource(dataSource);

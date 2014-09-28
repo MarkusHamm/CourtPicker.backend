@@ -19,8 +19,8 @@ public class WebdesignDAOTest extends BaseDAOTest {
     @Test
     public void getWebdesign_returnsCorrectEntryIfExists() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-1");
-        jdbcTemplate.execute("INSERT INTO roger.webdesign (id, cpinstanceid, backgroundstyle, backgroundcolor, " +
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-1");
+        jdbcTemplate.execute("INSERT INTO cp.webdesign (id, cpinstanceid, backgroundstyle, backgroundcolor, " +
                 "headercolor, headerbackgroundcolor, controlscolor, contentcolor, contentbackgroundcolor, " +
                 "ctselectcolor, ctselectbackgroundcolor, ctselectfocuscolor, linkcolor, reservablehourcolor, " +
                 "nonreservablehourcolor, footercolor) values (-1, -1 , 'bgstyle', 'bgcolor', 'hdcolor', " +
@@ -48,13 +48,13 @@ public class WebdesignDAOTest extends BaseDAOTest {
         assertEquals(design.getFooterColor(), "ftcol");
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-1");
     }
     
     @Test
     public void getWebdesign_returnsNullIfNoEntryExists() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-99");
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-99");
 
         // execute + assert
         Webdesign design = dao.getWebdesign(-99);
@@ -65,7 +65,7 @@ public class WebdesignDAOTest extends BaseDAOTest {
     @Test
     public void persist_webdesignWithoutIdIsInserted() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-1");
 
         // execute + assert
         Webdesign wd = new Webdesign();
@@ -87,8 +87,8 @@ public class WebdesignDAOTest extends BaseDAOTest {
         
         wd = dao.persist(wd);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.webdesign where cpinstanceid=-1");
-        Webdesign dbWd = jdbcTemplate.query("SELECT * from roger.webdesign where cpinstanceid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.webdesign where cpinstanceid=-1");
+        Webdesign dbWd = jdbcTemplate.query("SELECT * from cp.webdesign where cpinstanceid=-1",
                 new WebdesignRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -110,14 +110,14 @@ public class WebdesignDAOTest extends BaseDAOTest {
         assertEquals(wd.getFooterColor(), dbWd.getFooterColor());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-1");
     }
 
     @Test
     public void persist_webdesignWithIdIsUpdated() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-1");
-        jdbcTemplate.execute("INSERT INTO roger.webdesign (id, cpinstanceid, backgroundstyle, backgroundcolor, " +
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-1");
+        jdbcTemplate.execute("INSERT INTO cp.webdesign (id, cpinstanceid, backgroundstyle, backgroundcolor, " +
                 "headercolor, headerbackgroundcolor, controlscolor, contentcolor, contentbackgroundcolor, " +
                 "ctselectcolor, ctselectbackgroundcolor, ctselectfocuscolor, linkcolor, reservablehourcolor, " +
                 "nonreservablehourcolor, footercolor) values (-1, -1 , 'bgstyle', 'bgcolor', 'hdcolor', " +
@@ -144,8 +144,8 @@ public class WebdesignDAOTest extends BaseDAOTest {
         wd.setFooterColor("footerX");
         wd = dao.persist(wd);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.webdesign where cpinstanceid=-1");
-        Webdesign dbWd = jdbcTemplate.query("SELECT * from roger.webdesign where cpinstanceid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.webdesign where cpinstanceid=-1");
+        Webdesign dbWd = jdbcTemplate.query("SELECT * from cp.webdesign where cpinstanceid=-1",
                 new WebdesignRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -167,6 +167,6 @@ public class WebdesignDAOTest extends BaseDAOTest {
         assertEquals(wd.getFooterColor(), dbWd.getFooterColor());
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.webdesign where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesign where cpinstanceid=-1");
     }
 }

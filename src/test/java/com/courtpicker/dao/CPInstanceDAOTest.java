@@ -23,7 +23,7 @@ public class CPInstanceDAOTest extends BaseDAOTest {
     @Test
     public void persist_cpInstanceWithoutIdIsInserted() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where licence='mytestlicence'");
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where licence='mytestlicence'");
         
         // execute + assert
         CPInstance cpi = new CPInstance();
@@ -35,8 +35,8 @@ public class CPInstanceDAOTest extends BaseDAOTest {
         cpi.setLicenceStartDate(calendar.getTime());
         cpi = dao.persist(cpi);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.cpinstance where licence='mytestlicence'");
-        CPInstance dbCpi = jdbcTemplate.query("SELECT * from roger.cpinstance where licence='mytestlicence'",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.cpinstance where licence='mytestlicence'");
+        CPInstance dbCpi = jdbcTemplate.query("SELECT * from cp.cpinstance where licence='mytestlicence'",
                 new CPInstanceRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -48,14 +48,14 @@ public class CPInstanceDAOTest extends BaseDAOTest {
         assertEquals(df.format(cpi.getLicenceStartDate()), df.format(dbCpi.getLicenceStartDate()));
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where licence='mytestlicence'");
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where licence='mytestlicence'");
     }
 
     @Test
     public void persist_cpInstanceWithIdIsUpdated() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.cpinstance (id, name, shortname, licence, licencestartdate) " +
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.cpinstance (id, name, shortname, licence, licencestartdate) " +
                              "values (-1, 'xxx', 'yyy', 'ccc', '1980-12-12')");
 
         // execute + assert
@@ -69,8 +69,8 @@ public class CPInstanceDAOTest extends BaseDAOTest {
         cpi.setLicenceStartDate(calendar.getTime());
         cpi = dao.persist(cpi);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.cpinstance where id=-1");
-        CPInstance dbCpi = jdbcTemplate.query("SELECT * from roger.cpinstance where id=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.cpinstance where id=-1");
+        CPInstance dbCpi = jdbcTemplate.query("SELECT * from cp.cpinstance where id=-1",
                 new CPInstanceRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -82,13 +82,13 @@ public class CPInstanceDAOTest extends BaseDAOTest {
         assertEquals(df.format(cpi.getLicenceStartDate()), df.format(dbCpi.getLicenceStartDate()));
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where id=-1");
     }
     
     @Test
     public void getByShortName_returnsNullAtNoMatch() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where shortname='daounittest'");
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where shortname='daounittest'");
 
         CPInstance result = dao.getByShortName("daounittest");
 
@@ -98,8 +98,8 @@ public class CPInstanceDAOTest extends BaseDAOTest {
     @Test
     public void getByShortName_returnsMatchingInstanceIngoringCase() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where lower(shortname)='daounittest'");
-        jdbcTemplate.execute("INSERT INTO roger.cpinstance (id, name, shortname, licence, licencestartdate) " +
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where lower(shortname)='daounittest'");
+        jdbcTemplate.execute("INSERT INTO cp.cpinstance (id, name, shortname, licence, licencestartdate) " +
         		             "values (-1, 'testname', 'DAOUnitTest', 'ccc', '2014-01-01')");
 
         // execute + assert
@@ -115,6 +115,6 @@ public class CPInstanceDAOTest extends BaseDAOTest {
         assertEquals(df.format(calendar.getTime()), df.format(result.getLicenceStartDate()));
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.cpinstance where lower(shortname)='daounittest'");
+        jdbcTemplate.execute("DELETE FROM cp.cpinstance where lower(shortname)='daounittest'");
     }
 }

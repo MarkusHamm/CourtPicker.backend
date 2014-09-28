@@ -25,7 +25,7 @@ public class SubscriptionRateDAO {
     }
 
     public SubscriptionRate get(Integer id) {
-        String query = "select * from roger.subscriptionrate where id=?";
+        String query = "select * from cp.subscriptionrate where id=?";
         List<SubscriptionRate> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -35,7 +35,7 @@ public class SubscriptionRateDAO {
         return matches.get(0);
     }
     public List<SubscriptionRate> getAll(Integer subscriptionId) {
-        String query = "select * from roger.subscriptionrate where subscriptionid=?";
+        String query = "select * from cp.subscriptionrate where subscriptionid=?";
         List<SubscriptionRate> matches = jdbcTemplate.query(query, new Object[] { subscriptionId }, rowMapper);
         return matches;
     }
@@ -45,15 +45,15 @@ public class SubscriptionRateDAO {
 
         // do an insert if id is NOT set
         if (sRate.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.subscriptionrate_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.subscriptionrate_id_seq')");
             sRate.setId(newRecordId);
-            query = "insert into roger.subscriptionrate (subscriptionid, name, price, " +
+            query = "insert into cp.subscriptionrate (subscriptionid, name, price, " +
                     "constraintime, constrainweekday, constrainusergroup, ctimefrom, ctimeto, cmon, ctue, cwed, cthu, cfri, csat, csun, " +
                     "cusergroupids, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.subscriptionrate set subscriptionid=?, name=?, price=?, " +
+            query = "update cp.subscriptionrate set subscriptionid=?, name=?, price=?, " +
                     "constraintime=?, constrainweekday=?, constrainusergroup=?, ctimefrom=?, ctimeto=?, cmon=?, ctue=?, cwed=?, " +
                     "cthu=?, cfri=?, csat=?, csun=?, cusergroupids=? where id=?";
         }
@@ -67,7 +67,7 @@ public class SubscriptionRateDAO {
     }
     
     public void delete(Integer id) {
-        String query = "delete from roger.subscriptionrate where id=?";
+        String query = "delete from cp.subscriptionrate where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 

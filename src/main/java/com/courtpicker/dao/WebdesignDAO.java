@@ -25,7 +25,7 @@ public class WebdesignDAO {
     }
 
     public Webdesign get(Integer id) {
-        String query = "select * from roger.webdesign where id=?";
+        String query = "select * from cp.webdesign where id=?";
         List<Webdesign> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -37,7 +37,7 @@ public class WebdesignDAO {
     
     public Webdesign getWebdesign(int cpInstanceId) {
         Webdesign webdesign = null;
-        String query = "select * from roger.webdesign where cpinstanceid=?";
+        String query = "select * from cp.webdesign where cpinstanceid=?";
         
         try {
             webdesign = jdbcTemplate.queryForObject(query, new Object[] { cpInstanceId }, rowMapper);
@@ -52,9 +52,9 @@ public class WebdesignDAO {
 
         // do an insert if id is NOT set
         if (webdesign.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.webdesign_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.webdesign_id_seq')");
             webdesign.setId(newRecordId);
-            query = "insert into roger.webdesign " +
+            query = "insert into cp.webdesign " +
             		"(cpinstanceid, backgroundstyle, backgroundcolor, headercolor, headerbackgroundcolor, controlscolor," +
             		" controlstextcolor, contentcolor, contentbackgroundcolor, ctselectcolor, ctselectbackgroundcolor, ctselectfocuscolor," +
             		" linkcolor, reservablehourcolor, nonreservablehourcolor, footercolor, id) " +
@@ -62,7 +62,7 @@ public class WebdesignDAO {
         }
         // do an update if id is set
         else {
-            query = "update roger.webdesign set cpinstanceid=?, backgroundstyle=?, backgroundcolor=?, headercolor=?, " +
+            query = "update cp.webdesign set cpinstanceid=?, backgroundstyle=?, backgroundcolor=?, headercolor=?, " +
             		"headerbackgroundcolor=?, controlscolor=?, controlstextcolor=?, contentcolor=?, contentbackgroundcolor=?, " +
             		"ctselectcolor=?, ctselectbackgroundcolor=?, ctselectfocuscolor=?, linkcolor=?, " +
             		"reservablehourcolor=?, nonreservablehourcolor=?, footercolor=? where id=?";

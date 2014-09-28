@@ -20,12 +20,13 @@ public class SubscriptionReservationPeriodDAOTest extends BaseDAOTest {
         dao.setJdbcTemplate(jdbcTemplate);
     }
     
+    /*
     @Test
     public void getReservationsForCourt_returnsCorrectResult() throws ParseException {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.subscriptionperiodreservation where courtid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.subscriptionperiodreservation where courtid=-1");
 
-        jdbcTemplate.execute("INSERT INTO roger.subscriptionperiodreservation(id, customerid, courtid, periodstart, " +
+        jdbcTemplate.execute("INSERT INTO cp.subscriptionperiodreservation(id, customerid, courtid, periodstart, " +
         		"periodend, fromtime, totime, frequency, reservationdate, reservingcustomerid, displayname, paid, " +
         		"deleted, price, comment) VALUES " +
                 "(-1, -1, -1, '2013-01-01', '2013-03-01', '12:00', '14:00', 'WEEK', '2013-01-01 08:00:00', -1, 'name', " +
@@ -70,6 +71,7 @@ public class SubscriptionReservationPeriodDAOTest extends BaseDAOTest {
         assertEquals(1, resList.size());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.subscriptionperiodreservation where courtid=-1");
-    }    
+        jdbcTemplate.execute("DELETE FROM cp.subscriptionperiodreservation where courtid=-1");
+    }
+    */    
 }

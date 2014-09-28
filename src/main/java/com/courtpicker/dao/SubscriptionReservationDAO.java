@@ -29,7 +29,7 @@ public class SubscriptionReservationDAO {
     }
     
     public SubscriptionReservation get(Integer id) {
-        String query = "select * from roger.subscriptionreservation where id=?";
+        String query = "select * from cp.subscriptionreservation where id=?";
         List<SubscriptionReservation> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -40,7 +40,7 @@ public class SubscriptionReservationDAO {
     }
 
     public List<SubscriptionReservation> getReservationsForCourt(Integer courtId, Date fromDate, Date toDate) {
-        String query = "select * from roger.subscriptionreservation where courtid=? " +
+        String query = "select * from cp.subscriptionreservation where courtid=? " +
                 "and to_date(periodend, 'DD.MM.YYYY')>=? and to_date(periodstart, 'DD.MM.YYYY')<=? " +
                 "and deleted=false";
         List<SubscriptionReservation> matches = jdbcTemplate.query(query, new Object[] { courtId, fromDate, toDate },
@@ -49,7 +49,7 @@ public class SubscriptionReservationDAO {
     }
     
     public List<SubscriptionReservation> getReservationsForCourtCategory(Integer courtCategoryId, Date fromDate, Date toDate) {
-        String query = "select * from roger.subscriptionreservation r, roger.court c " +
+        String query = "select * from cp.subscriptionreservation r, cp.court c " +
                 "where r.courtid = c.id and c.courtcategoryid=? and to_date(r.periodend, 'DD.MM.YYYY')>=? and to_date(r.periodstart, 'DD.MM.YYYY')<=? " +
                 "and r.deleted=false";
         List<SubscriptionReservation> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId, fromDate, toDate },
@@ -62,16 +62,16 @@ public class SubscriptionReservationDAO {
 
         // do an insert if id is NOT set
         if (reservation.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.subscriptionreservation_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.subscriptionreservation_id_seq')");
             reservation.setId(newRecordId);
-            query = "INSERT INTO roger.subscriptionreservation(subscriptionid, customerid, courtid, periodstart, periodend, fromtime, totime, " +
+            query = "INSERT INTO cp.subscriptionreservation(subscriptionid, customerid, courtid, periodstart, periodend, fromtime, totime, " +
             		"reservationdate, reservingcustomerid, displayname, paid, deleted, price, comment, customername, " +
             		"calculatedprice, paymentdate, paymentoptionid, id) " +
             		"VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "UPDATE roger.subscriptionreservation SET subscriptionid=?, customerid=?, courtid=?, periodstart=?, periodend=?, fromtime=?, " +
+            query = "UPDATE cp.subscriptionreservation SET subscriptionid=?, customerid=?, courtid=?, periodstart=?, periodend=?, fromtime=?, " +
             		"totime=?, reservationdate=?, reservingcustomerid=?, displayname=?, paid=?, deleted=?, price=?, comment=?, " +
             		"customername=?, calculatedprice=?, paymentdate=?, paymentoptionid=? WHERE id=?";
         }
@@ -86,7 +86,7 @@ public class SubscriptionReservationDAO {
     }
     
     public void cancelReservation(Integer id) {
-        String query = "update roger.subscriptionreservation set deleted=true where id=?";
+        String query = "update cp.subscriptionreservation set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
     
@@ -98,13 +98,13 @@ public class SubscriptionReservationDAO {
                 "sr.fromtime, sr.totime, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
                 "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
                 "from " +
-                "roger.subscriptionreservation sr " +
-                "left outer join roger.subscription su on (sr.subscriptionid=su.id) " +
-                "left outer join roger.courtcategory cc on (su.courtcategoryid=cc.id) " +
-                "left outer join roger.cpinstance ci on (cc.cpinstanceid=ci.id) " +
-                "left outer join roger.court co on (sr.courtid=co.id) " +
-                "left outer join roger.customer cu on (sr.customerid=cu.id) " +
-                "left outer join roger.paymentoption po on (sr.paymentoptionid=po.id) " +
+                "cp.subscriptionreservation sr " +
+                "left outer join cp.subscription su on (sr.subscriptionid=su.id) " +
+                "left outer join cp.courtcategory cc on (su.courtcategoryid=cc.id) " +
+                "left outer join cp.cpinstance ci on (cc.cpinstanceid=ci.id) " +
+                "left outer join cp.court co on (sr.courtid=co.id) " +
+                "left outer join cp.customer cu on (sr.customerid=cu.id) " +
+                "left outer join cp.paymentoption po on (sr.paymentoptionid=po.id) " +
                 "where sr.customerid=? and sr.deleted=false " +
                 "order by sr.reservationdate desc";
 
@@ -120,13 +120,13 @@ public class SubscriptionReservationDAO {
                 "sr.fromtime, sr.totime, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
                 "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
                 "from " +
-                "roger.subscriptionreservation sr " +
-                "left outer join roger.subscription su on (sr.subscriptionid=su.id) " +
-                "left outer join roger.courtcategory cc on (su.courtcategoryid=cc.id) " +
-                "left outer join roger.cpinstance ci on (cc.cpinstanceid=ci.id) " +
-                "left outer join roger.court co on (sr.courtid=co.id) " +
-                "left outer join roger.customer cu on (sr.customerid=cu.id) " +
-                "left outer join roger.paymentoption po on (sr.paymentoptionid=po.id) " +
+                "cp.subscriptionreservation sr " +
+                "left outer join cp.subscription su on (sr.subscriptionid=su.id) " +
+                "left outer join cp.courtcategory cc on (su.courtcategoryid=cc.id) " +
+                "left outer join cp.cpinstance ci on (cc.cpinstanceid=ci.id) " +
+                "left outer join cp.court co on (sr.courtid=co.id) " +
+                "left outer join cp.customer cu on (sr.customerid=cu.id) " +
+                "left outer join cp.paymentoption po on (sr.paymentoptionid=po.id) " +
                 "where ci.id=? and sr.deleted=false " +
                 "order by sr.reservationdate desc";
 

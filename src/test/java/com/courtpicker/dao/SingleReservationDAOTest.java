@@ -27,17 +27,17 @@ public class SingleReservationDAOTest extends BaseDAOTest {
     @Test
     public void getReservationsForCourt_returnsCorrectResult() throws ParseException {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlereservation where courtid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlereservation where courtid=-1");
 
-        jdbcTemplate.execute("INSERT INTO roger.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
+        jdbcTemplate.execute("INSERT INTO cp.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
         		"reservationdate, reservingcustomerid, displayname, paid, deleted, calculatedprice, price, comment, paymentdate, paymentoptionid) VALUES " +
         		"(-1, -1, 'custname', -1, '2014-01-01 18:00:00', '2014-01-01 20:00:00', '2014-01-01 09:00:00', -1, 'name', " +
         		"false, false, 20, 10.99, 'not yet paid', null, null);");
-        jdbcTemplate.execute("INSERT INTO roger.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
+        jdbcTemplate.execute("INSERT INTO cp.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
                 "reservationdate, reservingcustomerid, displayname, paid, deleted, calculatedprice, price, comment, paymentdate, paymentoptionid) VALUES " +
                 "(-2, -1, 'custname', -1, '2014-01-02 18:00:00', '2014-01-02 20:00:00', '2014-01-01 09:00:00', -1, 'name', " +
                 "true, false, 20, 10.99, 'not yet paid', '2014-10-10 10:00:00', 5);");
-        jdbcTemplate.execute("INSERT INTO roger.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
+        jdbcTemplate.execute("INSERT INTO cp.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
                 "reservationdate, reservingcustomerid, displayname, paid, deleted, calculatedprice, price, comment, paymentdate, paymentoptionid) VALUES " +
                 "(-3, -1, 'custname', -1, '2014-01-05 18:00:00', '2014-01-05 20:00:00', '2014-01-01 09:00:00', -1, 'name', " +
                 "false, false, 20, 10.99, 'not yet paid', null, null);");
@@ -71,13 +71,13 @@ public class SingleReservationDAOTest extends BaseDAOTest {
         assertEquals(0, resList.size());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.singlereservation where courtid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlereservation where courtid=-1");
     }
     
     @Test
     public void persist_insertsIfIdIsNull() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlereservation where courtid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlereservation where courtid=-1");
 
         // execute + assert
         SingleReservation res = new SingleReservation();
@@ -98,8 +98,8 @@ public class SingleReservationDAOTest extends BaseDAOTest {
         res.setPaymentOptionId(5);
         dao.persist(res);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.singlereservation where courtid=-1");
-        SingleReservation dbRes = jdbcTemplate.query("SELECT * from roger.singlereservation where courtid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.singlereservation where courtid=-1");
+        SingleReservation dbRes = jdbcTemplate.query("SELECT * from cp.singlereservation where courtid=-1",
                 new SingleReservationRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -121,14 +121,14 @@ public class SingleReservationDAOTest extends BaseDAOTest {
         assertEquals(res.getPaymentDate(), dbRes.getPaymentDate());
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.singlereservation where courtid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlereservation where courtid=-1");
     }
     
     @Test
     public void persist_updatesIfIdIsNotNull() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.singlerate where id=-1");        
-        jdbcTemplate.execute("INSERT INTO roger.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
+        jdbcTemplate.execute("DELETE FROM cp.singlerate where id=-1");        
+        jdbcTemplate.execute("INSERT INTO cp.singlereservation(id, customerid, customername, courtid, fromdate, todate, " +
                 "reservationdate, reservingcustomerid, displayname, paid, deleted, calculatedprice, price, comment, paymentdate, paymentoptionid) VALUES " +
                 "(-1, -2, 'xx', -2, '2014-01-01 18:00:00', '2014-01-01 20:00:00', '2014-01-01 09:00:00', -2, 'name', " +
                 "false, true, 20, 10.99, 'not yet paid', null, null);");
@@ -153,8 +153,8 @@ public class SingleReservationDAOTest extends BaseDAOTest {
         res.setPaymentOptionId(5);
         dao.persist(res);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.singlereservation where courtid=-1");
-        SingleReservation dbRes = jdbcTemplate.query("SELECT * from roger.singlereservation where id=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.singlereservation where courtid=-1");
+        SingleReservation dbRes = jdbcTemplate.query("SELECT * from cp.singlereservation where id=-1",
                 new SingleReservationRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -176,6 +176,6 @@ public class SingleReservationDAOTest extends BaseDAOTest {
         assertEquals(res.getPaymentDate(), dbRes.getPaymentDate());
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.singlereservation where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.singlereservation where id=-1");
     }
 }

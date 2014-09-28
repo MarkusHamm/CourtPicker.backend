@@ -20,8 +20,8 @@ public class WebdesignFileDAOTest extends BaseDAOTest {
     @Test
     public void getWebdesignFile_foundEntryIsReturned() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesignfile where webdesignid=-1");
-        jdbcTemplate.execute("INSERT INTO roger.webdesignfile (id, webdesignid, type, content) " +
+        jdbcTemplate.execute("DELETE FROM cp.webdesignfile where webdesignid=-1");
+        jdbcTemplate.execute("INSERT INTO cp.webdesignfile (id, webdesignid, type, content) " +
         		             "values (-1, -1, 'logo', E'\\x78\\x78')");
         
         // execute + test
@@ -32,13 +32,13 @@ public class WebdesignFileDAOTest extends BaseDAOTest {
         assertEquals("xx", new String(wdf.getContent()));
         
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.webdesignfile where webdesignid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesignfile where webdesignid=-1");
     }
 
     @Test
     public void getWebdesignFile_notFoundEntryReturnsNull() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesignfile where webdesignid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesignfile where webdesignid=-1");
         
         // execute + test
         WebdesignFile wdf = dao.getWebdesignFile(-1, "logo");
@@ -54,8 +54,8 @@ public class WebdesignFileDAOTest extends BaseDAOTest {
         wdf.setContent("xx".getBytes());
         wdf = dao.persist(wdf);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.webdesignfile where webdesignid=-1");
-        WebdesignFile dbWdf = jdbcTemplate.query("SELECT * from roger.webdesignfile where webdesignid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.webdesignfile where webdesignid=-1");
+        WebdesignFile dbWdf = jdbcTemplate.query("SELECT * from cp.webdesignfile where webdesignid=-1",
                 new WebdesignFileRowMapper()).get(0);
        
         assertEquals(1, rowCount);
@@ -65,14 +65,14 @@ public class WebdesignFileDAOTest extends BaseDAOTest {
         assertEquals(new String(wdf.getContent()), new String(dbWdf.getContent()));
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.webdesignfile where webdesignid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesignfile where webdesignid=-1");
     }
     
     @Test
     public void persist_entryWithGivenIdIsUpdated() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.webdesignfile where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.webdesignfile (id, webdesignid, type, content) " +
+        jdbcTemplate.execute("DELETE FROM cp.webdesignfile where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.webdesignfile (id, webdesignid, type, content) " +
                 "values (-1, -1, 'logo', E'\\x78\\x78')");
         
         // execute + test
@@ -83,8 +83,8 @@ public class WebdesignFileDAOTest extends BaseDAOTest {
         wdf.setContent("xxxx".getBytes());
         wdf = dao.persist(wdf);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.webdesignfile where id=-1");
-        WebdesignFile dbWdf = jdbcTemplate.query("SELECT * from roger.webdesignfile where id=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.webdesignfile where id=-1");
+        WebdesignFile dbWdf = jdbcTemplate.query("SELECT * from cp.webdesignfile where id=-1",
                 new WebdesignFileRowMapper()).get(0);
        
         assertEquals(1, rowCount);
@@ -94,6 +94,6 @@ public class WebdesignFileDAOTest extends BaseDAOTest {
         assertEquals(new String(wdf.getContent()), new String(dbWdf.getContent()));
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.webdesignfile where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.webdesignfile where id=-1");
     }
 }

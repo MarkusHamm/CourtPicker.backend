@@ -27,7 +27,7 @@ public class SingleReservationDAO {
     }
     
     public SingleReservation get(Integer id) {
-        String query = "select * from roger.singlereservation where id=?";
+        String query = "select * from cp.singlereservation where id=?";
         List<SingleReservation> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -38,7 +38,7 @@ public class SingleReservationDAO {
     }
 
     public List<SingleReservation> getReservationsForCourt(Integer courtId, Date fromDate, Date toDate) {
-        String query = "select * from roger.singlereservation where courtid=? " +
+        String query = "select * from cp.singlereservation where courtid=? " +
                 "and todate>? and fromdate<? " +
                 "and deleted=false";
         List<SingleReservation> matches = jdbcTemplate.query(query, new Object[] { courtId, fromDate, toDate },
@@ -47,7 +47,7 @@ public class SingleReservationDAO {
     }
     
     public List<SingleReservation> getReservationsForCourtCategory(Integer courtCategoryId, Date fromDate, Date toDate) {
-        String query = "select * from roger.singlereservation r, roger.court c " +
+        String query = "select * from cp.singlereservation r, cp.court c " +
         		"where r.courtid = c.id and c.courtcategoryid=? and r.todate>? and r.fromdate<? " +
         		"and r.deleted=false";
         List<SingleReservation> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId, fromDate, toDate },
@@ -60,15 +60,15 @@ public class SingleReservationDAO {
 
         // do an insert if id is NOT set
         if (reservation.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.singlereservation_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.singlereservation_id_seq')");
             reservation.setId(newRecordId);
-            query = "insert into roger.singlereservation (customerid, customername, courtid, fromdate, todate, reservationdate, " +
+            query = "insert into cp.singlereservation (customerid, customername, courtid, fromdate, todate, reservationdate, " +
             		"reservingcustomerid, displayname, paid, deleted, calculatedprice, price, comment, paymentdate, paymentoptionid, id) " +
                     "values (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.singlereservation set customerid=?, customername=?, courtid=?, fromdate=?, todate=?, reservationdate=?, " +
+            query = "update cp.singlereservation set customerid=?, customername=?, courtid=?, fromdate=?, todate=?, reservationdate=?, " +
                     "reservingcustomerid=?, displayname=?, paid=?, deleted=?, calculatedprice=?, price=?, comment=?, paymentdate=?, " +
                     "paymentoptionid=? where id=?";
         }
@@ -82,7 +82,7 @@ public class SingleReservationDAO {
     }
     
     public void cancelReservation(Integer id) {
-        String query = "update roger.singlereservation set deleted=true where id=?";
+        String query = "update cp.singlereservation set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
     
@@ -93,12 +93,12 @@ public class SingleReservationDAO {
             "sr.fromdate, sr.todate, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
             "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
             "from " +
-            "roger.singlereservation sr " +
-            "left outer join roger.court co on (sr.courtid=co.id) " +
-            "left outer join roger.courtcategory cc on (co.courtcategoryid=cc.id) " +
-            "left outer join roger.cpinstance ci on (cc.cpinstanceid=ci.id) " +
-            "left outer join roger.customer cu on (sr.customerid=cu.id) " +
-            "left outer join roger.paymentoption po on (sr.paymentoptionid=po.id) " +
+            "cp.singlereservation sr " +
+            "left outer join cp.court co on (sr.courtid=co.id) " +
+            "left outer join cp.courtcategory cc on (co.courtcategoryid=cc.id) " +
+            "left outer join cp.cpinstance ci on (cc.cpinstanceid=ci.id) " +
+            "left outer join cp.customer cu on (sr.customerid=cu.id) " +
+            "left outer join cp.paymentoption po on (sr.paymentoptionid=po.id) " +
             "where sr.customerid=? and sr.deleted=false " + 
             "order by fromdate desc";
                 
@@ -113,12 +113,12 @@ public class SingleReservationDAO {
             "sr.fromdate, sr.todate, sr.reservationdate, sr.customerid, cu.firstname as customerfirstname, cu.lastname as customerlastname, " +
             "cu.username as customerusername, sr.customername as reservationcustomername, sr.price, sr.paid, sr.paymentdate, sr.paymentoptionid, po.name as paymentoptionname, sr.comment " +
             "from " +
-            "roger.singlereservation sr " +
-            "left outer join roger.court co on (sr.courtid=co.id) " +
-            "left outer join roger.courtcategory cc on (co.courtcategoryid=cc.id) " +
-            "left outer join roger.cpinstance ci on (cc.cpinstanceid=ci.id) " +
-            "left outer join roger.customer cu on (sr.customerid=cu.id) " +
-            "left outer join roger.paymentoption po on (sr.paymentoptionid=po.id) " +
+            "cp.singlereservation sr " +
+            "left outer join cp.court co on (sr.courtid=co.id) " +
+            "left outer join cp.courtcategory cc on (co.courtcategoryid=cc.id) " +
+            "left outer join cp.cpinstance ci on (cc.cpinstanceid=ci.id) " +
+            "left outer join cp.customer cu on (sr.customerid=cu.id) " +
+            "left outer join cp.paymentoption po on (sr.paymentoptionid=po.id) " +
             "where ci.id=? and sr.deleted=false " +
             "order by fromdate desc";
                 

@@ -20,9 +20,9 @@ public class UserGroupDAOTest extends BaseDAOTest {
     @Test
     public void getAllUserGroups_retrievedCorrect() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where cpinstanceid=-1");
-        jdbcTemplate.execute("INSERT INTO roger.usergroup (id, cpinstanceid, name) values (default, -1, 'studenten')");
-        jdbcTemplate.execute("INSERT INTO roger.usergroup (id, cpinstanceid, name) values (default, -1, 'pensionisten')");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where cpinstanceid=-1");
+        jdbcTemplate.execute("INSERT INTO cp.usergroup (id, cpinstanceid, name) values (default, -1, 'studenten')");
+        jdbcTemplate.execute("INSERT INTO cp.usergroup (id, cpinstanceid, name) values (default, -1, 'pensionisten')");
 
         // execute + assert
         List<UserGroup> ugList = dao.getUserGroups(-1);
@@ -37,13 +37,13 @@ public class UserGroupDAOTest extends BaseDAOTest {
         assertEquals(ug2.getName(), "pensionisten");
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where cpinstanceid=-1");
     }
 
     @Test
     public void persist_userGroupWithoutIdIsInserted() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where cpinstanceid=-1");
 
         // execute + assert
         UserGroup ug = new UserGroup();
@@ -51,8 +51,8 @@ public class UserGroupDAOTest extends BaseDAOTest {
         ug.setName("mygroup");
         ug = dao.persist(ug);
         
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.usergroup where cpinstanceid=-1");
-        UserGroup dbUG = jdbcTemplate.query("SELECT * from roger.usergroup where cpinstanceid=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.usergroup where cpinstanceid=-1");
+        UserGroup dbUG = jdbcTemplate.query("SELECT * from cp.usergroup where cpinstanceid=-1",
                 new UserGroupRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -61,14 +61,14 @@ public class UserGroupDAOTest extends BaseDAOTest {
         assertEquals(ug.getName(), dbUG.getName());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.courtcategory where cpinstanceid=-1");
+        jdbcTemplate.execute("DELETE FROM cp.courtcategory where cpinstanceid=-1");
     }
 
     @Test
     public void persist_userGroupWithIdIsUpdated() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.usergroup (id, cpinstanceid, name) values (-1, -1, 'tennisspieler')");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.usergroup (id, cpinstanceid, name) values (-1, -1, 'tennisspieler')");
 
         // execute + assert
         UserGroup ug = new UserGroup();
@@ -77,8 +77,8 @@ public class UserGroupDAOTest extends BaseDAOTest {
         ug.setName("fußballspieler");
         ug = dao.persist(ug);
 
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.usergroup where id=-1");
-        UserGroup dbUG = jdbcTemplate.query("SELECT * from usergroup where id=-1",
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.usergroup where id=-1");
+        UserGroup dbUG = jdbcTemplate.query("SELECT * from cp.usergroup where id=-1",
                 new UserGroupRowMapper()).get(0);
 
         assertEquals(1, rowCount);
@@ -87,17 +87,17 @@ public class UserGroupDAOTest extends BaseDAOTest {
         assertEquals(ug.getName(), dbUG.getName());
 
         // tear-down
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where id=-1");
     }
     
     @Test
     public void delete_nonExistingIdThrowsNoException() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where id=-1");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where id=-1");
         
         // execute + assert
         dao.delete(-1);
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.usergroup where id=-1");
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.usergroup where id=-1");
         
         assertEquals(0, rowCount);
     }
@@ -106,12 +106,12 @@ public class UserGroupDAOTest extends BaseDAOTest {
     @Test
     public void delete_existingIdDeltesAsRequested() {
         // set-up
-        jdbcTemplate.execute("DELETE FROM roger.usergroup where id=-1");
-        jdbcTemplate.execute("INSERT INTO roger.usergroup (id, cpinstanceid, name) values (-1, -1, 'tennisspieler')");
+        jdbcTemplate.execute("DELETE FROM cp.usergroup where id=-1");
+        jdbcTemplate.execute("INSERT INTO cp.usergroup (id, cpinstanceid, name) values (-1, -1, 'tennisspieler')");
         
         // execute + assert
         dao.delete(-1);
-        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from roger.usergroup where id=-1");
+        int rowCount = jdbcTemplate.queryForInt("SELECT count(*) from cp.usergroup where id=-1");
         
         assertEquals(0, rowCount);
     }

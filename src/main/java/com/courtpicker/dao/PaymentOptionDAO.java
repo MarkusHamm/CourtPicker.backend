@@ -25,7 +25,7 @@ public class PaymentOptionDAO {
     }
     
     public PaymentOption get(Integer id) {
-        String query = "select * from roger.paymentoption where id=?";
+        String query = "select * from cp.paymentoption where id=?";
         List<PaymentOption> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -36,7 +36,7 @@ public class PaymentOptionDAO {
     }
     
     public List<PaymentOption> getPaymentOptions(Integer courtCategoryId) {
-        String query = "select * from roger.paymentoption where cpinstanceid=? and deleted=false order by id";
+        String query = "select * from cp.paymentoption where cpinstanceid=? and deleted=false order by id";
         List<PaymentOption> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
@@ -46,14 +46,14 @@ public class PaymentOptionDAO {
 
         // do an insert if id is NOT set
         if (paymentOption.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.paymentoption_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.paymentoption_id_seq')");
             paymentOption.setId(newRecordId);
-            query = "insert into roger.paymentoption (cpinstanceid, name, active, deleted, id) " +
+            query = "insert into cp.paymentoption (cpinstanceid, name, active, deleted, id) " +
             		"values (?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.paymentoption set cpinstanceid=?, name=?, active=?, deleted=? where id=?";
+            query = "update cp.paymentoption set cpinstanceid=?, name=?, active=?, deleted=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { paymentOption.getCpInstanceId(), paymentOption.getName(), 
@@ -63,7 +63,7 @@ public class PaymentOptionDAO {
     }
     
     public void delete(Integer id) {
-        String query = "update roger.paymentoption set deleted=true where id=?";
+        String query = "update cp.paymentoption set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
 

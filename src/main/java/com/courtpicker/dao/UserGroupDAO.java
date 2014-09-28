@@ -24,7 +24,7 @@ public class UserGroupDAO {
     }
 
     public UserGroup get(Integer id) {
-        String query = "select * from roger.usergroup where id=? and deleted=false";
+        String query = "select * from cp.usergroup where id=? and deleted=false";
         List<UserGroup> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -35,7 +35,7 @@ public class UserGroupDAO {
     }
 
     public List<UserGroup> getUserGroups(Integer cpInstanceId) {
-        String query = "select * from roger.usergroup where cpinstanceid=? and deleted=false";
+        String query = "select * from cp.usergroup where cpinstanceid=? and deleted=false";
         List<UserGroup> matches = jdbcTemplate.query(query, new Object[] { cpInstanceId }, rowMapper);
         return matches;
     }
@@ -45,13 +45,13 @@ public class UserGroupDAO {
 
         // do an insert if id is NOT set
         if (userGroup.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('roger.usergroup_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.usergroup_id_seq')");
             userGroup.setId(newRecordId);
-            query = "insert into roger.usergroup (cpinstanceid, name, id) values (?, ?, ?)";
+            query = "insert into cp.usergroup (cpinstanceid, name, id) values (?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.usergroup set cpinstanceid=?, name=? where id=?";
+            query = "update cp.usergroup set cpinstanceid=?, name=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { userGroup.getCpInstanceId(), userGroup.getName(), userGroup.getId() });
@@ -60,7 +60,7 @@ public class UserGroupDAO {
     }
     
     public void delete(Integer id) {
-        String query = "update roger.usergroup set deleted=true where id=?";
+        String query = "update cp.usergroup set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
     

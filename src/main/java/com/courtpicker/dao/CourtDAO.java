@@ -24,13 +24,13 @@ public class CourtDAO {
     }
 
     public List<Court> getAllCourts(Integer courtCategoryId) {
-        String query = "select * from roger.court where courtcategoryid=? and deleted=false order by ordernr";
+        String query = "select * from cp.court where courtcategoryid=? and deleted=false order by ordernr";
         List<Court> matches = jdbcTemplate.query(query, new Object[] { courtCategoryId }, rowMapper);
         return matches;
     }
 
     public Court get(Integer id) {
-        String query = "select * from roger.court where id=?";
+        String query = "select * from cp.court where id=?";
         List<Court> matches = jdbcTemplate.query(query, new Object[] { id }, rowMapper);
         
         if (matches.size() == 0) {
@@ -45,13 +45,13 @@ public class CourtDAO {
 
         // do an insert if id is NOT set
         if (court.getId() == null) {
-            int newRecordId = jdbcTemplate.queryForInt("select nextval('court_id_seq')");
+            int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.court_id_seq')");
             court.setId(newRecordId);
-            query = "insert into roger.court (courtcategoryid, name, ordernr, id) values (?, ?, ?, ?)";
+            query = "insert into cp.court (courtcategoryid, name, ordernr, id) values (?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update roger.court set courtcategoryid=?, name=?, ordernr=? where id=?";
+            query = "update cp.court set courtcategoryid=?, name=?, ordernr=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { court.getCourtCategoryId(), court.getName(), court.getOrderNr(),
@@ -61,13 +61,13 @@ public class CourtDAO {
     }
     
     public void delete(Integer id) {
-        String query = "update roger.court set deleted=true where id=?";
+        String query = "update cp.court set deleted=true where id=?";
         jdbcTemplate.update(query, new Object[] { id });
     }
     
     public Integer getNrOfCourts(Integer cpInstanceId) {
-        String query = "select count(1) from roger.court where courtcategoryid in " +
-        		"(select id from roger.courtcategory where cpinstanceid=?) and deleted=false";
+        String query = "select count(1) from cp.court where courtcategoryid in " +
+        		"(select id from cp.courtcategory where cpinstanceid=?) and deleted=false";
         Integer result = jdbcTemplate.queryForObject(query, new Object[] { cpInstanceId }, Integer.class);
         return result;
     }

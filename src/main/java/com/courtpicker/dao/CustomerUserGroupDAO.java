@@ -27,30 +27,30 @@ public class CustomerUserGroupDAO {
     }
     
     public List<CustomerUserGroup> getAll() {
-        String query = "select * from roger.customer_usergroup order by customerid";
+        String query = "select * from cp.customer_usergroup order by customerid";
         List<CustomerUserGroup> matches = jdbcTemplate.query(query, new Object[] {}, rowMapper);
         return matches;
     }
     
     public List<CustomerExtract> getUserGroupCustomerExtract(Integer userGroupId) {
-        String query = "select * from roger.customer where id in " +
-                "(select customerid from roger.customer_usergroup where usergroupid=?)";
+        String query = "select * from cp.customer where id in " +
+                "(select customerid from cp.customer_usergroup where usergroupid=?)";
         List<CustomerExtract> matches = jdbcTemplate.query(query, new Object[] { userGroupId }, customerExtractRowMapper);
         return matches;
     }
     
     public void addCustomerToUserGroup(Integer userGroupId, Integer customerId) {
-        String query = "insert into roger.customer_usergroup (usergroupid, customerid) values (?, ?)";
+        String query = "insert into cp.customer_usergroup (usergroupid, customerid) values (?, ?)";
         jdbcTemplate.update(query, new Object[] { userGroupId, customerId });
     }
 
     public void removeCustomerFromUserGroup(Integer userGroupId, Integer customerId) {
-        String query = "delete from roger.customer_usergroup where usergroupid=? and customerid=?";
+        String query = "delete from cp.customer_usergroup where usergroupid=? and customerid=?";
         jdbcTemplate.update(query, new Object[] { userGroupId, customerId });
     }
 
     public List<Integer> getCustomerIds(Integer userGroupId) {
-        String query = "select * from roger.customer_usergroup where usergroupid=?";
+        String query = "select * from cp.customer_usergroup where usergroupid=?";
         List<CustomerUserGroup> matches = jdbcTemplate.query(query, new Object[] { userGroupId }, rowMapper);
         
         List<Integer> customerIds = new ArrayList<Integer>();
@@ -62,7 +62,7 @@ public class CustomerUserGroupDAO {
     }
     
     public List<Integer> getUserGroupIds(Integer customerId) {
-        String query = "select * from roger.customer_usergroup where customerid=?";
+        String query = "select * from cp.customer_usergroup where customerid=?";
         List<CustomerUserGroup> matches = jdbcTemplate.query(query, new Object[] { customerId }, rowMapper);
         
         List<Integer> userGroupIds = new ArrayList<Integer>();
@@ -74,7 +74,7 @@ public class CustomerUserGroupDAO {
     }
     
     public void deleteEntries(Integer userGroupId) {
-        String query = "delete from roger.customer_usergroup where usergroupid=?";
+        String query = "delete from cp.customer_usergroup where usergroupid=?";
         jdbcTemplate.update(query, new Object[] { userGroupId });
     }
 }
