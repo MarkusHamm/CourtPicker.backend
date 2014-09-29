@@ -1,6 +1,7 @@
 package com.courtpicker.controller;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.List;
@@ -12,7 +13,10 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.codec.binary.Base64;
+import org.apache.commons.io.IOUtils;
 import org.springframework.context.annotation.Scope;
+import org.springframework.core.io.Resource;
+import org.springframework.core.io.ResourceLoader;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -97,6 +101,8 @@ public class ConfigurationController implements Serializable {
     private CustomerDAO customerDAO;
     @Inject
     private MonthlyFeeCalculator monthlyFeeCalculator;
+    @Inject
+    private ResourceLoader resourceLoader;
 
     @RequestMapping(value = "/api/createNewInstance", method = RequestMethod.GET)
     public @ResponseBody
@@ -125,12 +131,11 @@ public class ConfigurationController implements Serializable {
         webdesign.setFooterColor("555555");
         webdesignDAO.persist(webdesign);
 
-        /*
-         * WebdesignFile webdesignFile = new WebdesignFile();
-         * webdesignFile.setWebdesignId(webdesign.getId());
-         * webdesignFile.setType("logo"); webdesignFile.setContent(null);
-         * webdesignFileDAO.persist(webdesignFile);
-         */
+        WebdesignFile webdesignFile = new WebdesignFile();
+        webdesignFile.setWebdesignId(webdesign.getId());
+        webdesignFile.setType("logo");
+        webdesignFile.setContent(getCPLogoBytes());
+        webdesignFileDAO.persist(webdesignFile);
         
         PaymentOption standardPaymentOption = new PaymentOption();
         standardPaymentOption.setCpInstanceId(cpInstance.getId());
@@ -550,6 +555,22 @@ public class ConfigurationController implements Serializable {
         return webdesign;
     }
 
+    private byte[] getCPLogoBytes() throws IOException {
+        Resource resource = resourceLoader.getResource("resources/cplogo.png");
+        InputStream in = null;
+        byte[] cpLogoData = null;
+        
+        try {
+            in = resource.getInputStream();
+            cpLogoData = IOUtils.toByteArray(in);
+        }
+        finally {
+            IOUtils.closeQuietly(in);
+        }
+        
+        return cpLogoData;
+    }
+    
     public UserGroupDAO getUserGroupDAO() {
         return userGroupDAO;
     }
