@@ -37,6 +37,27 @@ public class UserAccountManager {
         return registeredCustomer;
     }
     
+    public Customer registerUserExtended(String userName, String password, String email, String firstName, String lastName,
+            String phoneNumber, String street, String zipCode, String city, String country) throws UserAlreadyExistsException {
+        Customer customer = new Customer();
+        customer.setUserName(userName);
+        customer.setPassword(DigestUtils.md5Hex(password));
+        customer.setEmail(email);
+        customer.setFirstName(firstName);
+        customer.setLastName(lastName);
+        customer.setPhoneNumber(phoneNumber);
+        customer.setStreet(street);
+        customer.setZipCode(zipCode);
+        customer.setCity(city);
+        customer.setCountry(country);
+        customer.setActivationCode(UUID.randomUUID().toString());
+        
+        Customer registeredCustomer = createUser(customer);
+        cpMailSender.sendAccountCreatedMail(registeredCustomer);
+        
+        return registeredCustomer;
+    }    
+    
     public Boolean activateUser(Integer userId, String activationCode) {
         Customer customer = customerDAO.get(userId);
         

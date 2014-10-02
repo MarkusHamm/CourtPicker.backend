@@ -116,6 +116,20 @@ public class CourtpickerController implements Serializable {
         }
     }
     
+    @RequestMapping(value="/api/registerUserExtended", method=RequestMethod.POST)
+    public @ResponseBody Customer registerUserExtended(@RequestParam String userName, @RequestParam String password, 
+            @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, 
+            @RequestParam String phoneNumber, @RequestParam String street, @RequestParam String zipCode, 
+            @RequestParam String city, @RequestParam String country) throws Exception {
+        try {
+            Customer customer = userAccountManager.registerUserExtended(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country);
+            return customer;
+        }
+        catch (UserAlreadyExistsException e) {
+            return null;
+        }
+    }    
+    
     @RequestMapping(value="/api/activateUser", method=RequestMethod.POST)
     public @ResponseBody Boolean activateUser(@RequestParam Integer userId, @RequestParam String activationCode) {
         return userAccountManager.activateUser(userId, activationCode);
