@@ -47,4 +47,16 @@ public class CssDefinition {
 
         return result;
     }
+    
+    public String getStringRepresentationImportant() {
+        String result = "";
+        
+        for(String key : definitions.keySet()) {
+            for (String value : definitions.get(key)) {
+                result += key + ": " + value + " !important;\r\n";
+            }
+        }
+
+        return result;        
+    }
 }

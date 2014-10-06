@@ -271,7 +271,7 @@ public class ConfigurationController implements Serializable {
     public @ResponseBody
     String createWebdesignCss(@RequestBody Webdesign webdesign) {
         CssDesign cssDesign = cssDesignFactory.create(webdesign);
-        return cssDesign.getStringRepresentation();
+        return cssDesign.getStringRepresentationImportant();
     }
 
     @RequestMapping(value = "/api/getWebdesignCss", method = RequestMethod.GET)
@@ -279,7 +279,7 @@ public class ConfigurationController implements Serializable {
     String getWebdesignCss(@RequestParam Integer cpInstanceId) {
         Webdesign webdesign = webdesignDAO.getWebdesign(cpInstanceId);
         CssDesign cssDesign = cssDesignFactory.create(webdesign);
-        return cssDesign.getStringRepresentation();
+        return cssDesign.getStringRepresentationImportant();
     }
 
     @RequestMapping(value = "/api/getWebdesignFile", method = RequestMethod.GET)

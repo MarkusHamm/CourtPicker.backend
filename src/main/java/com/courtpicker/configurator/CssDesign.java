@@ -32,4 +32,15 @@ public class CssDesign {
 
         return stringRep;
     }
+    
+    public String getStringRepresentationImportant() {
+        String stringRep = "";
+
+        for (String key : cssDefinitions.keySet()) {
+            CssDefinition cssDef = cssDefinitions.get(key);
+            stringRep += key + " {\r\n" + cssDef.getStringRepresentationImportant() + "}\r\n";
+        }
+
+        return stringRep;
+    }
 }

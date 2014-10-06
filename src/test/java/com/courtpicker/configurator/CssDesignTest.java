@@ -34,4 +34,25 @@ public class CssDesignTest {
                                 "}\r\n";
         assertEquals(expectedResult, cssDesign.getStringRepresentation());
     }
+    
+    @Test
+    public void getStringRepresentationImportant_severalDefinitionsReturnCorrectRepresentation() {
+        CssDefinition emptyCssDef = mock(CssDefinition.class);
+        when(emptyCssDef.getStringRepresentationImportant()).thenReturn("");
+        CssDefinition filledCssDef = mock(CssDefinition.class);
+        when(filledCssDef.getStringRepresentationImportant()).thenReturn("border: 10px !important;\r\nmargin: 0 auto !important;\r\n");
+        
+        CssDesign cssDesign = new CssDesign();
+        cssDesign.put("#header", emptyCssDef);
+        cssDesign.put(".div", filledCssDef);
+        cssDesign.put(".test", filledCssDef);
+        cssDesign.remove(".test");
+        
+        String expectedResult = "#header {\r\n" +
+                                "}\r\n" +
+                                ".div {\r\n" +
+                                "border: 10px !important;\r\nmargin: 0 auto !important;\r\n" +
+                                "}\r\n";
+        assertEquals(expectedResult, cssDesign.getStringRepresentationImportant());
+    }
 }
