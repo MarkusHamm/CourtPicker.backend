@@ -89,7 +89,7 @@
    		<div class="row">
 			 <div class="col-md-6"><h1><spring:message code="prices.title"/> <small><spring:message code="prices.subtitle"/></small></h1>
 			 </div>
-			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-success" href="http://localhost:8080/app/cp.html#/configureCourts?createNew" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></span>
+			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-success" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></span>
 			 </div>
 		</div>  
 		<hr class="divider">

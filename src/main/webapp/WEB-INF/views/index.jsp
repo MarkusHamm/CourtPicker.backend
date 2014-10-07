@@ -162,7 +162,7 @@
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/zahnrad.png" width="50" height="50" alt="Generic placeholder image">-->
           <h2><spring:message code="index.tryOut.header"/></h2>
           <p><spring:message code="index.tryOut.text"/></p>
-          <p><a class="btn btn-success" href="http://localhost:8080/app/cp.html#/configureCourts?createNew" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
+          <p><a class="btn btn-success" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div>
 
