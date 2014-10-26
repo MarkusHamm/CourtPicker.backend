@@ -14,7 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
+  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -79,9 +80,10 @@
 <!--                    <li class="divider"></li>-->
                   </ul>
 	                </li>
-<!--	                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>-->
+		                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>
 	<!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
 <!--	                <li><a href="ueberuns.htm"><spring:message code="menubar.about"/></a></li>-->
+						<li><a href="references.htm"><spring:message code="menubar.references"/></a></li>
 						<li class="active"><a href="contact.htm"><spring:message code="menubar.contact"/></a></li>
 	              </ul>
             </div>
@@ -105,9 +107,7 @@
       <footer>
       	<div class="row">
 			 <div class="col-md-10">
-			 	<p>&copy; 2014 CourtPicker &middot; 
-<!--        		<a href="agb.htm"><spring:message code="footer.agb"/></a> &middot; <a href="datasecuritystatement.htm"><spring:message code="footer.dataSecurity"/></a> &middot; <a href="contact.htm"><spring:message code="footer.contact"/></a>-->
-        		</p>
+			 	<p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
 			 </div>
 			 <div class="fb-like col-md-2" data-href="https://www.facebook.com/courtpicker" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false" style="align:right;">
 			 </div>

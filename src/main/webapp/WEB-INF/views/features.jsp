@@ -14,7 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
+  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -71,9 +72,10 @@
 <!--                    <li class="divider"></li>-->
                   </ul>
                 </li>
-<!--                <li><a href="pricelist.htm">Preise</a></li>-->
+	                <li><a href="pricelist.htm">Preise</a></li>
 <!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
 <!--                <li><a href="ueberuns.htm">Über Uns</a></li>-->
+					<li><a href="references.htm"><spring:message code="menubar.references"/></a></li>
 					<li><a href="contact.htm"><spring:message code="menubar.contact"/></a></li>
               </ul>
             </div>
@@ -90,7 +92,7 @@
  		<div class="row">
 			 <div class="col-md-6"><h1>Funktionalitäten von CourtPicker</h1>
 			 </div>
-			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-success" href="/configurator" role="button">Meinen CourtPicker jetzt ausprobieren &raquo;</a></span>
+			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-primary" href="http://www.courtpicker.com/createnew/#/configureCourts" role="button">Meinen CourtPicker jetzt ausprobieren &raquo;</a></span>
 			 </div>
 		</div>  	
     	<hr class="divider">	
@@ -464,9 +466,7 @@
 	      <hr class="divider">
       <footer>
         <p class="pull-right"><a href="#">Nach oben</a></p>
-        <p>&copy; 2014 CourtPicker &middot; 
-<!--        <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a> &middot; <a href="contact.htm">Kontakt</a>-->
-        </p>
+        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
       </footer>
 
     </div><!-- /.container -->

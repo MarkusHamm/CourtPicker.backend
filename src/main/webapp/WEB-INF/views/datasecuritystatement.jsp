@@ -14,7 +14,8 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
+  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -37,44 +38,46 @@
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
               </button>
-              <a class="navbar-brand" href="index.htm"><font color="white">CourtPicker</font></a>
+              <a class="navbar-brand active" href="index.htm"><font color="white">CourtPicker</font></a>
             </div>
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
-<!--                <li><a href="index.htm">Home</a></li>-->
-                <li><a href="benefits.htm">Vorteile</a></li>
-                <li class="dropdown">
-                  <a href="features.htm" class="dropdown-toggle" data-toggle="dropdown disabled">Funktionalitäten<b class="caret"></b></a>
-                  <ul class="dropdown-menu">
-<!--                    <li class="divider"></li>-->
-                    <li class="dropdown-header">Online-Konfiguration</li>
+	<!--                <li class="active"><a href="index.htm">Home</a></li>-->
+	                <li><a href="benefits.htm"><spring:message code="menubar.benefits"/></a></li>
+	                <li class="dropdown">
+	                  <a href="features.htm" class="dropdown-toggle" data-toggle="dropdown disabled"><spring:message code="menubar.features"/><b class="caret"></b></a>
+	                  <ul class="dropdown-menu">
+	<!--                    <li class="divider"></li>-->
+	                     <li class="dropdown-header">Online-Konfiguration</li>
                     <li><a href="features.htm#courtconfig">Konfiguration von Platzkategorien und Plätzen</a></li>
-                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>
+<!--                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>-->
                     <li><a href="features.htm#priceconfig">Flexible Tarifeinstellungen für jede Platzkategorie</a></li>
                     <li><a href="features.htm#layoutconfig">Eigenes Layout für Deinen CourtPicker</a></li>
-                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
 <!--                    <li><a href="features.htm#integration">Integration in Deine Homepage</a></li>-->
                     <li class="divider"></li>
                     <li class="dropdown-header">Reservierungsfunktionalitäten</li>
                     <li><a href="features.htm#combinedweekview">Kombinierte Wochenansicht</a></li>
                     <li><a href="features.htm#dayview">Tagesansicht</a></li>
                     <li><a href="features.htm#reservation">Einzel- und Aboreservierungen</a></li>
-                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>
+<!--                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>-->
                     <li><a href="features.htm#customerarea">Eigener Benutzerbereich für Deine Kunden</a></li>
                     <li class="divider"></li>
                     <li class="dropdown-header">Administrationsfunktionalitäten</li>
+                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
                     <li><a href="features.htm#payment">Bezahlstatus von Reservierungen verwalten</a></li>
                     <li><a href="features.htm#closure">Tagesabschluss auf Knopfdruck</a></li>
-                    <li><a href="features.htm#statistics">Statistiken</a></li>
-                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>
-                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>
+<!--                    <li><a href="features.htm#statistics">Statistiken</a></li>-->
+<!--                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>-->
+<!--                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>-->
 <!--                    <li class="divider"></li>-->
                   </ul>
-                </li>
-                <li><a href="pricelist.htm">Preise</a></li>
-<!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
-                <li><a href="ueberuns.htm">Über Uns</a></li>
-              </ul>
+	                </li>
+		                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>
+	<!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
+<!--	                <li><a href="ueberuns.htm"><spring:message code="menubar.about"/></a></li>-->
+						<li><a href="references.htm"><spring:message code="menubar.references"/></a></li>
+						<li><a href="contact.htm"><spring:message code="menubar.contact"/></a></li>
+	              </ul>
             </div>
           </div>
         </div>
@@ -91,53 +94,85 @@
 			Unser Unternehmen, nachstehend CourtPicker genannt, geht mit Ihren persönlichen Daten sehr verantwortungsvoll um 
 			und die nachstehende Datenschutzerklärung soll Ihnen einen Überblick geben, was mit den Daten passiert und welche Schutz wir anbieten.
 			<br>
-			<h2>1. Gegenstand der Datenschutzerklärung</h2>
-			Diese Erklärung bezieht sich auf die Daten, die durch den Besuch unserer Webseite bekannt werden und informiert darüber, 
-			wie mit den Daten umgegangen wird. Ein Datenaustausch mit anderen Firmen erfolgt nicht, 
-			wodurch die Datenschutzerklärung auf Ihren Besuch unserer Webseite beschränkt bleibt.
-			
-			<h2>2. Persönliche Daten und ihre Anwendung</h2>
-			Um bei uns einkaufen zu können, brauchen Sie ein Kundenkonto. Dieses Kundenkonto beinhaltet persönliche Daten wie den Namen, die Anschrift oder die E-Mail-Adresse. 
-			Die Daten werden in unserer Datenbank zwecks späterer Verarbeitung beim Einloggen gespeichert.
+			<h4>1. Geltung der Datenschutzbestimmungen</h4>
+			(1) Diese Datenschutzerklärung beschreibt, welche personenbezogenen Daten CourtPicker (CourtPicker GesBR, 
+			XXX, 1230 Wien, im Zusammenhang mit der Nutzung der Reservierungssystemlösung "CourtPicker" erhebt und 
+			zu welchem Zweck diese verarbeitet werden.
 			<br>
-			<p><font style="color:blue;">Zudem werden automatisch Daten in unseren Logfiles gespeichert, die wir von Ihrem Browser während des Besuches erhalten 
-			(Browser ist zum Beispiel der Internet Explorer, Firefox, Safari etc.). 
-			Das bedeutet, dass die IP-Adresse bekannt ist und es wird ein Cookie auf Ihrem Computer angelegt. 
-			Dieses Cookie garantiert, dass die Abwicklung der Bestellung ordnungsgemäß abgewickelt werden kann und vor allem ist es dadurch möglich, 
-			Ihre Interessen zu speichern, sodass wir Ihnen beim nächsten Besuch jene Produkte anbieten können, die Sie besonders interessieren, 
-			ohne dass Sie das Interesse wiederholen müssen.</font>
-			</p>
-			
-			<h2>3. Weitergabe der Daten</h2>
-			Die Daten, die wir von Ihnen erhalten haben, werden nicht an Dritte weitergegeben. 
-			
-			<h2>4. Cookies</h2>
-			<font style="color:blue;">Immer wieder kommt es zu Unsicherheiten wegen der Cookies, die auf dem Computer des Besuchers gespeichert werden. 
-			Doch diese kleinen Dateien sind reine Informationsspeicher. Es werden keine Viren produziert, der Computer wird nicht angegriffen und Sie werden nicht ausgeforscht.
+			(2) Diese Datenschutzerklärung findet Anwendung auf die Datenverarbeitung im Zusammenhang mit 
+			<ul>
+			<li>a) der Nutzung unserer Website (www.courtpicker.com) sowie
+			</li>
+			<li>b) der Nutzung der Reservierungssystemlösung CourtPicker.
+			</li>
+			</ul>
+			(3) Soweit von unserer Website oder CourtPicker auf andere Seiten verlinkt wird, haben wir weder Einfluss 
+			noch Kontrolle auf verlinkte Angebote und Inhalte, noch können wir eine Verantwortung für die Einhaltung 
+			der Datenschutzbestimmungen auf diesen verlinkten Webseiten übernehmen. Wir empfehlen daher, die
+			Datenschutzbestimmungen dieser verlinkten Webseiten durchzusehen, um feststellen zu können, wie und 
+			in welchem Umfang personenbezogene Informationen erhoben, genutzt oder und anderen zugänglich 
+			gemacht werden.
+			<br><br>
+			<h4>2. Datenverarbeitung und Datenerhebung auf unserer Website "courtpicker.com"</h4>
+			(1) Sie können unsere Webseiten grundsätzlich anonym besuchen, d.h., ohne, dass wir Information darüber 
+			erhalten, wer Sie sind.
 			<br>
-			Ziel des Cookies ist einzig, Ihre persönlichen Aktivitäten und Interessen zu speichern, 
-			sodass wir bei Ihrem nächsten Besuch damit arbeiten können. Der Vorteil für Sie besteht auch darin, 
-			dass Sie beim Besuch unserer Webseite sofort jene Angebote sehen können, die Ihren Interessen entsprechen. 
-			Das ist möglich, weil im Cookie gespeichert ist, welche Produkte Sie sich zuletzt angeschaut haben und entsprechende Alternativen oder Ergänzungen herausgesucht werden, 
-			sobald Sie die Seite aufrufen.</font>
+			(2) Wenn Sie unsere Website aufrufen, werden jedoch standardmäßig Daten über diesen Vorgang in einer
+			Protokolldatei (sog. Logfile) gespeichert und verarbeitet. Im Einzelnen werden in den sog. Logfiles 
+			hierbei Ihre IP-Adresse, das Datum und die Uhrzeit des Aufrufs unserer Website, die aufgerufene URL 
+			(unserer Webseite), die URL, woher Sie auf unsere Website gekommen sind und die Kennung Ihres Browsers 
+			gespeichert. Diese Daten werden zur Sicherung eines störungsfreien Betriebs benötigt und werden 
+			anonymisiert genutzt, um die Gestaltung der Website und der Betriebsabläufe zu verbessern.
+			<br>
+			(3) Ein Rückschluss auf Ihre Person ist hierdurch jedoch nicht möglich. Die Daten in den Logfiles werden 
+			ausschließlich für statistische Zwecke ausgewertet und spätestens nach Ablauf von sechs (6) Monaten 
+			automatisch gelöscht.
+			<br>
+			(4) Darüber hinaus werden persönliche (personenbezogene) Daten auf unserer Website nur erhoben, wenn Sie
+			uns diese von sich aus bei der Registrierung bereitstellen oder über ein Kontaktformular mit uns in 
+			Verbindung treten.
+			<br>
+			(5) Sofern Sie innerhalb unseres Internetangebotes die Möglichkeit zur Eingabe von personenbezogenen 
+			Daten erhalten und wahrnehmen, insbesondere persönliche oder geschäftliche Daten (E-Mail-Adressen, 
+			Namen, Anschriften) angeben, so erfolgt dies stets auf freiwilliger Basis. CourtPicker wird diese Daten 
+			ausschließlich zur Beantwortung und Bearbeitung Ihrer Anfragen speichern und nutzen. Die Daten werden
+			nicht an Dritte weitergegeben.  
+			<br><br>
+			<h4>3. Cookies</h4>
+			(1) Ferner verwendet CourtPicker auf den Webseiten sogenannte Cookies. Bei Cookies handelt es sich um
+			kleine Textdateien, die beim Besuch unserer Webseite auf dem Gerät des Nutzers gespeichert werden.
+			<br>
+			(2) Wenn Sie auf die Website von CourtPicker zurückkehren, ist es durch den Cookie möglich, die zuvor 
+			eingegebenen Informationen (Suchanfragen, Benutzernamen etc.) automatisch zu laden, so dass die Daten
+			nicht erneut eingegeben werden müssen um die zuvorkonfigurierten Funktionen zu nutzen. Auf diese Weise
+			können schnellere und genauere Ergebnisse geliefert und der Webauftritt von CourtPicker für den Nutzer
+			individualisiert und optimiert werden.
+			<br>
+			(3) Die Daten, die mit Hilfe der vorgenannten Cookies gesammelt werden, sind anonym. Wir werden diese
+			Daten ohne Zustimmung von Ihnen weder mit persönlichen (personenbezogenen) Daten verknüpfen noch
+			abgleichen. Sie haben die Möglichkeit, jederzeit über Ihre Browsereinstellungen Cookies zu akzeptieren,
+			abzulehnen oder manuell zu löschen. Die Anleitung hierfür ist den Einstellungen der jeweils benutzten
+			Browser zu entnehmen. Falls Cookies abgelehnt werden, kann dies unter Umständen die Leistung der
+			Dienste herabsetzen oder die Verfügbarkeit einzelner Dienste auf der Webseite einschränken. 
+			<h4>4. Kontaktformulare</h4>
+			(1) Wir speichern die von Ihnen im Kontaktformular eingegebenen Daten (insbesondere Name, Firma und 
+			E-Mail-Adresse) und verwenden diese ausschließlich zum Zwecke der individuellen Kommunikation mit Ihnen.
+			<br>
+			(2) Bitte beachten Sie, dass die Übermittlung der Daten nicht verschlüsselt erfolgt und deshalb keine 
+			vertraulichen Informationen über das Kontaktformular gesendet werden sollten. 
+			<br>
+			<h4>Auskunfts-, Berichtigungs- und Löschungsrecht</h4>
+			(1) Sie haben das Recht, jederzeit Auskunft über die von Ihnen gespeicherten Daten zu erhalten oder 
+			deren Löschung oder Berichtigung zu verlangen.
+			<br>
+			(2) Dieses Auskunfts-, Löschungs- und Berichtigungsrecht ist unentgeltlich. Bitte wenden Sie sich hierzu 
+			per E-Mail an: info@courtpicker.com
 			
-			<h2>5. Bearbeitung und Löschung der Daten</h2>
-			Natürlich haben Sie jederzeit das Recht, Ihre eingetragenen persönlichen Daten im Kundenkonto zu korrigieren. Das ist uns sogar sehr wichtig, 
-			falls sich beispielsweise eine Adresse ändert. 
-			
-			<h2>6. Datenschutz</h2>
-			Wie bereits erwähnt, werden die Daten nicht weitergegeben. Um die Datensicherheit zu gewährleisten, ist Ihr Kundenkonto passwortgeschützt, 
-			wodurch fremde Personen keinen Zugriff auf das Konto und die Daten haben.
-			
-			<h2>7. Änderungen dieser Datenschutzerklärung</h2>
-			Der Webseitenbetreiber behält sich vor, diese Datenschutzerklärung zu ändern. 
-			Sollte dies der Fall sein, werden Sie per E-Mail informiert und Sie erhalten entsprechende Informationen auch im Rahmen Ihres Kundenkontos.
-    	  
       <!-- FOOTER -->
       <hr class="divider">
       <footer>
         <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a> &middot; <a href="contact.htm">Kontakt</a></p>
+        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
       </footer>
 
     </div><!-- /.container -->

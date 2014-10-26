@@ -14,14 +14,15 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
+  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
     <!-- Bootstrap core CSS -->
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 	<!-- bootstrap -->
-	<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+	<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -82,9 +83,10 @@
 <!--                    <li class="divider"></li>-->
                   </ul>
 	                </li>
-<!--	                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>-->
+		                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>
 	<!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
 <!--	                <li><a href="ueberuns.htm"><spring:message code="menubar.about"/></a></li>-->
+						<li><a href="references.htm"><spring:message code="menubar.references"/></a></li>
 						<li><a href="contact.htm"><spring:message code="menubar.contact"/></a></li>
 	              </ul>	
 	         </div>
@@ -115,28 +117,28 @@
 	      </ol>
 	      <div class="carousel-inner">
 	      	<div class="item active">
-	          <img src="${contextPath}/resources/images/de/courtpickercarousel1.gif" alt="First slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel1newwithlogo.gif" alt="First slide">
 	          <div class="carousel-caption">
-	          	<h2><spring:message code="carousel.slide1.header"/></h2>
-	     		<p class="lead"><spring:message code="carousel.slide1"/></p>
+<!--	          	<h2><spring:message code="carousel.slide1.header"/></h2>-->
+<!--	     		<p class="lead"><spring:message code="carousel.slide1"/></p>-->
 	          </div>	
 	        </div>
 	        <div class="item">
-	          <img src="${contextPath}/resources/images/de/courtpickercarousel2.gif" alt="First slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel4new.gif" alt="First slide">
 	          <div class="carousel-caption">
-	     		<p class="lead"><spring:message code="carousel.slide2"/></p>
+<!--	     		<p class="lead"><spring:message code="carousel.slide2"/></p>-->
 	          </div>	
 	        </div>
 	        <div class="item">
-	          <img src="${contextPath}/resources/images/de/courtpickercarousel3.gif" alt="Second slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel3new.gif" alt="Second slide">
 	          <div class="carousel-caption">
-	          	<p class="lead"><spring:message code="carousel.slide3"/></p>
+<!--	          	<p class="lead"><spring:message code="carousel.slide3"/></p>-->
 	          </div>
 	        </div>
 	        <div class="item">
-	          <img src="${contextPath}/resources/images/de/courtpickercarousel4.gif" alt="Third slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel2new.gif" alt="Third slide">
 	          <div class="carousel-caption">
-	          	<p class="lead"><spring:message code="carousel.slide4"/></p>
+<!--	          	<p class="lead"><spring:message code="carousel.slide4"/></p>-->
 	          </div>
 	        </div>
 	      </div>
@@ -168,13 +170,13 @@
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/preisschild.png" width="50" height="50" alt="Generic placeholder image">-->
           <h2><spring:message code="index.prices.header"/></h2>
           <p><spring:message code="index.prices.text"/></p>
-          <p><a class="btn btn-default disabled" href="pricelist.htm" role="button"><spring:message code="index.prices.button"/> &raquo;</a></p>
+          <p><a class="btn btn-default" href="pricelist.htm" role="button"><spring:message code="index.prices.button"/> &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/zahnrad.png" width="50" height="50" alt="Generic placeholder image">-->
           <h2><spring:message code="index.tryOut.header"/></h2>
           <p><spring:message code="index.tryOut.text"/></p>
-          <p><a class="btn btn-success" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
+          <p><a class="btn btn-primary" href="http://www.courtpicker.com/createnew/#/configureCourts" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div>
 
@@ -249,9 +251,7 @@
       <footer>
       	<div class="row">
 			 <div class="col-md-10">
-			 	<p>&copy; 2014 CourtPicker &middot; 
-<!--        		<a href="agb.htm"><spring:message code="footer.agb"/></a> &middot; <a href="datasecuritystatement.htm"><spring:message code="footer.dataSecurity"/></a> &middot; <a href="contact.htm"><spring:message code="footer.contact"/></a>-->
-        		</p>
+			 	<p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
 			 </div>
 			 <div class="fb-like col-md-2" data-href="https://www.facebook.com/courtpicker" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false" style="align:right;">
 			 </div>

@@ -91,7 +91,7 @@
 	    <div class="row">
 			 <div class="col-md-6"><h1>Über Uns</h1>
 			 </div>
-			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-success" href="/configurator" role="button">Meinen CourtPicker jetzt ausprobieren &raquo;</a></span>
+			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-success" href="http://5.45.104.233/createnew/#/configureCourts" role="button">Meinen CourtPicker jetzt ausprobieren &raquo;</a></span>
 			 </div>
 		</div> 
 	    <hr class="divider"> 
