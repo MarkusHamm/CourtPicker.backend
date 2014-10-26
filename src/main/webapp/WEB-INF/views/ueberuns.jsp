@@ -49,27 +49,27 @@
                   <a href="features.htm" class="dropdown-toggle" data-toggle="dropdown disabled">Funktionalitäten<b class="caret"></b></a>
                   <ul class="dropdown-menu">
 <!--                    <li class="divider"></li>-->
-                    <li class="dropdown-header">Online-Konfiguration</li>
+                   <li class="dropdown-header">Online-Konfiguration</li>
                     <li><a href="features.htm#courtconfig">Konfiguration von Platzkategorien und Plätzen</a></li>
-                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>
+<!--                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>-->
                     <li><a href="features.htm#priceconfig">Flexible Tarifeinstellungen für jede Platzkategorie</a></li>
                     <li><a href="features.htm#layoutconfig">Eigenes Layout für Deinen CourtPicker</a></li>
-                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
 <!--                    <li><a href="features.htm#integration">Integration in Deine Homepage</a></li>-->
                     <li class="divider"></li>
                     <li class="dropdown-header">Reservierungsfunktionalitäten</li>
                     <li><a href="features.htm#combinedweekview">Kombinierte Wochenansicht</a></li>
                     <li><a href="features.htm#dayview">Tagesansicht</a></li>
                     <li><a href="features.htm#reservation">Einzel- und Aboreservierungen</a></li>
-                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>
+<!--                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>-->
                     <li><a href="features.htm#customerarea">Eigener Benutzerbereich für Deine Kunden</a></li>
                     <li class="divider"></li>
                     <li class="dropdown-header">Administrationsfunktionalitäten</li>
+                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
                     <li><a href="features.htm#payment">Bezahlstatus von Reservierungen verwalten</a></li>
                     <li><a href="features.htm#closure">Tagesabschluss auf Knopfdruck</a></li>
-                    <li><a href="features.htm#statistics">Statistiken</a></li>
-                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>
-                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>
+<!--                    <li><a href="features.htm#statistics">Statistiken</a></li>-->
+<!--                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>-->
+<!--                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>-->
 <!--                    <li class="divider"></li>-->
                   </ul>
                 </li>
@@ -120,7 +120,7 @@
 	
 		    <div class="row featurette">
 		    	<div class="col-md-2">
-		          	<img class="featurette-image img-responsive" src="${contextPath}/resources/css/images/MaHe.jpg" alt="Generic placeholder image" width="150px;">
+		          	<img class="featurette-image img-responsive" src="${contextPath}/resources/images/MaHe.jpg" alt="Generic placeholder image" width="150px;">
 		        </div>
 		        <div class="col-md-9">
 		          <h2 class="featurette-heading">Matthias Heindl. <span class="text-muted">Leidenschaftlicher Tennisspieler.</span></h2>
@@ -135,7 +135,7 @@
 	
 	      	<div class="row featurette">
 		        <div class="col-md-2">
-		          <img class="featurette-image img-responsive" src="${contextPath}/resources/css/images/MaHa2.jpg" alt="Generic placeholder image" width="150px;">
+		          <img class="featurette-image img-responsive" src="${contextPath}/resources/images/MaHa2.jpg" alt="Generic placeholder image" width="150px;">
 		        </div>
 		        <div class="col-md-9">
 		          <h2 class="featurette-heading">Markus Hamm. <span class="text-muted">See for yourself.</span></h2>
@@ -144,21 +144,7 @@
 		          <button class="btn btn-xing" onclick="window.open('https://www.xing.com/profile/Markus_Hamm7');"><i class="fa fa-xing"></i> | Connect with XING</button>
 		         </div>
 		   	</div>
-	 
-	    	<hr class="featurette-divider">
-	    	
-	    	<h2>Partner</h2>
-	    	
-	    	<div class="row featurette">
-	        <div class="col-md-2">
-	          <img class="featurette-image img-responsive" src="${contextPath}/resources/css/images/fgrcon.png" alt="Generic placeholder image" width="150px;">
-	        </div>
-	        <div class="col-md-10">
-	          <h2 class="featurette-heading">FGRcon. <span class="text-muted">Hosting Provider.</span></h2>
-	          <p class="lead">tbd.</p>
-	          <p></p>
-	        </div>
-	      </div>
+
 	
       <!-- FOOTER -->
       <hr class="divider">

@@ -72,7 +72,7 @@
                   </ul>
                 </li>
                 <li><a href="pricelist.htm">Preise</a></li>
-<!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
+                <li><a href="/configurator">Try now!</a></li>
                 <li><a href="ueberuns.htm">Über Uns</a></li>
               </ul>
             </div>

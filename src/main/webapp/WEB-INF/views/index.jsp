@@ -26,6 +26,17 @@
 <!-- NAVBAR
 ================================================== -->
   <body>
+  	<div id="fb-root"></div>
+		<script>(function(d, s, id) {
+		  var js, fjs = d.getElementsByTagName(s)[0];
+		  if (d.getElementById(id)) return;
+		  js = d.createElement(s); js.id = id;
+		  js.src = "//connect.facebook.net/de_DE/all.js#xfbml=1";
+		  fjs.parentNode.insertBefore(js, fjs);
+		}(document, 'script', 'facebook-jssdk'));</script>
+<!--  	<div style="position:absolute;z-index:99999;left:980px;top:-30px;">-->
+<!--			<img src="${contextPath}/resources/images/courtpickerAnkuendigung.gif" alt="ankuendigung" width="200px;">-->
+<!--	</div>-->
     <div class="navbar-wrapper">
       <div class="container" style="margin-bottom:0px!important;">
         <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom:0px!important;">
@@ -47,33 +58,34 @@
 	                  <a href="features.htm" class="dropdown-toggle" data-toggle="dropdown disabled"><spring:message code="menubar.features"/><b class="caret"></b></a>
 	                  <ul class="dropdown-menu">
 	<!--                    <li class="divider"></li>-->
-	                    <li class="dropdown-header"><spring:message code="menubar.features.submenu.section.onlineConfig"/></li>
-	                    <li><a href="features.htm#courtconfig"><spring:message code="menubar.features.submenu.courts"/></a></li>
-	                    <li><a href="features.htm#reservationconfig"><spring:message code="menubar.features.submenu.reservationCategories"/></a></li>
-	                    <li><a href="features.htm#priceconfig"><spring:message code="menubar.features.submenu.tarifs"/></a></li>
-	                    <li><a href="features.htm#layoutconfig"><spring:message code="menubar.features.submenu.layout"/></a></li>
-	                    <li><a href="features.htm#userconfig"><spring:message code="menubar.features.submenu.authorization"/></a></li>
-	<!--                    <li><a href="features.htm#integration">Integration in Deine Homepage</a></li>-->
-	                    <li class="divider"></li>
-	                    <li class="dropdown-header"><spring:message code="menubar.features.submenu.section.reservationFeatures"/></li>
-	                    <li><a href="features.htm#combinedweekview"><spring:message code="menubar.features.submenu.weekView"/></a></li>
-	                    <li><a href="features.htm#dayview"><spring:message code="menubar.features.submenu.dayView"/></a></li>
-	                    <li><a href="features.htm#reservation"><spring:message code="menubar.features.submenu.singleAndAboReservation"/></a></li>
-	                    <li><a href="features.htm#emails"><spring:message code="menubar.features.submenu.email"/></a></li>
-	                    <li><a href="features.htm#customerarea"><spring:message code="menubar.features.submenu.userArea"/></a></li>
-	                    <li class="divider"></li>
-	                    <li class="dropdown-header"><spring:message code="menubar.features.submenu.section.adminFeatures"/></li>
-	                    <li><a href="features.htm#payment"><spring:message code="menubar.features.submenu.paymentStatus"/></a></li>
-	                    <li><a href="features.htm#closure"><spring:message code="menubar.features.submenu.dayClosure"/></a></li>
-	                    <li><a href="features.htm#statistics"><spring:message code="menubar.features.submenu.statistics"/></a></li>
-	                    <li><a href="features.htm#search"><spring:message code="menubar.features.submenu.searchAndExcelExport"/></a></li>
-	                    <li><a href="features.htm#settings"><spring:message code="menubar.features.submenu.settings"/></a></li>
-	<!--                    <li class="divider"></li>-->
-	                  </ul>
+	                <li class="dropdown-header">Online-Konfiguration</li>
+                    <li><a href="features.htm#courtconfig">Konfiguration von Platzkategorien und Plätzen</a></li>
+<!--                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>-->
+                    <li><a href="features.htm#priceconfig">Flexible Tarifeinstellungen für jede Platzkategorie</a></li>
+                    <li><a href="features.htm#layoutconfig">Eigenes Layout für Deinen CourtPicker</a></li>
+<!--                    <li><a href="features.htm#integration">Integration in Deine Homepage</a></li>-->
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Reservierungsfunktionalitäten</li>
+                    <li><a href="features.htm#combinedweekview">Kombinierte Wochenansicht</a></li>
+                    <li><a href="features.htm#dayview">Tagesansicht</a></li>
+                    <li><a href="features.htm#reservation">Einzel- und Aboreservierungen</a></li>
+<!--                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>-->
+                    <li><a href="features.htm#customerarea">Eigener Benutzerbereich für Deine Kunden</a></li>
+                    <li class="divider"></li>
+                    <li class="dropdown-header">Administrationsfunktionalitäten</li>
+                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
+                    <li><a href="features.htm#payment">Bezahlstatus von Reservierungen verwalten</a></li>
+                    <li><a href="features.htm#closure">Tagesabschluss auf Knopfdruck</a></li>
+<!--                    <li><a href="features.htm#statistics">Statistiken</a></li>-->
+<!--                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>-->
+<!--                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>-->
+<!--                    <li class="divider"></li>-->
+                  </ul>
 	                </li>
-	                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>
+<!--	                <li><a href="pricelist.htm"><spring:message code="menubar.prices"/></a></li>-->
 	<!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
-	                <li><a href="ueberuns.htm"><spring:message code="menubar.about"/></a></li>
+<!--	                <li><a href="ueberuns.htm"><spring:message code="menubar.about"/></a></li>-->
+						<li><a href="contact.htm"><spring:message code="menubar.contact"/></a></li>
 	              </ul>	
 	         </div>
 <!--			  <div class="navbar-right">-->
@@ -103,26 +115,26 @@
 	      </ol>
 	      <div class="carousel-inner">
 	      	<div class="item active">
-	          <img src="${contextPath}/resources/css/images/img/de/courtpickercarousel1.gif" alt="First slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel1.gif" alt="First slide">
 	          <div class="carousel-caption">
 	          	<h2><spring:message code="carousel.slide1.header"/></h2>
 	     		<p class="lead"><spring:message code="carousel.slide1"/></p>
 	          </div>	
 	        </div>
 	        <div class="item">
-	          <img src="${contextPath}/resources/css/images/img/de/courtpickercarousel2.gif" alt="First slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel2.gif" alt="First slide">
 	          <div class="carousel-caption">
 	     		<p class="lead"><spring:message code="carousel.slide2"/></p>
 	          </div>	
 	        </div>
 	        <div class="item">
-	          <img src="${contextPath}/resources/css/images/img/de/courtpickercarousel3.gif" alt="Second slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel3.gif" alt="Second slide">
 	          <div class="carousel-caption">
 	          	<p class="lead"><spring:message code="carousel.slide3"/></p>
 	          </div>
 	        </div>
 	        <div class="item">
-	          <img src="${contextPath}/resources/css/images/img/de/courtpickercarousel4.gif" alt="Third slide">
+	          <img src="${contextPath}/resources/images/de/courtpickercarousel4.gif" alt="Third slide">
 	          <div class="carousel-caption">
 	          	<p class="lead"><spring:message code="carousel.slide4"/></p>
 	          </div>
@@ -156,7 +168,7 @@
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/preisschild.png" width="50" height="50" alt="Generic placeholder image">-->
           <h2><spring:message code="index.prices.header"/></h2>
           <p><spring:message code="index.prices.text"/></p>
-          <p><a class="btn btn-default" href="pricelist.htm" role="button"><spring:message code="index.prices.button"/> &raquo;</a></p>
+          <p><a class="btn btn-default disabled" href="pricelist.htm" role="button"><spring:message code="index.prices.button"/> &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/zahnrad.png" width="50" height="50" alt="Generic placeholder image">-->
@@ -235,8 +247,15 @@
       <!-- FOOTER -->
       <hr class="divider">
       <footer>
-        <p class="pull-right"><a href="#"><spring:message code="footer.backToTop"/></a></p>
-        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm"><spring:message code="footer.agb"/></a> &middot; <a href="datasecuritystatement.htm"><spring:message code="footer.dataSecurity"/></a> &middot; <a href="contact.htm"><spring:message code="footer.contact"/></a></p>
+      	<div class="row">
+			 <div class="col-md-10">
+			 	<p>&copy; 2014 CourtPicker &middot; 
+<!--        		<a href="agb.htm"><spring:message code="footer.agb"/></a> &middot; <a href="datasecuritystatement.htm"><spring:message code="footer.dataSecurity"/></a> &middot; <a href="contact.htm"><spring:message code="footer.contact"/></a>-->
+        		</p>
+			 </div>
+			 <div class="fb-like col-md-2" data-href="https://www.facebook.com/courtpicker" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false" style="align:right;">
+			 </div>
+		</div>            
       </footer>
 
     </div><!-- /.container -->

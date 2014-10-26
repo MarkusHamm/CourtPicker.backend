@@ -42,38 +42,39 @@
             <div class="navbar-collapse collapse">
               <ul class="nav navbar-nav">
 <!--                <li><a href="index.htm">Home</a></li>-->
-                <li class="active"><a href="benefits.htm">Vorteile</a></li>
+                <li class="active"><a href="benefits.htm"><spring:message code="menubar.benefits"/></a></li>
                <li class="dropdown">
-                  <a href="features.htm" class="dropdown-toggle" data-toggle="dropdown disabled">Funktionalitäten<b class="caret"></b></a>
+                  <a href="features.htm" class="dropdown-toggle" data-toggle="dropdown disabled"><spring:message code="menubar.features"/><b class="caret"></b></a>
                   <ul class="dropdown-menu">
 <!--                    <li class="divider"></li>-->
-                    <li class="dropdown-header">Online-Konfiguration</li>
+                     <li class="dropdown-header">Online-Konfiguration</li>
                     <li><a href="features.htm#courtconfig">Konfiguration von Platzkategorien und Plätzen</a></li>
-                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>
+<!--                    <li><a href="features.htm#reservationconfig">Deine eigenen Reservierungskategorien</a></li>-->
                     <li><a href="features.htm#priceconfig">Flexible Tarifeinstellungen für jede Platzkategorie</a></li>
                     <li><a href="features.htm#layoutconfig">Eigenes Layout für Deinen CourtPicker</a></li>
-                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
 <!--                    <li><a href="features.htm#integration">Integration in Deine Homepage</a></li>-->
                     <li class="divider"></li>
                     <li class="dropdown-header">Reservierungsfunktionalitäten</li>
                     <li><a href="features.htm#combinedweekview">Kombinierte Wochenansicht</a></li>
                     <li><a href="features.htm#dayview">Tagesansicht</a></li>
                     <li><a href="features.htm#reservation">Einzel- und Aboreservierungen</a></li>
-                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>
+<!--                    <li><a href="features.htm#emails">Email-Bestätigungen</a></li>-->
                     <li><a href="features.htm#customerarea">Eigener Benutzerbereich für Deine Kunden</a></li>
                     <li class="divider"></li>
                     <li class="dropdown-header">Administrationsfunktionalitäten</li>
+                    <li><a href="features.htm#userconfig">Mehrstufiges Berechtigungskonzept</a></li>
                     <li><a href="features.htm#payment">Bezahlstatus von Reservierungen verwalten</a></li>
                     <li><a href="features.htm#closure">Tagesabschluss auf Knopfdruck</a></li>
-                    <li><a href="features.htm#statistics">Statistiken</a></li>
-                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>
-                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>
+<!--                    <li><a href="features.htm#statistics">Statistiken</a></li>-->
+<!--                    <li><a href="features.htm#search">Reservierungssuche und Excel-Export</a></li>-->
+<!--                    <li><a href="features.htm#settings">Hilfreiche Settings</a></li>-->
 <!--                    <li class="divider"></li>-->
                   </ul>
                 </li>
-                <li><a href="pricelist.htm">Preise</a></li>
+<!--                <li><a href="pricelist.htm">Preise</a></li>-->
 <!--                <li><a href="http://localhost:8080/app/cp.html#/configureCourts?createNew">Try now!</a></li>-->
-                <li><a href="ueberuns.htm">Über Uns</a></li>
+<!--                <li><a href="ueberuns.htm">Über Uns</a></li>-->
+					<li><a href="contact.htm"><spring:message code="menubar.contact"/></a></li>
               </ul>
             </div>
           </div>
@@ -183,8 +184,10 @@
       <!-- FOOTER -->
       <hr class="divider">
       <footer>
-        <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a> &middot; <a href="contact.htm">Kontakt</a></p>
+        <p class="pull-right"><a href="#">Nach oben</a></p>
+        <p>&copy; 2014 CourtPicker &middot; 
+<!--        <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a> &middot; <a href="contact.htm">Kontakt</a>-->
+        </p>
       </footer>
 
     </div><!-- /.container -->
