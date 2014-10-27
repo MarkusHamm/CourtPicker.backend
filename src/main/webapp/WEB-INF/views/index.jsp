@@ -14,8 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
-  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -39,8 +37,8 @@
 <!--			<img src="${contextPath}/resources/images/courtpickerAnkuendigung.gif" alt="ankuendigung" width="200px;">-->
 <!--	</div>-->
     <div class="navbar-wrapper">
-      <div class="container" style="margin-bottom:0px!important;">
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom:0px!important;">
+      <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom:0px!important;">
+        <div class="container" style="margin-bottom:0px!important;">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -176,7 +174,7 @@
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/zahnrad.png" width="50" height="50" alt="Generic placeholder image">-->
           <h2><spring:message code="index.tryOut.header"/></h2>
           <p><spring:message code="index.tryOut.text"/></p>
-          <p><a class="btn btn-primary" href="http://www.courtpicker.com/createnew/#/configureCourts" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
+          <p><a class="btn btn-primary" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
       </div>
 

@@ -14,8 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
-  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -36,8 +34,8 @@
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
     <div class="navbar-wrapper">
-      <div class="container" style="margin-bottom:0px!important;">
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom:0px!important;">
+      <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom:0px!important;">
+        <div class="container" style="margin-bottom:0px!important;">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -107,7 +105,7 @@
     			</div>
     			<div class="col-md-10 text-justify">
     				<h2 class="featurette-heading">TC Kalksburg<br> <!--<span class="text-muted">8 Freiplätze und 1 Hallenplatz.</span>--></h2>
-		          	<p class="lead"><a href="http://www.courtpicker.com/tckalksburg" target="_blank">www.courtpicker.at/tckalksburg</a></p>
+		          	<p class="lead"><a href="/tckalksburg" target="_blank">www.courtpicker.at/tckalksburg</a></p>
 				  	<p>Der Tennisclub Kalksburg verfügt über 8 Freiplätze und einen Hallenplatz. <br>CourtPicker kommt in diesem Verein hauptsächlich zur Verwaltung des Winterbetriebes in der Halle zum Einsatz.
 				    </p>
     			</div>

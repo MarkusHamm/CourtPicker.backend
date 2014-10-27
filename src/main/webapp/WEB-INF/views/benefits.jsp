@@ -14,8 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
-  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -28,8 +26,8 @@
 ================================================== -->
   <body>
     <div class="navbar-wrapper">
-      <div class="container">
-        <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+      <div class="navbar navbar-inverse navbar-static-top" role="navigation">
+        <div class="container">
           <div class="container">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
@@ -92,7 +90,7 @@
    		<div class="row">
 			 <div class="col-md-6"><h1><spring:message code="benefits.title"/></h1>
 			 </div>
-			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-primary" href="http://www.courtpicker.com/createnew/#/configureCourts" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></span>
+			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-primary" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></span>
 			 </div>
 		</div>  
       

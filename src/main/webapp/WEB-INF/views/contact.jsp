@@ -14,8 +14,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta name="description" content="">
     <meta name="author" content="">
-    <link rel="icon" href="${contextPath}/favicon.ico" type="image/x-icon">
-  	<link rel="shortcut icon" href="${contextPath}/favicon.ico" type="image/x-icon">
 
     <title>CourtPicker</title>
 	<c:set  var="contextPath" value="${pageContext.request.contextPath}" scope="request" />
@@ -36,9 +34,8 @@
 		  fjs.parentNode.insertBefore(js, fjs);
 		}(document, 'script', 'facebook-jssdk'));</script>
     <div class="navbar-wrapper">
-      <div class="container" style="margin-bottom:0px!important;">
         <div class="navbar navbar-inverse navbar-static-top" role="navigation" style="margin-bottom:0px!important;">
-          <div class="container">
+          <div class="container" style="margin-bottom:0px!important;">
             <div class="navbar-header">
               <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
                 <span class="sr-only">Toggle navigation</span>
@@ -89,7 +86,6 @@
             </div>
           </div>
         </div>
-      </div>
     </div>
 	
     <!-- Marketing messaging and featurettes
