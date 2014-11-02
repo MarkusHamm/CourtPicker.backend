@@ -46,16 +46,18 @@ public class CPMailSender {
     @Inject
     private SubscriptionDAO subscriptionDAO;
     
-    public void sendAccountCreatedMail(Customer user) {
+    public void sendAccountCreatedMail(Customer user, String registerInstanceShortName) {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("user", user);
+        model.put("registerInstanceShortName", registerInstanceShortName);
         String body = applyModelToTemplate("accountCreated.vm", model);
         mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Account erstellt", body);
     }
 
-    public void sendMinimalAccountCreatedMail(Customer user) {
+    public void sendMinimalAccountCreatedMail(Customer user, String registerInstanceShortName) {
         Map<String,Object> model = new HashMap<String,Object>();
         model.put("user", user);
+        model.put("registerInstanceShortName", registerInstanceShortName);
         String body = applyModelToTemplate("minimalAccountCreated.vm", model);
         mailEngine.sendHtmlMail(user.getEmail(), null, null, "CourtPicker Account erstellt", body);
     }

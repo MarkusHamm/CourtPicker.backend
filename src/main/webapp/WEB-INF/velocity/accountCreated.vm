@@ -3,13 +3,14 @@
         <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
     </head>
     <body>
-        <h1>CourtPicker Account erstellt</h1>
+        <img src="http://www.courtpicker.com/courtpicker/resources/emailheader.png">
+		<h2>Ihr CourtPicker Benutzer wurde erfolgreich angelegt!</h2>
         <p>
-            Sie können sich mit folgendem Benutzernamen einloggen: $user.userName
+            Sie können sich mit folgendem Benutzernamen unter <a href="http://www.courtpicker.com/$registerInstanceShortName">www.courtpicker.com/$registerInstanceShortName</a> einloggen: $user.userName
         </p>
         <p>
             Bevor sie sich einloggen, müssen sie ihren Account mit folgendem Link aktivieren: <br/>
-            <a href="http://mycourtpicker.com/app/cp.html#/activateUser?userId=$user.id&activationCode=$user.activationCode">Account aktivieren</a>
+            <a href="http://www.courtpicker.com/app/cp.html#/activateUser?userId=$user.id&activationCode=$user.activationCode">Account aktivieren</a>
         </p>
     </body>
 </html>

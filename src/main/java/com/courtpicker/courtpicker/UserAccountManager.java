@@ -22,7 +22,7 @@ public class UserAccountManager {
     @Inject 
     private CPMailSender cpMailSender;
 
-    public Customer registerUser(String userName, String password, String email, String firstName, String lastName) throws UserAlreadyExistsException {
+    public Customer registerUser(String userName, String password, String email, String firstName, String lastName, String registerInstanceShortName) throws UserAlreadyExistsException {
         Customer customer = new Customer();
         customer.setUserName(userName);
         customer.setPassword(DigestUtils.md5Hex(password));
@@ -32,13 +32,13 @@ public class UserAccountManager {
         customer.setActivationCode(UUID.randomUUID().toString());
         
         Customer registeredCustomer = createUser(customer);
-        cpMailSender.sendAccountCreatedMail(registeredCustomer);
+        cpMailSender.sendAccountCreatedMail(registeredCustomer, registerInstanceShortName);
         
         return registeredCustomer;
     }
     
     public Customer registerUserExtended(String userName, String password, String email, String firstName, String lastName,
-            String phoneNumber, String street, String zipCode, String city, String country) throws UserAlreadyExistsException {
+            String phoneNumber, String street, String zipCode, String city, String country, String registerInstanceShortName) throws UserAlreadyExistsException {
         Customer customer = new Customer();
         customer.setUserName(userName);
         customer.setPassword(DigestUtils.md5Hex(password));
@@ -53,7 +53,7 @@ public class UserAccountManager {
         customer.setActivationCode(UUID.randomUUID().toString());
         
         Customer registeredCustomer = createUser(customer);
-        cpMailSender.sendAccountCreatedMail(registeredCustomer);
+        cpMailSender.sendAccountCreatedMail(registeredCustomer, registerInstanceShortName);
         
         return registeredCustomer;
     }    
@@ -74,7 +74,7 @@ public class UserAccountManager {
         return true;
     }
     
-    public Customer createOrGetMinimalUser(String email, String name) {
+    public Customer createOrGetMinimalUser(String email, String name, String registerInstanceShortName) {
         Customer customer = new Customer();
         customer.setUserName(email);
         // password "temp"
@@ -90,7 +90,7 @@ public class UserAccountManager {
             return e.getExistingUser();
         }
         
-        cpMailSender.sendMinimalAccountCreatedMail(customer);
+        cpMailSender.sendMinimalAccountCreatedMail(customer, registerInstanceShortName);
 
         return customer;
     }

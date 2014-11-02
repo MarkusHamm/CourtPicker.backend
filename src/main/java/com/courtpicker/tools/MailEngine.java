@@ -17,7 +17,7 @@ public class MailEngine {
     @Inject
     private JavaMailSender mailSender;
     // has to match with the mailSender server settings (in config file)
-    private final String fromEmail = "markus.hamm@gmx.at";
+    private final String fromEmail = "info@courtpicker.com";
             
     @Async
     public void sendHtmlMail(final String to, final String cc, final String bcc, final String subject, final String text) {

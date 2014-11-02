@@ -3,7 +3,8 @@
         <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
     </head>
     <body>
-        <h1>Courtpicker Abo Reservierung</h1>
+		<img src="http://www.courtpicker.com/courtpicker/resources/emailheader.png">
+        <h2>Courtpicker Abo Reservierung</h2>
         <p>
             Hiermit bestätigen wir ihre Abo Reservierung:
         </p>
@@ -15,5 +16,8 @@
             Preis: $price €<br/>
             Reservierungsnummer: $reservationId
         </p>
+		<p>
+			Bitte bezahlen Sie obigen Betrag vor Ort oder über die auf der Homepage der Anlage angegebene Bankverbindung!  
+		</p>
     </body>
 </html>

@@ -104,11 +104,19 @@ public class CourtpickerController implements Serializable {
     @Inject
     private UserAccountManager userAccountManager;
 
+    @RequestMapping(value="/api/testmail", method=RequestMethod.GET)
+    public @ResponseBody String testmail() {
+        Customer user = new Customer();
+        user.setEmail("markus.hamm@gmail.com");
+        cpMailSender.sendAccountCreatedMail(user, "hugo");
+        return "done";
+    }
+    
     @RequestMapping(value="/api/registerUser", method=RequestMethod.POST)
     public @ResponseBody Customer registerUser(@RequestParam String userName, @RequestParam String password, 
-            @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName) throws Exception {
+            @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String registerInstanceShortName) throws Exception {
         try {
-            Customer customer = userAccountManager.registerUser(userName, password, email, firstName, lastName);
+            Customer customer = userAccountManager.registerUser(userName, password, email, firstName, lastName, registerInstanceShortName);
             return customer;
         }
         catch (UserAlreadyExistsException e) {
@@ -120,9 +128,9 @@ public class CourtpickerController implements Serializable {
     public @ResponseBody Customer registerUserExtended(@RequestParam String userName, @RequestParam String password, 
             @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, 
             @RequestParam String phoneNumber, @RequestParam String street, @RequestParam String zipCode, 
-            @RequestParam String city, @RequestParam String country) throws Exception {
+            @RequestParam String city, @RequestParam String country, @RequestParam String registerInstanceShortName) throws Exception {
         try {
-            Customer customer = userAccountManager.registerUserExtended(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country);
+            Customer customer = userAccountManager.registerUserExtended(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country, registerInstanceShortName);
             return customer;
         }
         catch (UserAlreadyExistsException e) {
@@ -410,7 +418,10 @@ public class CourtpickerController implements Serializable {
             dbCustomerName = customerName;
         }
         else if (customerInputType.toUpperCase().equals("NAME") && createUserAccount) {
-            dbCustomerId = userAccountManager.createOrGetMinimalUser(createUserAccountEmail, customerName).getId();
+            Court court = courtDAO.get(courtId);
+            CourtCategory courtCategory = courtCategoryDAO.get(court.getCourtCategoryId());
+            CPInstance cpInstance = cpInstanceDAO.get(courtCategory.getCpInstanceId());
+            dbCustomerId = userAccountManager.createOrGetMinimalUser(createUserAccountEmail, customerName, cpInstance.getShortName()).getId();
         }
         else {
             dbCustomerId = customerId;
@@ -520,7 +531,8 @@ public class CourtpickerController implements Serializable {
             dbCustomerName = customerName;
         }
         else if (customerInputType.toUpperCase().equals("NAME") && createUserAccount) {
-            dbCustomerId = userAccountManager.createOrGetMinimalUser(createUserAccountEmail, customerName).getId();
+            CPInstance cpInstance = cpInstanceDAO.get(courtCategory.getCpInstanceId());
+            dbCustomerId = userAccountManager.createOrGetMinimalUser(createUserAccountEmail, customerName, cpInstance.getShortName()).getId();
         }
         else {
             dbCustomerId = customerId;

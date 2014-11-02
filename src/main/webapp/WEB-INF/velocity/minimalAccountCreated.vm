@@ -3,13 +3,14 @@
         <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
     </head>
     <body>
-        <h1>CourtPicker Account erstellt</h1>
+	    <img src="http://www.courtpicker.com/courtpicker/resources/emailheader.png">
+		<h2>Für Sie wurde ein CourtPicker-Benutzer angelegt!</h2>
         <p>
-            Ein CourtPicker Account wurde für sie erstellt. <br/>
-            Sie können sich mit dem Benutzernamen: $user.userName und dem passwort: temp einloggen.
-        </p>
-        <p>
-            Sie können das Passwort jederzeit im Kundenbereich ändern.
+			Sie können sich mit folgendem Benutzernamen auf <a href="http://www.courtpicker.com/$registerInstanceShortName">www.courtpicker.com/$registerInstanceShortName</a> einloggen: $user.userName
+		</p>
+		<p>
+			Ihr vorläufiges Passwort lautet: temp
+			Sie können das Passwort jederzeit im Kundenbereich ändern.  
         </p>
     </body>
 </html>

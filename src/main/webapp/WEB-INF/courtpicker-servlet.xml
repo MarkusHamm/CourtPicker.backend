@@ -67,9 +67,9 @@
 </bean>
 
 <bean id="mailSender" class="org.springframework.mail.javamail.JavaMailSenderImpl">
-	<property name="host" value="mail.gmx.net"/>
-	<property name="username" value="markus.hamm@gmx.at" />
-	<property name="password" value="grf7v6d8" />
+	<property name="host" value="mail.courtpicker.com"/>
+	<property name="username" value="info@courtpicker.com" />
+	<property name="password" value="PF1nf0$$76" />
 	<property name="port" value="465" />
 	<property name="protocol" value="smtps" />
 	<property name="defaultEncoding" value="UTF-8"/> 
