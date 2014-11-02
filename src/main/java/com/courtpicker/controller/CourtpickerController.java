@@ -104,14 +104,6 @@ public class CourtpickerController implements Serializable {
     @Inject
     private UserAccountManager userAccountManager;
 
-    @RequestMapping(value="/api/testmail", method=RequestMethod.GET)
-    public @ResponseBody String testmail() {
-        Customer user = new Customer();
-        user.setEmail("markus.hamm@gmail.com");
-        cpMailSender.sendAccountCreatedMail(user, "hugo");
-        return "done";
-    }
-    
     @RequestMapping(value="/api/registerUser", method=RequestMethod.POST)
     public @ResponseBody Customer registerUser(@RequestParam String userName, @RequestParam String password, 
             @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String registerInstanceShortName) throws Exception {
