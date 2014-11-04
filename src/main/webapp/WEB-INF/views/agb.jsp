@@ -25,6 +25,9 @@
 <!-- NAVBAR
 ================================================== -->
   <body>
+  
+  <c:if test="${empty param.textonly}">
+  
     <div class="navbar-wrapper">
       <div class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div class="container">
@@ -87,6 +90,9 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="container">
+    
+  </c:if>
+    
     	<h1>CourtPicker - Allgemeine Geschäftsbedingungen</h1> 
     	<hr class="divider">Stand: 26. Oktober 2014<br><br>
 
@@ -272,15 +278,19 @@ entspricht und von Beginn der Unwirksamkeit an gilt.
 nicht wegfallen können, verpflichten sich die Vertragsparteien, den Vertrag unter Berücksichtigung
 des verfolgten Zwecks der unwirksamen Regelung so auszulegen, zu berichtigen oder durch eine andere,
 wirksame und durchführbare Regelung zu ersetzen, dass sein wirtschaftlicher und rechtlicher Zweck möglichst erreicht wird.
-	  
+	
+  <c:if test="${empty param.textonly}">    
+      
       <!-- FOOTER -->
       <hr class="divider">
       <footer>
         <p class="pull-right"><a href="#">Back to top</a></p>
         <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
       </footer>
+            
     </div><!-- /.container -->
-
+    
+  </c:if>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

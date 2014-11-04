@@ -25,6 +25,9 @@
 <!-- NAVBAR
 ================================================== -->
   <body>
+  
+  <c:if test="${empty param.textonly}">
+  
     <div class="navbar-wrapper">
       <div class="navbar navbar-inverse navbar-static-top" role="navigation">
         <div class="container">
@@ -87,6 +90,9 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="container">
+    
+  </c:if>
+    
     	<h1>CourtPicker - Datenschutzerklärung</h1>
     	<hr class="divider">
 			Unser Unternehmen, nachstehend CourtPicker genannt, geht mit Ihren persönlichen Daten sehr verantwortungsvoll um 
@@ -165,7 +171,9 @@
 			<br>
 			(2) Dieses Auskunfts-, Löschungs- und Berichtigungsrecht ist unentgeltlich. Bitte wenden Sie sich hierzu 
 			per E-Mail an: info@courtpicker.com
-			
+
+  <c:if test="${empty param.textonly}">
+  			
       <!-- FOOTER -->
       <hr class="divider">
       <footer>
@@ -174,6 +182,8 @@
       </footer>
 
     </div><!-- /.container -->
+    
+  </c:if>
 
 
     <!-- Bootstrap core JavaScript
