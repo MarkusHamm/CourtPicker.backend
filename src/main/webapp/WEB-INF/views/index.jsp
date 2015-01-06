@@ -21,6 +21,16 @@
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 	<!-- bootstrap -->
 	<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" >
+    <!-- google analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-58129508-1', 'auto');
+      ga('send', 'pageview');
+    </script>
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -172,7 +182,7 @@
         </div><!-- /.col-lg-4 -->
         <div class="col-lg-4">
 <!--          <img class="img-circle" src="${contextPath}/resources/css/images/zahnrad.png" width="50" height="50" alt="Generic placeholder image">-->
-          <h2><spring:message code="index.tryOut.header"/></h2>
+          <h2 style="color:#FFB90F"><spring:message code="index.tryOut.header"/></h2>
           <p><spring:message code="index.tryOut.text"/></p>
           <p><a class="btn btn-primary" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></p>
         </div><!-- /.col-lg-4 -->
@@ -249,7 +259,7 @@
       <footer>
       	<div class="row">
 			 <div class="col-md-10">
-			 	<p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
+			 	<p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">Impressum & AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
 			 </div>
 			 <div class="fb-like col-md-2" data-href="https://www.facebook.com/courtpicker" data-layout="button_count" data-action="like" data-show-faces="false" data-share="false" style="align:right;">
 			 </div>

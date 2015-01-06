@@ -21,6 +21,16 @@
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 	<!-- bootstrap -->
 	<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- google analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-58129508-1', 'auto');
+      ga('send', 'pageview');
+    </script>
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -87,105 +97,105 @@
     <!-- Wrap the rest of the page in another container to center all the content. -->
 
     <div class="container">
-   		<div class="row">
-			 <div class="col-md-6"><h1><spring:message code="benefits.title"/></h1>
-			 </div>
-			 <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-primary" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></span>
-			 </div>
-		</div>  
+        <div class="row">
+             <div class="col-md-6"><h1><spring:message code="benefits.title"/></h1>
+             </div>
+             <div class="col-md-6"><span class="pull-right"><br><a class="btn btn-primary" href="/configurator" role="button"><spring:message code="index.tryOut.button"/> &raquo;</a></span>
+             </div>
+        </div>  
       
-    	<hr class="divider">
-    	
-    	<div class="row">
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit1.title"/></h3>
-		        <p class="lead"><spring:message code="benefit1.lead"/></p><p><spring:message code="benefit1.text"/></p>
-		       </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit2.title"/></h3>
-		        <p class="lead"><spring:message code="benefit2.lead"/></p><p><spring:message code="benefit2.text"/></p>
-		       </div>
-		    </div>
-		  </div>
-		   <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit3.title"/></h3>
-		        <p class="lead"><spring:message code="benefit3.lead"/></p><p><spring:message code="benefit3.text"/><br><br><br></p>
-		       </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit4.title"/></h3>
-		        <p class="lead"><spring:message code="benefit4.lead"/></p><p><spring:message code="benefit4.text"/></p>
-		       </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit5.title"/></h3>
-		        <p class="lead"><spring:message code="benefit5.lead"/></p><p><spring:message code="benefit5.text"/></p>
-		       </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit6.title"/></h3>
-		        <p class="lead"><spring:message code="benefit6.lead"/></p><p><spring:message code="benefit6.text"/></p>
-		       </div>
-		    </div>
-		  </div>
-		   <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit7.title"/></h3>
-		        <p class="lead"><spring:message code="benefit7.lead"/></p><p><spring:message code="benefit7.text"/></p>
-		       </div>
-		    </div>
-		  </div> 
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="height:275px;">
-		      <div class="caption">
-		        <h3><spring:message code="benefit8.title"/></h3>
-		       <p class="lead"><spring:message code="benefit8.lead"/></p><p><spring:message code="benefit8.text"/></p>
-		       </div>
-		    </div>
-		  </div>
-		  <div class="col-sm-6 col-md-4">
-		    <div class="thumbnail" style="background-color:#428bca;height:275px;">
-		      <div class="caption">
-		      	<h3>  </h3>
-		      		<p class="lead"><br></p>
-		        	<br><br><br><br><br><br><br><br>
-		       </div>
-		    </div>
-		  </div> 
-<!--		  <div class="col-sm-6 col-md-4">-->
-<!--		    <div class="thumbnail">-->
-<!--		      <div class="caption">-->
-<!--		        <h3>CourtPicker-Portal inklusive.</h3>-->
-<!--		        <p class="lead">Eigenes Reservierungssystem und auch im CourtPicker-Portal.</p><p>CourtPicker bietet Dir nicht nur Dein eigenes Reservierungssystem. Du bist mit Deiner Anlage dann auch im CourtPicker-Portal vertreten. Deine Anlage kann dort für Reservierungen gefunden werden.</p>-->
-<!--		       </div>-->
-<!--		    </div>-->
-<!--		  </div> -->
-		 </div>
+        <hr class="divider">
+        
+        <div class="row">
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit1.title"/></h3>
+                <p class="lead"><spring:message code="benefit1.lead"/></p><p><spring:message code="benefit1.text"/></p>
+               </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit2.title"/></h3>
+                <p class="lead"><spring:message code="benefit2.lead"/></p><p><spring:message code="benefit2.text"/></p>
+               </div>
+            </div>
+          </div>
+           <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit3.title"/></h3>
+                <p class="lead"><spring:message code="benefit3.lead"/></p><p><spring:message code="benefit3.text"/><br><br><br></p>
+               </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit4.title"/></h3>
+                <p class="lead"><spring:message code="benefit4.lead"/></p><p><spring:message code="benefit4.text"/></p>
+               </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit5.title"/></h3>
+                <p class="lead"><spring:message code="benefit5.lead"/></p><p><spring:message code="benefit5.text"/></p>
+               </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit6.title"/></h3>
+                <p class="lead"><spring:message code="benefit6.lead"/></p><p><spring:message code="benefit6.text"/></p>
+               </div>
+            </div>
+          </div>
+           <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit7.title"/></h3>
+                <p class="lead"><spring:message code="benefit7.lead"/></p><p><spring:message code="benefit7.text"/></p>
+               </div>
+            </div>
+          </div> 
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="height:225px;">
+              <div class="caption">
+                <h3><spring:message code="benefit8.title"/></h3>
+               <p class="lead"><spring:message code="benefit8.lead"/></p><p><spring:message code="benefit8.text"/></p>
+               </div>
+            </div>
+          </div>
+          <div class="col-sm-6 col-md-4">
+            <div class="thumbnail" style="background-color:#428bca;height:225px;">
+              <div class="caption">
+                <h3>  </h3>
+                    <p class="lead"><br></p>
+                    <br><br><br><br><br><br><br><br>
+               </div>
+            </div>
+          </div> 
+<!--          <div class="col-sm-6 col-md-4">-->
+<!--            <div class="thumbnail">-->
+<!--              <div class="caption">-->
+<!--                <h3>CourtPicker-Portal inklusive.</h3>-->
+<!--                <p class="lead">Eigenes Reservierungssystem und auch im CourtPicker-Portal.</p><p>CourtPicker bietet Dir nicht nur Dein eigenes Reservierungssystem. Du bist mit Deiner Anlage dann auch im CourtPicker-Portal vertreten. Deine Anlage kann dort für Reservierungen gefunden werden.</p>-->
+<!--               </div>-->
+<!--            </div>-->
+<!--          </div> -->
+         </div>
 				
     	  
       <!-- FOOTER -->
       <hr class="divider">
       <footer>
         <p class="pull-right"><a href="#">Nach oben</a></p>
-        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
+        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">Impressum & AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
       </footer>
 
     </div><!-- /.container -->

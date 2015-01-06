@@ -21,6 +21,16 @@
     <link href="../../dist/css/bootstrap.min.css" rel="stylesheet">
 	<!-- bootstrap -->
 	<link href="${contextPath}/resources/bootstrap/css/bootstrap.min.css" rel="stylesheet" />
+    <!-- google analytics -->
+    <script>
+      (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+      (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+      m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+      })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+    
+      ga('create', 'UA-58129508-1', 'auto');
+      ga('send', 'pageview');
+    </script>
   </head>
 <!-- NAVBAR
 ================================================== -->
@@ -92,13 +102,26 @@
     <div class="container">
     
   </c:if>
+  
+        <h1>Impressum</h1> 
+        <hr class="divider">
+        <b>Eigentümer und Urheber:</b><br>
+        CourtPicker GesbR<br>
+        Pilotengasse 9/19<br>
+        1220 Wien<br>
+        Österreich<br>
+        <br>
+        <b>Gesellschafter:</b><br>
+        Markus Hamm <br>
+        Matthias Heindl<br>
+        <br>
     
-    	<h1>CourtPicker - Allgemeine Geschäftsbedingungen</h1> 
+    	<h1>Allgemeine Geschäftsbedingungen</h1> 
     	<hr class="divider">Stand: 26. Oktober 2014<br><br>
 
 <h4>1. Geltung der Geschäftsbedingungen</h4>
 (1) Die nachfolgenden Geschäftsbedingungen (nachfolgend AGB) gelten für alle Rechtsgeschäfte und 
-Verträge zwischen der CourtPicker GesBR, XXX, 1230 Wien (nachfolgend "CourtPicker") und dem
+Verträge zwischen der CourtPicker GesbR, Pilotengasse 9/19, 1220 Wien (nachfolgend "CourtPicker") und dem
 Nutzer der Reservierungssystemlösung "CourtPicker", der CourtPicker als Dienstleister für seine Kunden 
 bereitstellt. 
 <br><br>
@@ -285,7 +308,7 @@ wirksame und durchführbare Regelung zu ersetzen, dass sein wirtschaftlicher und 
       <hr class="divider">
       <footer>
         <p class="pull-right"><a href="#">Back to top</a></p>
-        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
+        <p>&copy; 2014 CourtPicker &middot; <a href="agb.htm">Impressum & AGB</a> &middot; <a href="datasecuritystatement.htm">Datenschutzerklärung</a></p>
       </footer>
             
     </div><!-- /.container -->
