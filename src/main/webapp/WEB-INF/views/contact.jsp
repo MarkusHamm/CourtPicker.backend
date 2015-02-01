@@ -107,6 +107,10 @@
     	<hr class="divider">
     	
 		  <spring:message code="contact.text"/>
+          
+        <p>
+            Gerne besuchen wir Dich auch persönlich um Dich zu beraten und bei der Umstellung auf CourtPicker zu unterstützen. 
+        </p>
 
       <!-- FOOTER -->
       <hr class="divider">

@@ -146,7 +146,7 @@ die der Nutzer buchen möchte oder sind der Website von CourtPicker (www.courtpic
 <br><br>
 (3) Der Vertrag mit dem Nutzer kommt durch Freischaltung und/oder Übermittlung der Zugangsdaten durch CourtPicker 
 gegenüber dem Nutzer zustande, wobei der Kunde die Möglichkeit hat, sein CourtPicker-Reservierungssystem im Rahmen 
-einer Testperiode für ein Monat (30 Tage nach Abschluss der Registrierung) kostenlos zu testen.
+einer Testperiode für drei Monate (90 Tage nach Abschluss der Registrierung) kostenlos zu testen.
 CourtPicker schickt dem Kunden nach Ablauf der Testperiode ein Mail, in dem der Kunde auf den Ablauf der Testperiode 
 hingewiesen und aufgefordert wird, zu bestätigen, dass er das Reservierungssystem zu den monatlichen Kosten, die ebenfalls im Mail enthalten sind,
 weiterbetreiben will.
