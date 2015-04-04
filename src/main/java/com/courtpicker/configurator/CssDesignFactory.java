@@ -138,9 +138,11 @@ public class CssDesignFactory {
         resHourHoverCssDef.add("box-shadow", "0 0 4px #" + brightenedReservableColor);
         cssdesign.put(".notreserved-color-clickable:hover", resHourHoverCssDef);
         
+        /*
         CssDefinition nonResHourCssDef = new CssDefinition();
         nonResHourCssDef.add("background-color", "#" + webdesign.getNonReservableHourColor());
         cssdesign.put(".past-color", nonResHourCssDef);
+        */
         
         cssdesign.put(".cpModal .modal-content", ctCssDef);
         cssdesign.put(".cpModal .modal-content h2", ctCssDef);
