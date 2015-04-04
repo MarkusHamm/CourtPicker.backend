@@ -119,8 +119,8 @@ public class CourtpickerController implements Serializable {
     @RequestMapping(value="/api/registerUserExtended", method=RequestMethod.POST)
     public @ResponseBody Customer registerUserExtended(@RequestParam String userName, @RequestParam String password, 
             @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, 
-            @RequestParam String phoneNumber, @RequestParam String street, @RequestParam String zipCode, 
-            @RequestParam String city, @RequestParam String country, @RequestParam String registerInstanceShortName) throws Exception {
+            @RequestParam(required=false) String phoneNumber, @RequestParam(required=false) String street, @RequestParam(required=false) String zipCode, 
+            @RequestParam(required=false) String city, @RequestParam(required=false) String country, @RequestParam String registerInstanceShortName) throws Exception {
         try {
             Customer customer = userAccountManager.registerUserExtended(userName, password, email, firstName, lastName, phoneNumber, street, zipCode, city, country, registerInstanceShortName);
             return customer;

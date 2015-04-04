@@ -29,15 +29,13 @@ public class FileUploadController {
     private FileHandler fileHandler;
     
     @RequestMapping("upload/webdesignfile")
-    public @ResponseBody String uploadWebdesignFile(HttpServletRequest request, HttpServletResponse response,
+    public void uploadWebdesignFile(HttpServletRequest request, HttpServletResponse response,
             @RequestParam("logowebdesignid") Integer webdesignId, @RequestParam("logotype") String type, 
             @RequestParam("logofile") MultipartFile file) 
-                    throws IOException {
+                    throws IOException {        
         WebdesignFile webdesignFile = saveWebdesignFileToDb(webdesignId, type, file);
         //String servletPath = saveWebdesignFileToServerDisk(request, file, webdesignFile);        
         String base64EncodedFileContent = new String(Base64.encodeBase64(webdesignFile.getContent()));
-        
-        return base64EncodedFileContent;
     }
 
     private WebdesignFile saveWebdesignFileToDb(Integer webdesignId, String type, MultipartFile file)

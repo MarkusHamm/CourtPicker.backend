@@ -1,5 +1,8 @@
 package com.courtpicker.model;
 
+import org.codehaus.jackson.annotate.JsonIgnoreProperties;
+
+@JsonIgnoreProperties(ignoreUnknown=true)
 public class Subscription {
     private Integer id;
     private Integer courtCategoryId;
