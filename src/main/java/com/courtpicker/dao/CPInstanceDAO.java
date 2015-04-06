@@ -31,15 +31,15 @@ public class CPInstanceDAO {
         if (cpInstance.getId() == null) {
             int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.cpinstance_id_seq')");
             cpInstance.setId(newRecordId);
-            query = "insert into cp.cpinstance (name, shortName, licence, licencestartdate, id) values (?, ?, ?, ?, ?)";
+            query = "insert into cp.cpinstance (name, shortName, licence, licencestartdate, createdate, id) values (?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update cp.cpinstance set name=?, shortName=?, licence=?, licenceStartDate=? where id=?";
+            query = "update cp.cpinstance set name=?, shortName=?, licence=?, licenceStartDate=?, createdate=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { cpInstance.getName(), cpInstance.getShortName(), 
-                cpInstance.getLicence(), cpInstance.getLicenceStartDate(), cpInstance.getId() });
+                cpInstance.getLicence(), cpInstance.getLicenceStartDate(), cpInstance.getCreateDate(), cpInstance.getId() });
 
         return cpInstance;
     }

@@ -8,6 +8,7 @@ public class CPInstance {
     private String shortName;
     private String licence;
     private Date licenceStartDate;
+    private Date createDate;
 
     public CPInstance() {
         id = null;
@@ -15,6 +16,7 @@ public class CPInstance {
         shortName = "";
         licence = "";
         licenceStartDate = null;
+        createDate = null;
     }
     
     public Integer getId() {
@@ -56,4 +58,12 @@ public class CPInstance {
     public void setLicenceStartDate(Date licenceStartDate) {
         this.licenceStartDate = licenceStartDate;
     }
+
+	public Date getCreateDate() {
+		return createDate;
+	}
+
+	public void setCreateDate(Date createDate) {
+		this.createDate = createDate;
+	}
 }

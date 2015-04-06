@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.math.BigDecimal;
+import java.util.Date;
 import java.util.List;
 
 import javax.inject.Inject;
@@ -110,6 +111,7 @@ public class ConfigurationController implements Serializable {
         CPInstance cpInstance = new CPInstance();
         cpInstance.setName("");
         cpInstance.setLicence("config");
+        cpInstance.setCreateDate(new Date());
         cpInstance = cpInstanceDAO.persist(cpInstance);
 
         Webdesign webdesign = new Webdesign();

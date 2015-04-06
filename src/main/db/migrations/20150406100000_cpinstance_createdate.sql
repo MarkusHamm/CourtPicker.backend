@@ -1,0 +1,1 @@
+alter table cp.cpinstance add column createdate date;

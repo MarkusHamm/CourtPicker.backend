@@ -14,7 +14,8 @@ public class CPInstanceRowMapper implements RowMapper<CPInstance> {
         cpInstance.setName(rs.getString("name"));
         cpInstance.setShortName(rs.getString("shortname"));
         cpInstance.setLicence(rs.getString("licence"));
-        cpInstance.setLicenceStartDate(rs.getDate("licenceStartDate"));
+        cpInstance.setLicenceStartDate(rs.getDate("licencestartdate"));
+        cpInstance.setCreateDate(rs.getDate("createdate"));
         return cpInstance;
     }
 }
