@@ -622,6 +622,20 @@ public class CourtpickerController implements Serializable {
         singleReservationDAO.persist(reservation);
     }
     
+    @RequestMapping(value="/api/undoPaymentSingleReservation", method=RequestMethod.POST)
+    public @ResponseBody SingleReservation undoPaymentSingleReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserIsAdminBySingleReservation(reservationId);
+    	
+        SingleReservation reservation = singleReservationDAO.get(reservationId);
+        reservation.setPaid(false);
+        reservation.setPaymentDate(null);
+        reservation.setPaymentOptionId(null);
+        reservation.setPrice(reservation.getCalculatedPrice());        
+        singleReservationDAO.persist(reservation);
+        
+        return reservation;
+    }
+    
     @RequestMapping(value="/api/getSubscriptionReservationInfosForCustomer", method=RequestMethod.GET)
     public @ResponseBody List<SubscriptionReservationInfo> getSubscriptionReservationInfosForCustomer(@RequestParam Integer customerId) throws UserNotAuthorizedException {
     	authorizationChecker.checkUserIsLoggedInUser(customerId);
@@ -656,6 +670,20 @@ public class CourtpickerController implements Serializable {
         }
         
         subscriptionReservationDAO.persist(reservation);
+    }
+    
+    @RequestMapping(value="/api/undoPaymentSubscriptionReservation", method=RequestMethod.POST)
+    public @ResponseBody SubscriptionReservation undoPaymentSubscriptionReservation(@RequestParam Integer reservationId) throws UserNotAuthorizedException {
+    	authorizationChecker.checkLoggedInUserIsAdminBySubscriptionReservation(reservationId);
+    	
+        SubscriptionReservation reservation = subscriptionReservationDAO.get(reservationId);
+        reservation.setPaid(false);
+        reservation.setPaymentDate(null);
+        reservation.setPaymentOptionId(null);
+        reservation.setPrice(reservation.getCalculatedPrice());
+        subscriptionReservationDAO.persist(reservation);
+        
+        return reservation;
     }
     
     private String getDisplayNameForCustomer(Integer customerId) {
