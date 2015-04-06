@@ -42,6 +42,11 @@ public class PriceCalculator {
             List<Rate> matchingRates = identifyMatchingRates(rates, slotFromTime, slotToTime, userGroupIds);
             Rate accurateRate = identifyAccurateRate(matchingRates);
             
+            if (accurateRate == null) {
+            	BigDecimal x = new BigDecimal(1);
+            	return x.negate();
+            }
+            
             price = price.add(accurateRate.getPrice());
         }
         
