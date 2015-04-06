@@ -57,6 +57,7 @@ import com.courtpicker.model.Webdesign;
 import com.courtpicker.model.WebdesignFile;
 import com.courtpicker.security.AuthorizationChecker;
 import com.courtpicker.security.UserInfo;
+import com.courtpicker.tools.CPMailSender;
 import com.courtpicker.tools.FileHandler;
 
 @Controller
@@ -104,6 +105,8 @@ public class ConfigurationController implements Serializable {
     private MonthlyFeeCalculator monthlyFeeCalculator;
     @Inject
     private ResourceLoader resourceLoader;
+    @Inject
+    private CPMailSender cpMailSender;
 
     @RequestMapping(value = "/api/createNewInstance", method = RequestMethod.GET)
     public @ResponseBody
@@ -145,6 +148,8 @@ public class ConfigurationController implements Serializable {
         standardPaymentOption.setName("Bar");
         standardPaymentOption.setDeleted(false);
         paymentOptionDAO.persist(standardPaymentOption);
+        
+        cpMailSender.sendInstanceCreatedMail();
 
         return cpInstance;
     }

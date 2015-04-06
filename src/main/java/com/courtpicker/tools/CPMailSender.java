@@ -110,6 +110,10 @@ public class CPMailSender {
         }
     }
     
+    public void sendInstanceCreatedMail() {
+        mailEngine.sendHtmlMail("info@courtpicker.com", null, null, "AUTO: Instance Created", "new instance created");
+    }
+    
     private Map<String, Object> getSubscriptionReservationTemplateModel(SubscriptionReservation reservation)
             throws ParseException {
         SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
