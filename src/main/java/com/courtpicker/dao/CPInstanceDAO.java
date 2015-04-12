@@ -76,7 +76,7 @@ public class CPInstanceDAO {
     
     public CPInstance getByShortName(String shortName) {
         String query = "select * from cp.cpinstance where lower(shortname)=?";
-        List<CPInstance> matches = jdbcTemplate.query(query, new Object[] { shortName }, rowMapper);
+        List<CPInstance> matches = jdbcTemplate.query(query, new Object[] { shortName.toLowerCase() }, rowMapper);
         
         if (matches.size() == 0) {
             return null;
