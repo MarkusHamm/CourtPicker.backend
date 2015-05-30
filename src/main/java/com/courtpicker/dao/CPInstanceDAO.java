@@ -31,15 +31,17 @@ public class CPInstanceDAO {
         if (cpInstance.getId() == null) {
             int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.cpinstance_id_seq')");
             cpInstance.setId(newRecordId);
-            query = "insert into cp.cpinstance (name, shortName, licence, licencestartdate, createdate, id) values (?, ?, ?, ?, ?, ?)";
+            query = "insert into cp.cpinstance (name, shortName, licence, licencestartdate, createdate, mailatregistration, reservationlimit, reservationlabelvisibility, id) values (?, ?, ?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update cp.cpinstance set name=?, shortName=?, licence=?, licenceStartDate=?, createdate=? where id=?";
+            query = "update cp.cpinstance set name=?, shortName=?, licence=?, licenceStartDate=?, createdate=?, mailatregistration=?, reservationlimit=?, reservationlabelvisibility=? where id=?";
         }
 
         jdbcTemplate.update(query, new Object[] { cpInstance.getName(), cpInstance.getShortName(), 
-                cpInstance.getLicence(), cpInstance.getLicenceStartDate(), cpInstance.getCreateDate(), cpInstance.getId() });
+                cpInstance.getLicence(), cpInstance.getLicenceStartDate(), cpInstance.getCreateDate(), 
+                cpInstance.getMailAtRegistration(), cpInstance.getReservationLimit(), cpInstance.getReservationLabelVisibility(),
+                cpInstance.getId() });
 
         return cpInstance;
     }
@@ -51,14 +53,16 @@ public class CPInstanceDAO {
         if (cpInstance.getId() == null) {
             int newRecordId = jdbcTemplate.queryForInt("select nextval('cp.cpinstance_id_seq')");
             cpInstance.setId(newRecordId);
-            query = "insert into cp.cpinstance (name, shortName, id) values (?, ?, ?)";
+            query = "insert into cp.cpinstance (name, shortName, createdate, mailatregistration, reservationlimit, reservationlabelvisibility, id) values (?, ?, ?, ?, ?, ?, ?)";
         }
         // do an update if id is set
         else {
-            query = "update cp.cpinstance set name=?, shortName=? where id=?";
+            query = "update cp.cpinstance set name=?, shortName=?, createdate=?, mailatregistration=?, reservationlimit=?, reservationlabelvisibility=? where id=?";
         }
 
-        jdbcTemplate.update(query, new Object[] { cpInstance.getName(), cpInstance.getShortName(), cpInstance.getId() });
+        jdbcTemplate.update(query, new Object[] { cpInstance.getName(), cpInstance.getShortName(), cpInstance.getCreateDate(),
+                cpInstance.getMailAtRegistration(), cpInstance.getReservationLimit(), cpInstance.getReservationLabelVisibility(),
+                cpInstance.getId() });
 
         return cpInstance;
     }
