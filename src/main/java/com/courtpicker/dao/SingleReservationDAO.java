@@ -126,6 +126,13 @@ public class SingleReservationDAO {
         return matches;
     }
     
+    public Integer getNrOfFutureReservations(Integer customerId, Integer cpInstanceId) {
+        String query = "select count(1) from cp.singlereservation where fromdate > current_timestamp and deleted=false and customerid=? " +
+        		"and courtid in (select c.id from cp.court c, cp.courtcategory cc where c.courtcategoryid=cc.id and cc.cpinstanceid=?)";
+        Integer result = jdbcTemplate.queryForObject(query, new Object[] { customerId, cpInstanceId }, Integer.class);
+        return result;
+    }
+    
     public JdbcTemplate getJdbcTemplate() {
         return jdbcTemplate;
     }

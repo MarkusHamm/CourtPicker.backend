@@ -376,6 +376,17 @@ public class CourtpickerController implements Serializable {
             @RequestParam String fromDateTime, @RequestParam String toDateTime, @RequestParam String comment) throws ParseException, UserNotAuthorizedException {
     	authorizationChecker.checkUserIsLoggedInUser(customerId);
     	
+        // reservation limit check
+        Court court = courtDAO.get(courtId);
+        CourtCategory courtCategory = courtCategoryDAO.get(court.getCourtCategoryId());
+        CPInstance cpInstance = cpInstanceDAO.get(courtCategory.getCpInstanceId());
+        if (cpInstance.getReservationLimit() > -1) {
+            Integer futureReservations = singleReservationDAO.getNrOfFutureReservations(customerId, cpInstance.getId());
+            if (cpInstance.getReservationLimit() <= futureReservations) {
+                return false;
+            }
+        }
+    	
         SimpleDateFormat dateTimeFormat = new SimpleDateFormat("dd.MM.yyyy HH:mm");
         Date fromDate = dateTimeFormat.parse(fromDateTime);
         Date toDate = dateTimeFormat.parse(toDateTime);
