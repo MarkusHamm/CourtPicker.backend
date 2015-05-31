@@ -1,0 +1,17 @@
+<html>
+    <head>
+        <meta http-equiv="Content-Type"  content="text/html charset=UTF-8" />
+    </head>
+    <body>
+        <img src="http://www.courtpicker.com/courtpicker/resources/emailheader.png">
+        <h2>Neuer CourtPicker User</h2>
+        <p>
+            Folgender Benutzer hat sich auf der CourtPicker Instanz $cpInstance.name registriert:
+        </p>
+        <p>
+            <b>Name:</b> $user.firstName $user.lastName<br>
+            <b>Benutzername:</b> $user.userName <br>
+            <b>E-Mail:</b> $user.email <br>
+        </p>
+    </body>
+</html>

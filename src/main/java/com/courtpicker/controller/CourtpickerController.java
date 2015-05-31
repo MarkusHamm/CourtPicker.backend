@@ -109,6 +109,10 @@ public class CourtpickerController implements Serializable {
             @RequestParam String email, @RequestParam String firstName, @RequestParam String lastName, @RequestParam String registerInstanceShortName) throws Exception {
         try {
             Customer customer = userAccountManager.registerUser(userName, password, email, firstName, lastName, registerInstanceShortName);
+            CPInstance cpInstance = cpInstanceDAO.getByShortName(registerInstanceShortName);
+            if (cpInstance != null && cpInstance.getMailAtRegistration()) {
+                userAccountManager.sendRegistrationInfoToAdmins(cpInstance, customer);
+            }
             return customer;
         }
         catch (UserAlreadyExistsException e) {

@@ -1,5 +1,6 @@
 package com.courtpicker.courtpicker;
 
+import java.util.List;
 import java.util.UUID;
 
 import javax.inject.Inject;
@@ -10,7 +11,9 @@ import org.springframework.stereotype.Component;
 
 import com.courtpicker.dao.CustomerDAO;
 import com.courtpicker.exception.UserAlreadyExistsException;
+import com.courtpicker.model.CPInstance;
 import com.courtpicker.model.Customer;
+import com.courtpicker.model.CustomerExtract;
 import com.courtpicker.tools.CPMailSender;
 import com.courtpicker.tools.MailEngine;
 
@@ -128,6 +131,13 @@ public class UserAccountManager {
         customerDAO.persist(customer);
         
         return newPasswordMd5;
+    }
+    
+    public void sendRegistrationInfoToAdmins(CPInstance cpInstance, Customer customer) {
+        List<CustomerExtract> adminUser = customerDAO.getAdminUserExctract(cpInstance.getId());
+        for (CustomerExtract admin : adminUser) {
+            cpMailSender.sendAdminRegistrationInfo(customer, cpInstance, admin.getEmail());
+        }
     }
     
     private Customer createUser(Customer user) throws UserAlreadyExistsException {
