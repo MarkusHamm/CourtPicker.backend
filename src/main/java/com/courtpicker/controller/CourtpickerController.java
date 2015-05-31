@@ -149,6 +149,7 @@ public class CourtpickerController implements Serializable {
             userInfo.setLoggedIn(false);
             userInfo.setLoggedInUser(null);
             userInfo.setUserAuthorities(null);
+            userInfo.setUserGroupIds(null);
             return null;
         }
         
@@ -156,6 +157,9 @@ public class CourtpickerController implements Serializable {
         userInfo.setLoggedInUser(user);
         Map<Integer, List<String>> userAuthorities = authorityDAO.getAllAuthorities(user.getId());
         userInfo.setUserAuthorities(userAuthorities);
+        Map<Integer, List<Integer>> userGroupIds = customerUserGroupDAO.getAllUserGroupsPerInstance(user.getId());
+        userInfo.setUserGroupIds(userGroupIds);
+        
         return user;
     }
     
@@ -164,6 +168,7 @@ public class CourtpickerController implements Serializable {
         userInfo.setLoggedIn(false);
         userInfo.setLoggedInUser(null);
         userInfo.setUserAuthorities(null);
+        userInfo.setUserGroupIds(null);
         return null;
     }
     
@@ -174,6 +179,9 @@ public class CourtpickerController implements Serializable {
         authStatus.setLoggedInUser(userInfo.getLoggedInUser());
         if (userInfo.isLoggedIn() && userInfo.getUserAuthorities().containsKey(cpInstanceId)) {
             authStatus.setAuthorities(userInfo.getUserAuthorities().get(cpInstanceId));
+        }
+        if (userInfo.isLoggedIn() && userInfo.getUserGroupIds().containsKey(cpInstanceId)) {
+            authStatus.setUserGroupIds(userInfo.getUserGroupIds().get(cpInstanceId));
         }
         return authStatus;
     }    
@@ -188,6 +196,12 @@ public class CourtpickerController implements Serializable {
     public @ResponseBody List<String> getAuthorities(@RequestParam Integer userId, @RequestParam Integer cpInstanceId) throws Exception {
     	authorizationChecker.checkUserIsLoggedInUser(userId);
         return authorityDAO.getAuthorities(userId, cpInstanceId);
+    }
+    
+    @RequestMapping(value="/api/getUserGroupIds", method=RequestMethod.GET)
+    public @ResponseBody List<Integer> getUserGroupIds(@RequestParam Integer userId, @RequestParam Integer cpInstanceId) throws Exception {
+        authorizationChecker.checkUserIsLoggedInUser(userId);
+        return customerUserGroupDAO.getUserGroupsPerInstance(userId, cpInstanceId);
     }
     
     /*

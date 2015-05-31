@@ -15,11 +15,13 @@ public class UserInfo implements Serializable {
     private boolean loggedIn;
     private Customer loggedInUser;
     private Map<Integer, List<String>> userAuthorities;
+    private Map<Integer, List<Integer>> userGroupIds;
     
     public UserInfo() {
         loggedIn = false;
         loggedInUser = null;
         userAuthorities = null;
+        userGroupIds = null;
     }
 
     public boolean isLoggedIn() {
@@ -45,5 +47,13 @@ public class UserInfo implements Serializable {
 
     public void setUserAuthorities(Map<Integer, List<String>> userAuthorities) {
         this.userAuthorities = userAuthorities;
+    }
+
+    public Map<Integer, List<Integer>> getUserGroupIds() {
+        return userGroupIds;
+    }
+
+    public void setUserGroupIds(Map<Integer, List<Integer>> userGroupIds) {
+        this.userGroupIds = userGroupIds;
     }
 }

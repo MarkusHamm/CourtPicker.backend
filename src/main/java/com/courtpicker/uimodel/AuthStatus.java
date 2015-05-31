@@ -9,12 +9,14 @@ public class AuthStatus {
     private boolean isLoggedIn;
     private Customer loggedInUser;
     private List<String> authorities;
+    private List<Integer> userGroupIds;
     private String statusMessage;
 
     public AuthStatus() {
         isLoggedIn = false;
         loggedInUser = null;
         authorities = new ArrayList<String>();
+        userGroupIds = new ArrayList<Integer>();
         statusMessage = "";
     }
     
@@ -48,5 +50,13 @@ public class AuthStatus {
 
     public void setStatusMessage(String statusMessage) {
         this.statusMessage = statusMessage;
+    }
+
+    public List<Integer> getUserGroupIds() {
+        return userGroupIds;
+    }
+
+    public void setUserGroupIds(List<Integer> userGroupIds) {
+        this.userGroupIds = userGroupIds;
     }
 }
